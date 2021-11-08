@@ -8,12 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    #[Route('/user/auth', name: 'auth')]
+    #[Route('/auth', name: 'auth')]
     public function index(): Response
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/UserController.php',
-        ]);
+        return $this->render('user/auth.html.twig');
     }
 }
