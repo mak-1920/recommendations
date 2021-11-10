@@ -33,7 +33,9 @@
         "symfony/validator": "5.3.*",
         "symfony/webpack-encore-bundle": "^1.12",
         "symfony/yaml": "5.3.*",
-        "symfonycasts/verify-email-bundle": "^1.5"
+        "symfonycasts/verify-email-bundle": "^1.5",
+        "symfony/stopwatch": "5.3.*",
+        "symfony/web-profiler-bundle": "5.3.*"
     },
     "config": {
         "optimize-autoloader": true,
@@ -79,7 +81,5 @@
         }
     },
     "require-dev": {
-        "symfony/stopwatch": "5.3.*",
-        "symfony/web-profiler-bundle": "5.3.*"
     }
 }
