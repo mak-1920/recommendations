@@ -8,7 +8,7 @@ hwi_oauth:
             type:                google
             client_id:           '%env(GOOGLE_CLIENT_ID)%'
             client_secret:       '%env(GOOGLE_CLIENT_TOKEN)%'
-            scope:               "email profile"
+            # scope:               "email profile"
         vk:
             type:                vkontakte
             client_id:           '%env(VK_CLIENT_ID)%'
