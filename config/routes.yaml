@@ -1,3 +1,8 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+# vk_login:
+#     path: /login/check-vk
+
+# google_login:
+#     path: /login/check-google

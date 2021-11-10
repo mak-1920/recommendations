@@ -3,17 +3,35 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header class="navbar navbar-expand-md navbar-light bg-light">
+            <nav class="container-xxl flex-wrap flex-md-nowrap">
+                <a href="{{ path('main') }}" class="navbar-brand p-0 me-2">Recommendations</a>
+                <div class="collapse navbar-collapse">
+                    {# <ul class="navbar-nav flex-row flex-wrap bd-navbar-nav pt-2 py-md-0">
+                        <li class="navbar-item"><a href="{{ path('main') }}" class="nav-link">Home</a></li>
+                    </ul> #}
+                    <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
+                        {% if(is_granted('IS_AUNTHENTICATED_FULLY')) %}
+                            <li class="navbar-item"><a href="{{ path('main') }}" class="nav-link">Logout</a></li>
+                        {% else %}
+                            <li class="navbar-item"><a href="{{ path('main') }}" class="nav-link">Auth</a></li>
+                            <li class="navbar-item"><a href="{{ path('main') }}" class="nav-link">Registration</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div class="container-md">
+            {% block body %}{% endblock %}
+        </div>
     </body>
 </html>
