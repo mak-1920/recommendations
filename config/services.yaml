@@ -3,8 +3,8 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
-parameters:
-    env(DATABASE_URL): "postgres://fillkhzfpvjwxj:fe8794788eec80efe46d483c18679cb46bfe3af1a8ba9de0bbf9fbe5ceebb644@ec2-34-203-182-172.compute-1.amazonaws.com:5432/dd6h8acm3ao0v9"
+# parameters:
+#     env(DATABASE_URL): "postgres://fillkhzfpvjwxj:fe8794788eec80efe46d483c18679cb46bfe3af1a8ba9de0bbf9fbe5ceebb644@ec2-34-203-182-172.compute-1.amazonaws.com:5432/dd6h8acm3ao0v9"
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -23,3 +23,6 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    hwi_oauth.user.provider.entity:
+        class: HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider
+        arguments: ['@doctrine',{google: googleID, vk: vkontakte}]

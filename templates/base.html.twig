@@ -12,7 +12,7 @@
         {% endblock %}
     </head>
     <body>
-        <header class="navbar navbar-expand-md navbar-light bg-light">
+        <header class="navbar navbar-expand-md navbar-light bg-light mb-2">
             <nav class="container-xxl flex-wrap flex-md-nowrap">
                 <a href="{{ path('main') }}" class="navbar-brand p-0 me-2">Recommendations</a>
                 <div class="collapse navbar-collapse">
@@ -20,11 +20,11 @@
                         <li class="navbar-item"><a href="{{ path('main') }}" class="nav-link">Home</a></li>
                     </ul> #}
                     <ul class="navbar-nav flex-row flex-wrap ms-md-auto">
-                        {% if(is_granted('IS_AUNTHENTICATED_FULLY')) %}
-                            <li class="navbar-item"><a href="{{ path('main') }}" class="nav-link">Logout</a></li>
+                        {% if(is_granted('ROLE_USER')) %}
+                            <li class="navbar-item"><a href="{{ path('app_logout') }}" class="nav-link">Logout</a></li>
                         {% else %}
-                            <li class="navbar-item"><a href="{{ path('main') }}" class="nav-link">Auth</a></li>
-                            <li class="navbar-item"><a href="{{ path('main') }}" class="nav-link">Registration</a></li>
+                            <li class="navbar-item"><a href="{{ path('login') }}" class="nav-link">Auth</a></li>
+                            <li class="navbar-item"><a href="{{ path('app_register') }}" class="nav-link">Registration</a></li>
                         {% endif %}
                     </ul>
                 </div>
