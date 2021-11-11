@@ -23,6 +23,3 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    hwi_oauth.user.provider.entity:
-        class: HWI\Bundle\OAuthBundle\Security\Core\User\OAuthUserProvider
-        arguments: ['@doctrine',{google: google, vk: vk}]

@@ -12,7 +12,8 @@
         "doctrine/doctrine-bundle": "^2.4",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.10",
-        "hwi/oauth-bundle": "dev-master",
+        "knpuniversity/oauth2-client-bundle": "^2.8",
+        "league/oauth2-google": "^4.0",
         "phpdocumentor/reflection-docblock": "^5.3",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "5.3.*",
@@ -28,14 +29,14 @@
         "symfony/runtime": "5.3.*",
         "symfony/security-bundle": "5.3.*",
         "symfony/serializer": "5.3.*",
+        "symfony/stopwatch": "5.3.*",
         "symfony/templating": "5.3.*",
         "symfony/twig-bundle": "5.3.*",
         "symfony/validator": "5.3.*",
+        "symfony/web-profiler-bundle": "5.3.*",
         "symfony/webpack-encore-bundle": "^1.12",
         "symfony/yaml": "5.3.*",
-        "symfonycasts/verify-email-bundle": "^1.5",
-        "symfony/stopwatch": "5.3.*",
-        "symfony/web-profiler-bundle": "5.3.*"
+        "symfonycasts/verify-email-bundle": "^1.5"
     },
     "config": {
         "optimize-autoloader": true,
@@ -79,7 +80,5 @@
             "allow-contrib": false,
             "require": "5.3.*"
         }
-    },
-    "require-dev": {
     }
 }

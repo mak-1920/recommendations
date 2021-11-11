@@ -15,6 +15,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -34,9 +37,94 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $nickname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $vk_id;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $vk_token;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $google_id;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $google_token;
+
+    /**
+     * @param string $clientId
+     * @param string $email
+     * @param string $username
+     * @param string $oauthType
+     * @param array $roles
+     */
+    public function __construct(
+        string $email,
+        string $username
+    ) {
+        $this->email = $email;
+        $this->username = $username;
+        $this->roles = [self::ROLE_USER];
+    }
+
+    // /**
+    //  * @param int $clientId
+    //  * @param string $email
+    //  * @param string $username
+    //  *
+    //  * @return User
+    //  */
+    // public static function fromVKRequest(
+    //     int $clientId,
+    //     string $email,
+    //     string $username
+    // ): User
+    // {
+    //     $user = new self(
+    //         $email,
+    //         $username,
+    //         [self::ROLE_USER]
+    //     );
+    //     $user->vk_id = $clientId;
+    //     return $user;
+    // }
+
+    // /**
+    //  * @param string $clientId
+    //  * @param string $email
+    //  * @param string $username
+    //  *
+    //  * @return User
+    //  */
+    // public static function fromGoogleRequest(
+    //     string $clientId,
+    //     string $email,
+    //     string $username
+    // ): User
+    // {
+    //     $user = new self(
+    //         $email,
+    //         $username,
+    //         [self::ROLE_USER]
+    //     );
+    //     $user->google_id = $clientId;
+    //     return $user;
+    // }
 
     public function getId(): ?int
     {
@@ -125,5 +213,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getNickname(): ?string
+    {
+        return $this->nickname;
+    }
+
+    public function setNickname(string $nickname): self
+    {
+        $this->nickname = $nickname;
+
+        return $this;
+    }
+
+    public function getVkId(): ?string
+    {
+        return $this->vk_id;
+    }
+
+    public function setVkId(?string $vk_id): self
+    {
+        $this->vk_id = $vk_id;
+
+        return $this;
+    }
+
+    public function getVkToken(): ?string
+    {
+        return $this->vk_token;
+    }
+
+    public function setVkToken(?string $vk_token): self
+    {
+        $this->vk_token = $vk_token;
+
+        return $this;
+    }
+
+    public function getGoogleId(): ?string
+    {
+        return $this->google_id;
+    }
+
+    public function setGoogleId(?string $google_id): self
+    {
+        $this->google_id = $google_id;
+
+        return $this;
+    }
+
+    public function getGoogleToken(): ?string
+    {
+        return $this->google_token;
+    }
+
+    public function setGoogleToken(?string $google_token): self
+    {
+        $this->google_token = $google_token;
+
+        return $this;
     }
 }
