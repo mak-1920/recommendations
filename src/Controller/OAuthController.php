@@ -19,6 +19,7 @@ class OAuthController extends AbstractController
             ->redirect(['email', 'profile'], []);
     }
 
+    #[Route("/google/auth", name: "google_auth")]
     public function connectGoogleCheck() : JsonResponse|RedirectResponse
     {
         if (!$this->getUser()) {
