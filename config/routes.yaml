@@ -10,11 +10,11 @@
 #     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
 #     prefix:   /login
 
-vk_login:
-    path: /login/check-vk
+# vk_login:
+#     path: /login/check-vk
 
-google_login:
-    path: /login/check-google
+# google_login:
+#     path: /login/check-google
 
 app_logout:
     path: /logout

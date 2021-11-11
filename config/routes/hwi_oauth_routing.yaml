@@ -1,17 +1,17 @@
 hwi_oauth_redirect:
     resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
-    prefix:   /connect
+    prefix:   /oauth/connect
 
 hwi_oauth_connect:
     resource: "@HWIOAuthBundle/Resources/config/routing/connect.xml"
-    prefix:   /connect
+    prefix:   /oauth/connect
 
 hwi_oauth_login:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
-    prefix:   /login
+    prefix:   /oauth/login
 
 vk_login:
-    path: /login/check-vk
+    path: /oauth/login/check-vk
 
 google_login:
-    path: /login/check-google
+    path: /oauth/login/check-google
