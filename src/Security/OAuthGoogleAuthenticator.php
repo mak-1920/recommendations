@@ -81,6 +81,7 @@ class OAuthGoogleAuthenticator extends SocialAuthenticator
                 $googleUser->getName()
             );
             $user->setGoogleId($googleUser->getId());
+            $user->setNickname($googleUser->getName());
 
             $this->em->persist($user);
             $this->em->flush();
