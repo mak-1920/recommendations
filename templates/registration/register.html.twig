@@ -11,16 +11,16 @@
         <div class="col-sm-5 p-3">
             <div class="display-4 text-center mb-2">Register with</div>
             <div class="row justify-content-sm-center mt-2">
-                <form action="{{ path('hwi_oauth_service_redirect', {'service': 'vk' }) }}" class="w-50">
+                <a action="{{ path('hwi_oauth_service_redirect', {'service': 'vk' }) }}" class="w-50">
                     <button class="btn btn-lg btn-primary w-100">
                             <span>vk</span>
                     </button>
-                </form>
-                <form action="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}" class="w-50">
+                </a>
+                <a action="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}" class="w-50">
                     <button class="btn btn-lg btn-primary w-100">
                             <span>google</span>
                     </button>
-                </form>
+                </a>
             </div>
         </div>
         <div class="col-sm-5 p-3">
