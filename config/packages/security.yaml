@@ -30,10 +30,10 @@ security:
 
                 oauth_user_provider:
                     service: hwi_oauth.user.provider.entity
-            form_login:
-                # "login" is the name of the route created previously
-                login_path: /login
-                check_path: /login
+            # form_login:
+            #     # "login" is the name of the route created previously
+            #     login_path: /login
+            #     check_path: /login
             # custom_authenticator: App\Security\UserAuthenticator
             logout:
                 path: app_logout
