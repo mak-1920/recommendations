@@ -54,17 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $vk_token;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
     private $google_id;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $google_token;
 
     /**
      * @param string $clientId
@@ -81,50 +71,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->username = $username;
         $this->roles = [self::ROLE_USER];
     }
-
-    // /**
-    //  * @param int $clientId
-    //  * @param string $email
-    //  * @param string $username
-    //  *
-    //  * @return User
-    //  */
-    // public static function fromVKRequest(
-    //     int $clientId,
-    //     string $email,
-    //     string $username
-    // ): User
-    // {
-    //     $user = new self(
-    //         $email,
-    //         $username,
-    //         [self::ROLE_USER]
-    //     );
-    //     $user->vk_id = $clientId;
-    //     return $user;
-    // }
-
-    // /**
-    //  * @param string $clientId
-    //  * @param string $email
-    //  * @param string $username
-    //  *
-    //  * @return User
-    //  */
-    // public static function fromGoogleRequest(
-    //     string $clientId,
-    //     string $email,
-    //     string $username
-    // ): User
-    // {
-    //     $user = new self(
-    //         $email,
-    //         $username,
-    //         [self::ROLE_USER]
-    //     );
-    //     $user->google_id = $clientId;
-    //     return $user;
-    // }
 
     public function getId(): ?int
     {
@@ -239,18 +185,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getVkToken(): ?string
-    {
-        return $this->vk_token;
-    }
-
-    public function setVkToken(?string $vk_token): self
-    {
-        $this->vk_token = $vk_token;
-
-        return $this;
-    }
-
     public function getGoogleId(): ?string
     {
         return $this->google_id;
@@ -259,18 +193,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setGoogleId(?string $google_id): self
     {
         $this->google_id = $google_id;
-
-        return $this;
-    }
-
-    public function getGoogleToken(): ?string
-    {
-        return $this->google_token;
-    }
-
-    public function setGoogleToken(?string $google_token): self
-    {
-        $this->google_token = $google_token;
 
         return $this;
     }
