@@ -43,7 +43,7 @@ class OAuthFacebookAuthenticator extends AbstractOAuthAuthenticator
 
         /** @var User $existingUser */
         $existingUser = $this->userRepository
-            ->findOneBy(['vk_id' => $facebookUser->getId()]);
+            ->findOneBy(['facebook_id' => $facebookUser->getId()]);
 
         if ($existingUser) {
             return $existingUser;
@@ -54,7 +54,7 @@ class OAuthFacebookAuthenticator extends AbstractOAuthAuthenticator
             ->findOneBy(['email' => $email]);
 
         if (!$user) {
-            $user = User::Create($email, 'vk', $facebookUser->getId(), $facebookUser->getNickname());
+            $user = User::Create($email, 'facebook', $facebookUser->getId(), $facebookUser->getNickname());
 
             $this->em->persist($user);
             $this->em->flush();

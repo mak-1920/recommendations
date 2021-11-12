@@ -27,7 +27,7 @@ class OAuthController extends AbstractController
         if (!$this->getUser()) {
             return new JsonResponse(['status' => false, 'message' => "User not found!"]);
         } else {
-            return $this->redirectToRoute('main');
+            return $this->redirectToRoute('reviews');
         }
     }
 
@@ -45,7 +45,7 @@ class OAuthController extends AbstractController
         if (!$this->getUser()) {
             return new JsonResponse(['status' => false, 'message' => "User not found!"]);
         } else {
-            return $this->redirectToRoute('main');
+            return $this->redirectToRoute('rewies');
         }
     }
 }
