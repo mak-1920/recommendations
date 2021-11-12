@@ -28,12 +28,12 @@ class OAuthFacebookAuthenticator extends AbstractOAuthAuthenticator
         UserRepository $userRepository
     )
     {
-        $this->init($clientRegistry, $em, $userRepository, 'vkontakte');
+        $this->init($clientRegistry, $em, $userRepository, 'facebook');
     }
 
     public function getUser(mixed $credentials, UserProviderInterface $userProvider) : ?UserInterface
     {
-        /** @var Facebook $vkUser */
+        /** @var Facebook $facebookUser */
         $facebookUser = $this->getClient()
             ->fetchUserFromToken($credentials);
 
@@ -52,12 +52,12 @@ class OAuthFacebookAuthenticator extends AbstractOAuthAuthenticator
             ->findOneBy(['email' => $email]);
 
         if (!$user) {
-            $user = User::Create($email, 'vk', $vkUser->getId(), $vkUser->getNickname());
+            $user = User::Create($email, 'vk', $facebookUser->getId(), $facebookUser->getNickname());
 
             $this->em->persist($user);
             $this->em->flush();
         } else {
-            $user->setGoogleId($vkUser->getId());
+            $user->setGoogleId($facebookUser->getId());
         }
 
         return $user;
