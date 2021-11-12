@@ -17,11 +17,12 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use knpu\OAuth2ClientBundle\Client\Provider\VKontakteClient;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use J4k\OAuth2\Client\Provider\User as VKUser;
+use League\OAuth2\Client\Provider\Facebook;
 
-class OAuthVKAuthenticator extends AbstractOAuthAuthenticator
+class OAuthFacebookAuthenticator extends AbstractOAuthAuthenticator
 {
     public function __construct(
+        
         ClientRegistry $clientRegistry,
         EntityManagerInterface $em,
         UserRepository $userRepository
@@ -32,15 +33,15 @@ class OAuthVKAuthenticator extends AbstractOAuthAuthenticator
 
     public function getUser(mixed $credentials, UserProviderInterface $userProvider) : ?UserInterface
     {
-        /** @var VKUser $vkUser */
-        $vkUser = $this->getClient()
+        /** @var Facebook $vkUser */
+        $facebookUser = $this->getClient()
             ->fetchUserFromToken($credentials);
 
-        $email = $vkUser->getEmail();
+        $email = $facebookUser->getEmail();
 
         /** @var User $existingUser */
         $existingUser = $this->userRepository
-            ->findOneBy(['vk_id' => $vkUser->getId()]);
+            ->findOneBy(['vk_id' => $facebookUser->getId()]);
 
         if ($existingUser) {
             return $existingUser;

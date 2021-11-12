@@ -29,16 +29,16 @@ class OAuthController extends AbstractController
         }
     }
 
-    #[Route('/connect/vk', name: 'connect_vk_start')]
-    public function redirectToVKConnect(ClientRegistry $clientRegistry) : RedirectResponse
+    #[Route('/connect/facebook', name: 'connect_facebook_start')]
+    public function redirectToFacebookConnect(ClientRegistry $clientRegistry) : RedirectResponse
     {
         return $clientRegistry
-            ->getClient('vk')
+            ->getClient('facebook')
             ->redirect(['email', 'profile'], []);
     }
 
-    #[Route("/vk/auth", name: "vk_auth")]
-    public function connectVKCheck() : JsonResponse|RedirectResponse
+    #[Route("/facebook/auth", name: "facebook_auth")]
+    public function connectFacebookCheck() : JsonResponse|RedirectResponse
     {
         if (!$this->getUser()) {
             return new JsonResponse(['status' => false, 'message' => "User not found!"]);

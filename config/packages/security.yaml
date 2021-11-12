@@ -23,7 +23,7 @@ security:
             guard:
                 authenticators: 
                     - App\Security\OAuthGoogleAuthenticator
-                    - App\Security\OAuthVKAuthenticator
+                    - App\Security\OAuthFacebookAuthenticator
             entry_point: App\Security\UserAuthenticator
             # security: true
             form_login:
