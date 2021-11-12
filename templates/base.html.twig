@@ -14,9 +14,14 @@
     <body>
         <header class="navbar navbar-expand-md navbar-light bg-light mb-2">
             <nav class="container-xxl flex-wrap flex-md-nowrap">
-                <a href="{{ path('main') }}" class="navbar-brand p-0 me-2">Recommendations</a>
+                <a href="{{ path('reviews') }}" class="navbar-brand p-0 me-2">Recommendations</a>
                 <ul class="nav nav-pills">
                     {% if(is_granted('ROLE_USER')) %}
+                        <li class="nav-item">
+                            <a href="#" class="nav-link border py-2 px-3 rounded-pill bg-primary text-white">
+                                {{ app.user.nickname }}
+                            </a>
+                        </li>
                         <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link">Logout</a></li>
                     {% else %}
                         <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link">Auth</a></li>

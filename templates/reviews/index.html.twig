@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Generator{% endblock %}
+
+{% block filesForPage %}
+    
+{% endblock %}
+
+{% block body %}
+    <a href="{{ path('reviews', {type: 'relevance'}) }}" 
+        class="nav-link border rounded-pill bg-primary p2 text-white d-inline-block">
+        sort by relevance
+    </a>
+    <a href="{{ path('reviews', {type: 'rating'}) }}"
+        class="nav-link border rounded-pill bg-secondary p2 text-white d-inline-block">
+        sort by rating
+    </a>
+    {% if is_granted('ROLE_USER') %}    
+        <a href="{{ path('review_create') }}"
+            class="nav-link border rounded-pill bg-success p2 text-white d-inline-block">
+            create review
+        </a>
+    {% endif %}
+    {% for review in reviews %}
+        <p>review.id</p>
+    {% endfor %}
+{% endblock %}

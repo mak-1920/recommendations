@@ -56,6 +56,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $google_id;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $facebook_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -197,9 +202,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         case 'vk':
             $user->setVkId($socialID);
             break;
+        case 'facebook':
+            $user->setFacebookId($socialID);
+            break;
         }
         $user->setNickname($nickname);
         $user->setRoles(['ROLE_USER']);
         return $user;
+    }
+
+    public function getFacebookId(): ?string
+    {
+        return $this->facebook_id;
+    }
+
+    public function setFacebookId(string $facebookId): self
+    {
+        $this->facebook_id = $facebookId;
+
+        return $this;
     }
 }

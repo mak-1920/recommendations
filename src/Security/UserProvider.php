@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security;
 
 use App\Entity\User;
@@ -31,9 +33,21 @@ class UserProvider implements UserProviderInterface
      *
      * @throws NonUniqueResultException
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username)
     {
         return $this->userRepository->loadUserByUsername($username);
+    }
+
+    /**
+     * @param int $username
+     *
+     * @return mixed|UserInterface
+     *
+     * @throws NonUniqueResultException
+     */
+    public function loadUserByIdentifier(int $id)
+    {
+        return $this->userRepository->loadUserByIdentifier($id);
     }
 
     /**
