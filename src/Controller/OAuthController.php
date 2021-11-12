@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
@@ -12,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class OAuthController extends AbstractController
 {
     #[Route('/connect/google', name: 'connect_google_start')]
-    public function redirectToGoogleConnect(ClientRegistry $clientRegistry) : RedirectResponse
+    public function redirectToGoogleConnect(ClientRegistry $clientRegistry) : Response
     {
         return $clientRegistry
             ->getClient('google')
@@ -20,7 +22,7 @@ class OAuthController extends AbstractController
     }
 
     #[Route("/google/auth", name: "google_auth")]
-    public function connectGoogleCheck() : JsonResponse|RedirectResponse
+    public function connectGoogleCheck() : Response
     {
         if (!$this->getUser()) {
             return new JsonResponse(['status' => false, 'message' => "User not found!"]);
@@ -30,7 +32,7 @@ class OAuthController extends AbstractController
     }
 
     #[Route('/connect/facebook', name: 'connect_facebook_start')]
-    public function redirectToFacebookConnect(ClientRegistry $clientRegistry) : RedirectResponse
+    public function redirectToFacebookConnect(ClientRegistry $clientRegistry) : Response
     {
         return $clientRegistry
             ->getClient('facebook')
@@ -38,7 +40,7 @@ class OAuthController extends AbstractController
     }
 
     #[Route("/facebook/auth", name: "facebook_auth")]
-    public function connectFacebookCheck() : JsonResponse|RedirectResponse
+    public function connectFacebookCheck() : Response
     {
         if (!$this->getUser()) {
             return new JsonResponse(['status' => false, 'message' => "User not found!"]);
