@@ -8,17 +8,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2Client;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
-use League\OAuth2\Client\Provider\GoogleUser;
 use League\OAuth2\Client\Token\AccessToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use knpu\OAuth2ClientBundle\Client\Provider\VKontakteClient;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use J4k\OAuth2\Client\Provider\User as VKUser;
 
-class OAuthGoogleAuthenticator extends AbstractOAuthAuthenticator
+class OAuthVKAuthenticator extends AbstractOAuthAuthenticator
 {
     public function __construct(
         ClientRegistry $clientRegistry,
@@ -26,20 +27,20 @@ class OAuthGoogleAuthenticator extends AbstractOAuthAuthenticator
         UserRepository $userRepository
     )
     {
-        $this->init($clientRegistry, $em, $userRepository, 'google');
+        $this->init($clientRegistry, $em, $userRepository, 'vkontakte');
     }
 
     public function getUser(mixed $credentials, UserProviderInterface $userProvider) : ?UserInterface
     {
-        /** @var GoogleUser $googleUser */
-        $googleUser = $this->getClient()
+        /** @var VKUser $vkUser */
+        $vkUser = $this->getClient()
             ->fetchUserFromToken($credentials);
 
-        $email = $googleUser->getEmail();
+        $email = $vkUser->getEmail();
 
         /** @var User $existingUser */
         $existingUser = $this->userRepository
-            ->findOneBy(['google_id' => $googleUser->getId()]);
+            ->findOneBy(['vk_id' => $vkUser->getId()]);
 
         if ($existingUser) {
             return $existingUser;
@@ -50,12 +51,12 @@ class OAuthGoogleAuthenticator extends AbstractOAuthAuthenticator
             ->findOneBy(['email' => $email]);
 
         if (!$user) {
-            $user = User::Create($email, 'google', $googleUser->getId(), $googleUser->getName());
+            $user = User::Create($email, 'vk', $vkUser->getId(), $vkUser->getNickname());
 
             $this->em->persist($user);
             $this->em->flush();
         } else {
-            $user->setGoogleId($googleUser->getId());
+            $user->setGoogleId($vkUser->getId());
         }
 
         return $user;

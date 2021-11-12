@@ -21,13 +21,15 @@ security:
             lazy: false
             provider: app_user_provider
             guard:
-                authenticators:
+                authenticators: 
                     - App\Security\OAuthGoogleAuthenticator
+                    - App\Security\OAuthVKAuthenticator
+            entry_point: App\Security\UserAuthenticator
             # security: true
-            # form_login:
-            #     # "login" is the name of the route created previously
-            #     login_path: /login
-            #     check_path: /login
+            form_login:
+                # "login" is the name of the route created previously
+                login_path: /login
+                check_path: /login
             # custom_authenticator: App\Security\UserAuthenticator
             logout:
                 path: app_logout

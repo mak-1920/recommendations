@@ -24,6 +24,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setRoles(['ROLE_USER']); 
             // encode the plain password
             $user->setPassword(
             $userPasswordHasherInterface->hashPassword(
@@ -39,7 +40,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('main');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('auth/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }

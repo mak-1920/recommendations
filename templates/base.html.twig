@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Recommendations{% endblock %}</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -23,7 +23,7 @@
                         {% if(is_granted('ROLE_USER')) %}
                             <li class="navbar-item"><a href="{{ path('app_logout') }}" class="nav-link">Logout</a></li>
                         {% else %}
-                            <li class="navbar-item"><a href="{{ path('login') }}" class="nav-link">Auth</a></li>
+                            <li class="navbar-item"><a href="{{ path('app_login') }}" class="nav-link">Auth</a></li>
                             <li class="navbar-item"><a href="{{ path('app_register') }}" class="nav-link">Registration</a></li>
                         {% endif %}
                     </ul>

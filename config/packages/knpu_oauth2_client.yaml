@@ -6,3 +6,9 @@ knpu_oauth2_client:
             client_secret: '%env(GOOGLE_CLIENT_TOKEN)%'
             redirect_route: google_auth
             redirect_params: {}
+        vk:
+            type: vkontakte
+            client_id: '%env(VK_CLIENT_ID)%'
+            client_secret: '%env(VK_CLIENT_TOKEN)%'
+            redirect_route: vk_auth
+            redirect_params: {} 

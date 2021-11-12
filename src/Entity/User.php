@@ -56,22 +56,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $google_id;
 
-    /**
-     * @param string $clientId
-     * @param string $email
-     * @param string $username
-     * @param string $oauthType
-     * @param array $roles
-     */
-    public function __construct(
-        string $email,
-        string $username
-    ) {
-        $this->email = $email;
-        $this->username = $username;
-        $this->roles = [self::ROLE_USER];
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -195,5 +179,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->google_id = $google_id;
 
         return $this;
+    }
+
+    static public function Create(
+        string $email,
+        string $socialName,
+        string $socialID,
+        string $nickname
+    ) : User
+    {
+        $user = new User();
+        $user->setEmail($email);
+        switch($socialName){
+        case 'google':
+            $user->setGoogleId($socialID);
+            break;
+        case 'vk':
+            $user->setVkId($socialID);
+            break;
+        }
+        $user->setNickname($nickname);
+        $user->setRoles(['ROLE_USER']);
+        return $user;
     }
 }

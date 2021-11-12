@@ -28,4 +28,22 @@ class OAuthController extends AbstractController
             return $this->redirectToRoute('main');
         }
     }
+
+    #[Route('/connect/vk', name: 'connect_vk_start')]
+    public function redirectToVKConnect(ClientRegistry $clientRegistry) : RedirectResponse
+    {
+        return $clientRegistry
+            ->getClient('vk')
+            ->redirect(['email', 'profile'], []);
+    }
+
+    #[Route("/vk/auth", name: "vk_auth")]
+    public function connectVKCheck() : JsonResponse|RedirectResponse
+    {
+        if (!$this->getUser()) {
+            return new JsonResponse(['status' => false, 'message' => "User not found!"]);
+        } else {
+            return $this->redirectToRoute('main');
+        }
+    }
 }
