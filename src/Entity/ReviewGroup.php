@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ReviewGroup
 {
+    public function __toString() : string
+    {
+        return $this->name;
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
