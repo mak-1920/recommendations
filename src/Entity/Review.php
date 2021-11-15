@@ -45,9 +45,20 @@ class Review
      */
     private $groupId;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ReviewIllustration::class, mappedBy="review")
+     */
+    private $Illustrations;
+
+    /**
+     * @ORM\Column(type="datetimetz_immutable")
+     */
+    private $DateOfPublication;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->Illustrations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -123,6 +134,48 @@ class Review
     public function setGroupId(?ReviewGroup $groupId): self
     {
         $this->groupId = $groupId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ReviewIllustration[]
+     */
+    public function getIllustrations(): Collection
+    {
+        return $this->Illustrations;
+    }
+
+    public function addIllustration(ReviewIllustration $illustration): self
+    {
+        if (!$this->Illustrations->contains($illustration)) {
+            $this->Illustrations[] = $illustration;
+            $illustration->setReview($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIllustration(ReviewIllustration $illustration): self
+    {
+        if ($this->Illustrations->removeElement($illustration)) {
+            // set the owning side to null (unless already changed)
+            if ($illustration->getReview() === $this) {
+                $illustration->setReview(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDateOfPublication(): ?\DateTimeImmutable
+    {
+        return $this->DateOfPublication;
+    }
+
+    public function setDateOfPublication(\DateTimeImmutable $DateOfPublication): self
+    {
+        $this->DateOfPublication = $DateOfPublication;
 
         return $this;
     }

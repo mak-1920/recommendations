@@ -7,6 +7,7 @@ use App\Entity\ReviewGroup;
 use App\Entity\ReviewTags;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -30,8 +31,8 @@ class ReviewCreatorType extends AbstractType
                 'class' => ReviewTags::class,
                 'choice_label' => 'name',
                 'attr' => [
-                    'class' => 'tags-input d-none',
-                    'disabled' => 'disabled',
+                    'class' => 'tags-input',
+                    // 'disabled' => 'disabled',
                 ],
             ])
             ->add('groupId', EntityType::class, [

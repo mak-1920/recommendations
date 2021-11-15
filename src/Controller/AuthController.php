@@ -37,7 +37,7 @@ class AuthController extends AbstractController
             $user->setRoles(['ROLE_USER']); 
             // encode the plain password
             $user->setPassword(
-            $userPasswordHasherInterface->hashPassword(
+                $userPasswordHasherInterface->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )

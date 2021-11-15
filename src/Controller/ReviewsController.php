@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Review;
 use App\Form\ReviewCreatorType;
 use App\Repository\ReviewRepository;
+use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +35,18 @@ class ReviewsController extends AbstractController
         $review = new Review();
         $form = $this->createForm(ReviewCreatorType::class, $review);
         $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            // $review->setDateOfPublication(time());
+            $review->setAuthorId($this->getUser()->getID());
+            $review->setDateOfPublication(new DateTimeImmutable());
+            
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($review);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('review_create');
+        }
 
         return $this->renderForm('reviews/creat.html.twig', [
             'form' => $form,
