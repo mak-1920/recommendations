@@ -1,0 +1,18 @@
+{% for review in reviews %}
+    <div class="container border border-1 rounded-2 p-2 my-2">
+        <div class="display-6 border-bottom">
+            {{ review.title }}
+        </div>
+        <div class="border-bottom py-2 fs-5">
+            {{ review.text | markdown_to_html }}
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ review.authorId }}
+            </div>
+            <div class="col text-end">
+                {{ review.dateOfPublication | date('Y-m-d H:m') }}
+            </div>
+        </div>
+    </div>
+{% endfor %}

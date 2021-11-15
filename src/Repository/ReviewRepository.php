@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Review;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,19 +20,22 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
-    /**
-     * @return Review[] Returns an array of Review objects
-     */
-    public function getLastReviews($page) : array
-    {
-        return $this->createQueryBuilder('r')
-            ->orderBy('r.id', 'DESC')
-            ->setFirstResult(($page - 1) * 10)
-            ->setMaxResults(20)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    // /**
+    //  * @return Review[] Returns an array of Review objects
+    //  */
+    // public function getLastReviews($page) : array
+    // {
+    //     return $this->createQueryBuilder('review')
+    //         ->addSelect('author')
+    //         // ->from(Review::class, 'r')
+    //         ->leftJoin('review.authorId', 'u.id', User::class, 'u')
+    //         ->orderBy('review.id', 'DESC')
+    //         ->setFirstResult(($page - 1) * 10)
+    //         ->setMaxResults(20)
+    //         ->getQuery()
+    //         ->getResult()
+    //     ;
+    // }
 
     /*
     public function findOneBySomeField($value): ?Review

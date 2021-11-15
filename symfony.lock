@@ -2,6 +2,9 @@
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
     },
+    "dflydev/dot-access-data": {
+        "version": "v3.0.1"
+    },
     "doctrine/annotations": {
         "version": "1.13",
         "recipe": {
@@ -112,6 +115,12 @@
     "laminas/laminas-code": {
         "version": "4.4.3"
     },
+    "league/commonmark": {
+        "version": "2.0.2"
+    },
+    "league/config": {
+        "version": "v1.1.1"
+    },
     "league/oauth2-client": {
         "version": "2.6.0"
     },
@@ -123,6 +132,12 @@
     },
     "monolog/monolog": {
         "version": "2.3.5"
+    },
+    "nette/schema": {
+        "version": "v1.2.2"
+    },
+    "nette/utils": {
+        "version": "v3.2.5"
     },
     "nikic/php-parser": {
         "version": "v4.13.1"
@@ -499,6 +514,12 @@
     },
     "symfonycasts/verify-email-bundle": {
         "version": "v1.5.0"
+    },
+    "twig/extra-bundle": {
+        "version": "v3.3.3"
+    },
+    "twig/markdown-extra": {
+        "version": "v3.3.3"
     },
     "twig/twig": {
         "version": "v3.3.3"

@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Extra\Markdown\MarkdownExtension;
 
 class ReviewsController extends AbstractController
 {
@@ -26,8 +27,24 @@ class ReviewsController extends AbstractController
     {
         return $this->render('reviews/index.html.twig', [
             'reviews' => $this->reviewRepository->findAll(),
+            // $markdownExtension,
         ]);
     }
+
+    // #[Route(
+    //     '/page/{page}', 
+    //     name: 'review_page', 
+    //     defaults: ['1']
+    //     // requirements: ['\d+']
+        
+    //     )]
+    // public function page(int $page, ReviewRepository $reviewRepository) : Response
+    // {
+    //     $reviews = $reviewRepository->getLastReviews($page);
+    //     return $this->render('reviews/page.html.twig', [
+    //         'reviews' => $reviews,
+    //     ]);
+    // }
 
     #[Route('/review/create', name: 'review_create')]
     public function create(Request $request) : Response
@@ -38,9 +55,9 @@ class ReviewsController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             // $review->setDateOfPublication(time());
-            $review->setAuthorId($this->getUser()->getID());
+            $review->setAuthor($this->getUser());
             $review->setDateOfPublication(new DateTimeImmutable());
-            
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($review);
             $entityManager->flush();

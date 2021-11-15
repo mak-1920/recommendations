@@ -30,11 +30,6 @@ class Review
     private $text;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $authorId;
-
-    /**
      * @ORM\ManyToMany(targetEntity=ReviewTags::class, inversedBy="reviews")
      */
     private $tags;
@@ -54,6 +49,12 @@ class Review
      * @ORM\Column(type="datetimetz_immutable")
      */
     private $DateOfPublication;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reviews")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Author;
 
     public function __construct()
     {
@@ -86,18 +87,6 @@ class Review
     public function setText(string $text): self
     {
         $this->text = $text;
-
-        return $this;
-    }
-
-    public function getAuthorId(): ?int
-    {
-        return $this->authorId;
-    }
-
-    public function setAuthorId(int $authorId): self
-    {
-        $this->authorId = $authorId;
 
         return $this;
     }
@@ -176,6 +165,18 @@ class Review
     public function setDateOfPublication(\DateTimeImmutable $DateOfPublication): self
     {
         $this->DateOfPublication = $DateOfPublication;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->Author;
+    }
+
+    public function setAuthor(?User $Author): self
+    {
+        $this->Author = $Author;
 
         return $this;
     }

@@ -13,6 +13,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.10",
         "knpuniversity/oauth2-client-bundle": "^2.8",
+        "league/commonmark": "^2.0",
         "league/oauth2-facebook": "^2.0",
         "league/oauth2-google": "^4.0",
         "phpdocumentor/reflection-docblock": "^5.3",
@@ -42,7 +43,9 @@
         "symfony/web-profiler-bundle": "5.3.*",
         "symfony/webpack-encore-bundle": "^1.12",
         "symfony/yaml": "5.3.*",
-        "symfonycasts/verify-email-bundle": "^1.5"
+        "symfonycasts/verify-email-bundle": "^1.5",
+        "twig/extra-bundle": "^3.3",
+        "twig/markdown-extra": "^3.3"
     },
     "config": {
         "optimize-autoloader": true,
