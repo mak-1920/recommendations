@@ -27,24 +27,17 @@ class ReviewsController extends AbstractController
     {
         return $this->render('reviews/index.html.twig', [
             'reviews' => $this->reviewRepository->findAll(),
-            // $markdownExtension,
         ]);
     }
 
-    // #[Route(
-    //     '/page/{page}', 
-    //     name: 'review_page', 
-    //     defaults: ['1']
-    //     // requirements: ['\d+']
-        
-    //     )]
-    // public function page(int $page, ReviewRepository $reviewRepository) : Response
-    // {
-    //     $reviews = $reviewRepository->getLastReviews($page);
-    //     return $this->render('reviews/page.html.twig', [
-    //         'reviews' => $reviews,
-    //     ]);
-    // }
+    #[Route('/ajax/reviews/page/{page}', name: 'review_page')]
+    public function page(int $page, ReviewRepository $reviewRepository) : Response
+    {
+        $reviews = $reviewRepository->getLastReviews($page);
+        return $this->render('reviews/page.html.twig', [
+            'reviews' => $reviews,
+        ]);
+    }
 
     #[Route('/review/create', name: 'review_create')]
     public function create(Request $request) : Response
