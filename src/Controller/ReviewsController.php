@@ -8,11 +8,13 @@ use App\Entity\Review;
 use App\Entity\ReviewTags;
 use App\Form\ReviewCreatorType;
 use App\Repository\ReviewRepository;
+use App\Repository\ReviewTagsRepository;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extra\Markdown\MarkdownExtension;
 
 class ReviewsController extends AbstractController
@@ -43,25 +45,39 @@ class ReviewsController extends AbstractController
     }
 
     #[Route('/review/create', name: 'review_create')]
-    public function create(Request $request) : Response
+    public function create(Request $request, ReviewTagsRepository $reviewTagsRepository) : Response
     {
         $review = new Review();
 
+        
         $form = $this->createForm(ReviewCreatorType::class, $review);
+        // if($form->isSubmitted()){
+        //     $tags = $request
+        // }
         $form->handleRequest($request);
 
+        // \var_dump($request->request->get('review_creator')['tags']);
+
         if($form->isSubmitted() && $form->isValid()){
+            $entityManager = $this->getDoctrine()->getManager();
+
             $review->setAuthor($this->getUser());
             $review->setDateOfPublication(new DateTimeImmutable());
 
-            foreach($form->tags as $tag)
-                $review->tag;
+            // foreach(explode(', ', $form->get('tagsOfString')->getData()) as $tag){
+            //     // if($tags->)
+            //     $review->addTag($tag);
 
-            $entityManager = $this->getDoctrine()->getManager();
+            // }
+
             $entityManager->persist($review);
             $entityManager->flush();
 
-            return $this->redirectToRoute($this->generateUrl('review_id', ['id' => $review->getId()]));
+            return $this->redirect($this->generateUrl(
+                'review_id', 
+                ['id' => $review->getId()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            ));
         }
 
         return $this->renderForm('reviews/creat.html.twig', [
@@ -72,10 +88,13 @@ class ReviewsController extends AbstractController
     #[Route('/review/tag-{tag}', name: 'review_tag')]
     public function reviewTag(ReviewTags $tag) : Response
     {
-        return $this->render($tag);
+        return $this->render($tag->getName());
     }
 
-    #[Route('/review/id{id}', name: 'review_id', requirements: ['id' => '\d+'])]
+    #[Route(
+        '/review/id{id}', 
+        name: 'review_id', 
+        requirements: ['id' => '\d+'])]
     public function reviewId(Review $review) : Response
     {
         return $this->render('reviews/review.html.twig', [

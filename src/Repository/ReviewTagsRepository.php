@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\ReviewTags;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -18,6 +21,21 @@ class ReviewTagsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ReviewTags::class);
     }
+
+    // public function createAndGetTagsOfEntity(array $tagsOfArray) : ArrayCollection
+    // {
+    //     /**
+    //      * @var ArrayCollection $tags
+    //      */
+    //     $tags = $this->createQueryBuilder('t')
+    //         ->where('name in :tags')
+    //         ->setParameter('tags', array_values($tagsOfArray))
+    //         ->getQuery()
+    //         ->getResult();
+    //     $tags->map(function($tag){
+    //         $tagsOfArray
+    //     });
+    // }
 
     // /**
     //  * @return ReviewTags[] Returns an array of ReviewTags objects

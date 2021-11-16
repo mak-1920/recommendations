@@ -2,7 +2,10 @@
     <div class="container border border-1 rounded-2 p-2 my-2">
         <div class="border-bottom row">
             <div class="display-6 col-10">
-                {{ review.title }}
+                <a href="{{ path('review_id', {'id' : review.id}) }}"
+                    class="text-black text-decoration-none">
+                    {{ review.title }}
+                </a>
             </div>
             <div class="col-2 text-end">
                 {% if is_granted('ROLE_USER') and app.user == review.author %}
@@ -17,7 +20,7 @@
             tags: 
             {% for tag in review.tags %}
                 <a href="{{ path('review_tag', {'tag': tag}) }}" 
-                    class="border d-inline-block p-2 bg-primary rounded-2 text-white">
+                    class="border d-inline-block px-2 bg-primary rounded-2 text-white text-decoration-none py-1">
                     {{ tag }}
                 </a>
             {% endfor %}
