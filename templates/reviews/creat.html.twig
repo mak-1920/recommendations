@@ -8,12 +8,13 @@
     Create view
 </div>
 {{ form_start(form) }}
+    {{ form_errors(form) }}
     {{ form_row(form.title) }}
     {{ form_row(form.text) }}
-    {{ form_row(form.groupId) }}
-    {# <div class="d-none"> #}
+    {{ form_row(form.group) }}
+    <div class="d-none">
         {{ form_row(form.tags) }}
-    {# </div> #}
+    </div>
 {{ form_end(form) }}
 
 {% endblock %}

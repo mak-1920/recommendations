@@ -5,11 +5,13 @@
         <title>{% block title %}Recommendations{% endblock %}</title>
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
             <link rel="stylesheet" href="/css/style.css">
         {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+            <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
             <script src="/js/script.js"></script>
         {% endblock %}
     </head>

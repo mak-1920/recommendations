@@ -10,12 +10,24 @@
                 {% endif %}
             </div>
         </div>
-        <div class="border-bottom py-2 fs-5 text-truncate mh-10">
+        <div class="py-2 fs-5 text-truncate mh-10">
             {{ review.text | markdown_to_html }}
+        </div>
+        <div class="border-bottom fx-5">
+            tags: 
+            {% for tag in review.tags %}
+                <a href="{{ path('review_tag', {'tag': tag}) }}" 
+                    class="border d-inline-block p-2 bg-primary rounded-2 text-white">
+                    {{ tag }}
+                </a>
+            {% endfor %}
         </div>
         <div class="row">
             <div class="col">
                 {{ review.author.nickname }}
+            </div>
+            <div class="col text-center">
+                {{ review.group }}
             </div>
             <div class="col text-end">
                 {{ review.dateOfPublication | date('Y-m-d H:i', app.request.attributes.get('_locale')) }}

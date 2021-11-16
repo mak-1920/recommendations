@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Review;
+use App\Entity\ReviewTags;
 use App\Form\ReviewCreatorType;
 use App\Repository\ReviewRepository;
 use DateTimeImmutable;
@@ -30,7 +33,7 @@ class ReviewsController extends AbstractController
         ]);
     }
 
-    #[Route('/ajax/reviews/page/{page}', name: 'review_page')]
+    #[Route('/ajax/reviews/page/{page}', name: 'review_page', requirements: ['page' => '\d+'], methods: ['GET'])]
     public function page(int $page, ReviewRepository $reviewRepository) : Response
     {
         $reviews = $reviewRepository->getLastReviews($page);
@@ -43,23 +46,40 @@ class ReviewsController extends AbstractController
     public function create(Request $request) : Response
     {
         $review = new Review();
+
         $form = $this->createForm(ReviewCreatorType::class, $review);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            // $review->setDateOfPublication(time());
             $review->setAuthor($this->getUser());
             $review->setDateOfPublication(new DateTimeImmutable());
+
+            foreach($form->tags as $tag)
+                $review->tag;
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($review);
             $entityManager->flush();
 
-            return $this->redirectToRoute('review_create');
+            return $this->redirectToRoute($this->generateUrl('review_id', ['id' => $review->getId()]));
         }
 
         return $this->renderForm('reviews/creat.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/review/tag-{tag}', name: 'review_tag')]
+    public function reviewTag(ReviewTags $tag) : Response
+    {
+        return $this->render($tag);
+    }
+
+    #[Route('/review/id{id}', name: 'review_id', requirements: ['id' => '\d+'])]
+    public function reviewId(Review $review) : Response
+    {
+        return $this->render('reviews/review.html.twig', [
+            'review' => $review,
         ]);
     }
 }

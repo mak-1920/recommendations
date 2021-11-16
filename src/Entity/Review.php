@@ -38,7 +38,7 @@ class Review
      * @ORM\ManyToOne(targetEntity=ReviewGroup::class, inversedBy="reviews")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $groupId;
+    private $group;
 
     /**
      * @ORM\OneToMany(targetEntity=ReviewIllustration::class, mappedBy="review")
@@ -115,14 +115,14 @@ class Review
         return $this;
     }
 
-    public function getGroupId(): ?ReviewGroup
+    public function getGroup(): ?ReviewGroup
     {
-        return $this->groupId;
+        return $this->group;
     }
 
-    public function setGroupId(?ReviewGroup $groupId): self
+    public function setGroup(?ReviewGroup $group): self
     {
-        $this->groupId = $groupId;
+        $this->group = $group;
 
         return $this;
     }

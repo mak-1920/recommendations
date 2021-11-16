@@ -31,13 +31,19 @@ class ReviewCreatorType extends AbstractType
                 'class' => ReviewTags::class,
                 'choice_label' => 'name',
                 'attr' => [
-                    'class' => 'tags-input',
-                    // 'disabled' => 'disabled',
+                    'class' => 'tags-data d-none',
+                    'disabled' => 'disabled',
                 ],
             ])
-            ->add('groupId', EntityType::class, [
+            ->add('group', EntityType::class, [
                 'class' => ReviewGroup::class,
-                'label' => 'Group',
+            ])
+            ->add('tagsOfString', TextType::class, [
+                'mapped' => false,
+                'label' => 'Tags',
+                'attr' => [
+                    'class' => 'tags-input',
+                ],
             ])
             ->add('save', SubmitType::class, ['label' => 'Create'])
         ;

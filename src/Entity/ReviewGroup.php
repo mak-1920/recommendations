@@ -30,7 +30,7 @@ class ReviewGroup
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="groupId", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="group", orphanRemoval=true)
      */
     private $reviews;
 
@@ -68,7 +68,7 @@ class ReviewGroup
     {
         if (!$this->reviews->contains($review)) {
             $this->reviews[] = $review;
-            $review->setGroupId($this);
+            $review->setGroup($this);
         }
 
         return $this;
@@ -78,8 +78,8 @@ class ReviewGroup
     {
         if ($this->reviews->removeElement($review)) {
             // set the owning side to null (unless already changed)
-            if ($review->getGroupId() === $this) {
-                $review->setGroupId(null);
+            if ($review->getGroup() === $this) {
+                $review->setGroup(null);
             }
         }
 

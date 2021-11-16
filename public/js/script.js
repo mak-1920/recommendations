@@ -6,7 +6,7 @@ jQuery(function(){
 
     function ajaxGenerate(page, type){
         if(isGeneration[type]) 
-            xhr[type].abort()
+            return
         isGeneration[type] = true
 
         xhr[type] = $.ajax({
@@ -37,12 +37,41 @@ jQuery(function(){
 
     $(window).scroll(function() 
     {
-        
-        if(isEnd[type] || isGeneration[type]) return
         if($(window).scrollTop() + $(window).height() >= $(document).height() - 10) 
             $('.scrolling-block').each((i, e) => {
                 var type = $(e).attr('scrolling-data-type')
+                if(isEnd[type] || isGeneration[type]) 
+                    return
                 ajaxGenerate(pages[type], type)
             })
+    });
+
+    function split( val ) {
+        return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+        return split( term ).pop();
+    }
+    $(".tags-input").on("keydown", function(event) {
+        if ( event.keyCode === $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active ) {
+            event.preventDefault();
+        }
+    })
+    .autocomplete({
+        minLength: 0,
+        source: function(request, response) {
+            response($.ui.autocomplete.filter($('.tags-data option'), extractLast(request.term)))
+        },
+        focus: function() {
+            return false
+        },
+        select: function(event, ui) {
+            var terms = split(this.value)
+            terms.pop()
+            terms.push($(ui.item).html())
+            terms.push("")
+            this.value = terms.join(", ")
+            return false
+        }
     });
 })
