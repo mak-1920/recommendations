@@ -1,38 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\ReviewIllustrationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ReviewIllustrationRepository::class)
- */
+#[ORM\Entity(repositoryClass:ReviewIllustrationRepository::class)]
 class ReviewIllustration
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type:"integer")]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $img;
+    #[ORM\Column(type:"string", length:255)]
+    private string $img;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Review::class, inversedBy="Illustrations")
-     */
+    #[ORM\ManyToOne(targetEntity:Review::class, inversedBy:"Illustrations")]
     private $review;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getImg(): ?string
+    public function getImg(): string
     {
         return $this->img;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\ReviewTagsRepository;
@@ -8,40 +10,32 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ReviewTagsRepository::class)
- * @UniqueEntity(fields={"name"}, message="This tag was created")
- */
+#[ORM\Entity(repositoryClass:ReviewTagsRepository::class)]
+#[UniqueEntity(fields:["name"], message:"This tag was created")]
 class ReviewTags
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type:"integer")]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type:"string", length:255)]
+    private string $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Review::class, mappedBy="tags")
-     */
-    private $reviews;
+    #[ORM\ManyToMany(targetEntity:Review::class, mappedBy:"tags")]
+    private Collection $reviews;
 
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -53,9 +47,7 @@ class ReviewTags
         return $this;
     }
 
-    /**
-     * @return Collection|Review[]
-     */
+    /** @return Collection|Review[] */
     public function getReviews(): Collection
     {
         return $this->reviews;

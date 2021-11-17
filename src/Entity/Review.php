@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\ReviewRepository;
@@ -7,53 +9,35 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ReviewRepository::class)
- */
+#[ORM\Entity(repositoryClass: ReviewRepository::class)]
 class Review
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
+    #[ORM\Column(type: "string", length: 255)]
+    private string $title;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $text;
+    #[ORM\Column(type: "text")]
+    private string $text;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=ReviewTags::class, inversedBy="reviews", cascade={"persist"})
-     */
-    private $tags;
+    #[ORM\ManyToMany(targetEntity: ReviewTags::class, inversedBy: "reviews", cascade: ["persist"])]
+    private Collection $tags;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=ReviewGroup::class, inversedBy="reviews")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $group;
+    #[ORM\ManyToOne(targetEntity: ReviewGroup::class, inversedBy: "reviews")]
+    #[ORM\JoinColumn(nullable: false)]
+    private ReviewGroup $group;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ReviewIllustration::class, mappedBy="review")
-     */
-    private $Illustrations;
-
-    /**
-     * @ORM\Column(type="datetimetz_immutable")
-     */
+    #[ORM\OneToMany(targetEntity: ReviewIllustration::class, mappedBy: "review")]
+    private Collection $Illustrations;
+    
+    #[ORM\Column(type: "datetimetz_immutable")]
     private $DateOfPublication;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reviews")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "reviews")]
+    #[ORM\JoinColumn(nullable: false)]
     private $Author;
 
     public function __construct()
@@ -62,12 +46,12 @@ class Review
         $this->Illustrations = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -79,7 +63,7 @@ class Review
         return $this;
     }
 
-    public function getText(): ?string
+    public function getText(): string
     {
         return $this->text;
     }
@@ -91,9 +75,8 @@ class Review
         return $this;
     }
 
-    /**
-     * @return Collection|ReviewTags[]
-     */
+    
+    /** @return Collection<ReviewTags> */
     public function getTags(): Collection
     {
         return $this->tags;
@@ -115,7 +98,7 @@ class Review
         return $this;
     }
 
-    public function getGroup(): ?ReviewGroup
+    public function getGroup(): ReviewGroup
     {
         return $this->group;
     }
@@ -127,9 +110,8 @@ class Review
         return $this;
     }
 
-    /**
-     * @return Collection|ReviewIllustration[]
-     */
+    
+    /** @return Collection<ReviewIllustration> */
     public function getIllustrations(): Collection
     {
         return $this->Illustrations;
@@ -157,7 +139,7 @@ class Review
         return $this;
     }
 
-    public function getDateOfPublication(): ?\DateTimeImmutable
+    public function getDateOfPublication(): \DateTimeImmutable
     {
         return $this->DateOfPublication;
     }
@@ -169,12 +151,12 @@ class Review
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getAuthor(): User
     {
         return $this->Author;
     }
 
-    public function setAuthor(?User $Author): self
+    public function setAuthor(User $Author): self
     {
         $this->Author = $Author;
 

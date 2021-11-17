@@ -3,8 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Review;
+use App\Entity\ReviewGroup;
+use App\Entity\ReviewTags;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -25,13 +29,25 @@ class ReviewRepository extends ServiceEntityRepository
      */
     public function getLastReviews($page) : array
     {
-        return $this->createQueryBuilder('review')
-            ->orderBy('review.id', 'DESC')
+        $query = $this->createQueryBuilder('r')
+            ->select('r, u, g, t')
+            ->orderBy('r.id', 'DESC')
+            ->join('r.Author', 'u')
+            ->join('r.group', 'g')
+            ->join('r.tags', 't')
             ->setFirstResult(($page - 1) * 10)
-            ->setMaxResults(20)
-            ->getQuery()
-            ->getResult()
-        ;
+            ->setMaxResults(10)
+            ;
+
+        $paginator = new Paginator($query, true);
+
+        $result = [];
+
+        foreach($paginator as $post) {
+            $result[] = $post;
+        }
+
+        return $result;
     }
 
     /*

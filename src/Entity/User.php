@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
@@ -10,75 +12,55 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ORM\Table(name="`user`")
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
- */
+#[ORM\Entity(repositoryClass:UserRepository::class)]
+#[ORM\Table(name:"`user`")]
+#[UniqueEntity(fields:["email"], message:"There is already an account with this email")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const ROLE_USER = 'ROLE_USER';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type:"integer")]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
-    private $email;
+    #[ORM\Column(type:"string", length:180, unique:true)]
+    private string $email;
 
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
+    #[ORM\Column(type:"json")]
+    private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $password;
+    /** @var string The hashed password */
+    #[ORM\Column(type:"string", nullable:true)]
+    private string $password;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $nickname;
+    #[ORM\Column(type:"string", length:100)]
+    private string $nickname;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $vk_id;
+    #[ORM\Column(type:"string", length:255, nullable:true)]
+    private ?string $vk_id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $google_id;
+    #[ORM\Column(type:"string", length:255, nullable:true)]
+    private ?string $google_id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $facebook_id;
+    #[ORM\Column(type:"string", length:255, nullable:true)]
+    private ?string $facebook_id;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="Author")
-     */
-    private $reviews;
+    #[ORM\OneToMany(targetEntity:Review::class, mappedBy:"Author")]
+    private Collection $reviews;
 
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -105,7 +87,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->nickname;
     }
 
     /**
@@ -130,7 +112,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -162,7 +144,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getNickname(): ?string
+    public function getNickname(): string
     {
         return $this->nickname;
     }
@@ -217,6 +199,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         case 'facebook':
             $user->setFacebookId($socialID);
             break;
+        default:
+            break;
         }
         $user->setNickname($nickname);
         $user->setRoles([self::ROLE_USER]);
@@ -253,15 +237,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeReview(Review $review): self
-    {
-        if ($this->reviews->removeElement($review)) {
-            // set the owning side to null (unless already changed)
-            if ($review->getAuthor() === $this) {
-                $review->setAuthor(null);
-            }
-        }
+    // public function removeReview(Review $review): self
+    // {
+    //     if ($this->reviews->removeElement($review)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($review->getAuthor() === $this) {
+    //             $review->setAuthor(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

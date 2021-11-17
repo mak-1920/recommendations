@@ -8,7 +8,7 @@
                 </a>
             </div>
             <div class="col-2 text-end">
-                {% if is_granted('ROLE_USER') and app.user == review.author %}
+                {% if is_granted('ROLE_USER') and app.user.id == review.author.id %}
                     <a href="#">change</a>
                 {% endif %}
             </div>
@@ -30,7 +30,7 @@
                 {{ review.author.nickname }}
             </div>
             <div class="col text-center">
-                {{ review.group }}
+                {{ review.group.name }}
             </div>
             <div class="col text-end">
                 {{ review.dateOfPublication | date('Y-m-d H:i', app.request.attributes.get('_locale')) }}

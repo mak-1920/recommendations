@@ -48,7 +48,7 @@ class ReviewsController extends AbstractController
     public function create(Request $request, ReviewTagsRepository $reviewTagsRepository) : Response
     {
         $review = new Review();
-        
+
         $form = $this->createForm(ReviewCreatorType::class, $review);
         $form->handleRequest($request);
 
