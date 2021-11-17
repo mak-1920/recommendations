@@ -12,19 +12,21 @@
     {{ form_row(form.title) }}
     {{ form_row(form.text) }}
     {{ form_row(form.group) }}
-    {# <div class="d-none"> #}
-    <ul class="tags list-group list-group-horizontal flex row row-cols-3 px-3"
-        data-index="{{ form.tags|length > 0 ? form.tags|last.vars.name + 1 : 0 }}" 
-        data-prototype="{{ form_widget(form.tags.vars.prototype)|e('html_attr') }}">
-        {% for tag in form.tags %}
-            {{ form_row(tag) }}
-        {% endfor %}
-        <li class="list-group-item border-0 p-0 mb-3 col w-100">
-            <button type="button" class="review-add-tag btn btn-secondary" data-collection-holder-class="tags">Add</button>
-        </li>
-    </ul>
-    {# </div> #}
+    <div class="d-none">
+        <ul class="tags"
+            data-index="{{ form.tags|length > 0 ? form.tags|last.vars.name + 1 : 0 }}" 
+            data-prototype="{{ form_widget(form.tags.vars.prototype)|e('html_attr') }}">
+            {% for tag in form.tags %}
+                {{ form_row(tag) }}
+            {% endfor %}
+            {# <li class="list-group-item border-0 p-0 mb-3 col w-100">
+                <button type="button" class="review-add-tag">Add</button>
+            </li> #}
+        </ul>
+    </div>
+    {{ form_row(form.tags_input) }}
     {{ form_row(form.save) }}
-{{ form_end(form, {render_rest: false}) }}
+    {{ form_row(form._token) }}
+{{ form_end(form, {'render_rest': false}) }}
 
 {% endblock %}

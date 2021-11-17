@@ -37,8 +37,7 @@ jQuery(function(){
         ajaxGenerate(type)
     })
 
-    $(window).scroll(function() 
-    {
+    $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() >= $(document).height() - 10) 
             $('.scrolling-block').each((i, e) => {
                 var type = $(e).attr('scrolling-data-type')
@@ -48,60 +47,66 @@ jQuery(function(){
             })
     });
 
-    $('.review-add-tag').click(function() {
-        var list = $(this).parent().parent()
-        var index = $(item).attr('data-index')
+    function getTagInput(name) {
+        var item = $('.tags :input').filter(function() {
+            return this.value == name
+        })
+        return item
+    }
+    function creatTag(name) {
+        var list = $('.tags')
+        var index = +$(list).attr('data-index')
         var prototype = $(list).attr('data-prototype').replace(/__name__/g, index)
-        // const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass)
-        // console.log( e.currentTarget.dataset.collectionHolderClass)
 
-        var item = $('<li></li>')
-            .addClass('p-0 col list-group-item border-0')
-            .html(prototype)
-
-        $(this).parent().before($(item))
-
-        // $(item).html(prototype)
-            // .dataset
-            // .prototype
-            // .replace(
-            //     /__name__/g,
-            //     collectionHolder.dataset.index
-            // ))
+        var item = $('<li></li>').html(prototype)
+        $(item).find('input').val(name)
+        $(list).append($(item))
         $(list).attr('data-index', index + 1)
-        // collectionHolder.appendChild(item)
-
-        // collectionHolder.dataset.index++
-    })
+    }
+    function removeTag(name) {
+        var input = getTagInput(name)
+        var listItem = $(input).closest('li')
+        $(listItem).remove()
+    }
 
     // function split( val ) {
-    //     return val.split( /,\s*/ );
+    //     return val.split(/,\s*/);
     // }
     // function extractLast( term ) {
-    //     return split( term ).pop();
+    //     return split(term).pop();
     // }
-    // $(".tags-input").select2({
-    //     tags: true,
-    //     theme: 'bootstrap-5',
-    //     multiple: true,
-    //     tokenSeparators: [',', ' '], 
-    // })
-    // .on('select2:select', e => {
-    //     var data = e.params.data
-    //     var input = $('.tags-input')
-    //     var searchingElement = $(input).find("option:contains('" + data.text + "'):first")
-    //     data.id = +$(searchingElement).val()
-    //     if (!isNaN(data.id)) {
-    //         // searchingElement.trigger('change')
-    //         if(isNaN($(input).find('option:last').val()))
-    //             $(input).find('option:last').remove()
-    //         $(searchingElement).attr('selected', 'true')
-    //     } else { 
-    //         $(input).find('option:last').remove()
-    //         // data.id = +$(input).find('option:last').val() + 1 ?? 1
-    //         var newOption = new Option(data.text, data.text, true, true)
-    //         $(input).append(newOption).trigger('change')
-    //     } 
-    //     return false
-    // })
+    $(".tags-input").select2({
+        tags: true,
+        theme: 'bootstrap-5',
+        multiple: true,
+        tokenSeparators: [',', ' '], 
+        val:  $('.tags :input').val()
+    }).on('select2:select', e => {
+        var data = e.params.data
+        var input = $('.tags-input')
+        var searchingElement = $(input).find("option:contains('" + data.text + "'):first")
+        data.id = +$(searchingElement).val()
+        if (!isNaN(data.id))
+        {
+            if(isNaN($(input).find('option:last').val()))
+                $(input).find('option:last').remove()
+            $(searchingElement).attr('selected', 'true')
+        } 
+        // else { 
+        //     $(input).find('option:last').remove()
+        //     var newOption = new Option(data.text, data.text, true, true)
+        //     $(input).append(newOption).trigger('change')
+        // } 
+        if($(getTagInput(e.params.data.text)).length)
+            return false
+        creatTag(e.params.data.text)
+        return false
+    }).on('select2:unselect', e => {
+        removeTag(e.params.data.text)
+        return false
+    })
+
+    $('.review-create-button').click(function() {
+        $(".tags-input").val('')
+    })
 })

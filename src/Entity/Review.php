@@ -30,7 +30,7 @@ class Review
     private $text;
 
     /**
-     * @ORM\ManyToMany(targetEntity=ReviewTags::class, inversedBy="reviews")
+     * @ORM\ManyToMany(targetEntity=ReviewTags::class, inversedBy="reviews", cascade={"persist"})
      */
     private $tags;
 

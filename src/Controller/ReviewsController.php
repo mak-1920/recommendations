@@ -48,27 +48,15 @@ class ReviewsController extends AbstractController
     public function create(Request $request, ReviewTagsRepository $reviewTagsRepository) : Response
     {
         $review = new Review();
-
         
         $form = $this->createForm(ReviewCreatorType::class, $review);
-        // if($form->isSubmitted()){
-        //     $tags = $request
-        // }
         $form->handleRequest($request);
-
-        // \var_dump($request->request->get('review_creator')['tags']);
 
         if($form->isSubmitted() && $form->isValid()){
             $entityManager = $this->getDoctrine()->getManager();
 
             $review->setAuthor($this->getUser());
             $review->setDateOfPublication(new DateTimeImmutable());
-
-            // foreach(explode(', ', $form->get('tagsOfString')->getData()) as $tag){
-            //     // if($tags->)
-            //     $review->addTag($tag);
-
-            // }
 
             $entityManager->persist($review);
             $entityManager->flush();

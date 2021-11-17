@@ -23,36 +23,31 @@ class ReviewCreatorType extends AbstractType
         $builder
             ->add('title')
             ->add('text')
-            ->add('tags', ChoiceType::class, [
+            ->add('tags_input', EntityType::class, [
+                'mapped' => false,
+                'class' => ReviewTags::class,
+                'choice_label' => 'name',
+                'label' => 'Tags',
                 'attr' => [
-                    'class' => 'tags-data',
+                    'class' => 'tags-input',
+                    'name' => null,
                 ],
             ])
-            // ->add('tags', options: [
-            //     'class' => ReviewTags::class,
-            //     'choice_label' => 'name',
-            //     'attr' => [
-            //         'class' => 'tags-input',
-            //         // 'disabled' => 'disabled',
-            //     ],
-            // ])
             ->add('tags', CollectionType::class, [
                 'entry_type' => ReviewTagType::class,
                 'allow_add' => true,
-                'label' => 'Tags',
-
+                'by_reference' => false,
+                'entry_options' => ['label' => false],
             ])
             ->add('group', EntityType::class, [
                 'class' => ReviewGroup::class,
             ])
-            // ->add('tagsOfString', TextType::class, [
-            //     'mapped' => false,
-            //     'label' => 'Tags',
-            //     'attr' => [
-            //         'class' => 'tags-input',
-            //     ],
-            // ])
-            ->add('save', SubmitType::class, ['label' => 'Create'])
+            ->add('save', SubmitType::class, [
+                'label' => 'Create',
+                'attr' => [
+                    'class' => 'review-create-button btn btn-primary',
+                ]
+            ])
         ;
     }
 

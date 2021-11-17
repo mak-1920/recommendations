@@ -22,20 +22,13 @@ class ReviewTagsRepository extends ServiceEntityRepository
         parent::__construct($registry, ReviewTags::class);
     }
 
-    // public function createAndGetTagsOfEntity(array $tagsOfArray) : ArrayCollection
-    // {
-    //     /**
-    //      * @var ArrayCollection $tags
-    //      */
-    //     $tags = $this->createQueryBuilder('t')
-    //         ->where('name in :tags')
-    //         ->setParameter('tags', array_values($tagsOfArray))
-    //         ->getQuery()
-    //         ->getResult();
-    //     $tags->map(function($tag){
-    //         $tagsOfArray
-    //     });
-    // }
+    public function getTagsNames() : array
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.name')
+            ->getQuery()
+            ->getSingleColumnResult();
+    }
 
     // /**
     //  * @return ReviewTags[] Returns an array of ReviewTags objects
