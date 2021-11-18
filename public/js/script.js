@@ -58,29 +58,23 @@ jQuery(function(){
         var index = +$(list).attr('data-index')
         var prototype = $(list).attr('data-prototype').replace(/__name__/g, index)
 
-        var item = $('<li></li>').html(prototype)
+        var item = $('<fieldset></fieldset>').html(prototype)
         $(item).find('input').val(name)
         $(list).append($(item))
         $(list).attr('data-index', index + 1)
     }
     function removeTag(name) {
         var input = getTagInput(name)
-        var listItem = $(input).closest('li')
+        var listItem = $(input).closest('fieldset')
         $(listItem).remove()
     }
 
-    // function split( val ) {
-    //     return val.split(/,\s*/);
-    // }
-    // function extractLast( term ) {
-    //     return split(term).pop();
-    // }
-    $(".tags-input").select2({
+    var s2 = $(".tags-input").select2({
         tags: true,
         theme: 'bootstrap-5',
         multiple: true,
         tokenSeparators: [',', ' '], 
-        val:  $('.tags :input').val()
+        width: '100%',
     }).on('select2:select', e => {
         var data = e.params.data
         var input = $('.tags-input')
@@ -109,4 +103,19 @@ jQuery(function(){
     $('.review-create-button').click(function() {
         $(".tags-input").val('')
     })
+
+    var tags = $('.tags :input').map((i,e) => {
+        return $('.tags-input')
+            .find("option:contains('" + $(e).val() + "'):first")
+            .val()
+    })
+    s2.val(tags).trigger('change')
+    // tags.forEach(e => {
+    //     console.log(e)
+    //     $('.select2-search__field').val(
+    //         e + ' '
+    //     )
+    // })
+    // console.log('[' + tags.splice(', ') + ']')
+    // s2.val('[' + tags.splice(', ') + ']').trigger('change')
 })

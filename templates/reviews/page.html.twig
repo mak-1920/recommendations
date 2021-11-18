@@ -9,7 +9,7 @@
             </div>
             <div class="col-2 text-end">
                 {% if is_granted('ROLE_USER') and app.user.id == review.author.id %}
-                    <a href="#">change</a>
+                    <a href="{{ path('review_edit', {'id': review.id}) }}">change</a>
                 {% endif %}
             </div>
         </div>

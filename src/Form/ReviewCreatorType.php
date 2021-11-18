@@ -43,7 +43,7 @@ class ReviewCreatorType extends AbstractType
                 'class' => ReviewGroup::class,
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Create',
+                'label' => 'Save',
                 'attr' => [
                     'class' => 'review-create-button btn btn-primary',
                 ]

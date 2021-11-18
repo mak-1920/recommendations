@@ -98,6 +98,19 @@ class Review
         return $this;
     }
 
+    public function setTags(array $tags): self
+    {
+        foreach($this->tags as $tag){
+            $this->removeTag($tag);
+        }
+
+        foreach($tags as $tag){
+            $this->addTag($tag);
+        }
+
+        return $this;
+    }
+
     public function getGroup(): ReviewGroup
     {
         return $this->group;

@@ -44,17 +44,27 @@ class ReviewsController extends AbstractController
         ]);
     }
 
+    #[Route('/review/edit/id{id}', name: 'review_edit', requirements: ['id' => '\d+'], defaults: ['id' => '0'])]
     #[Route('/review/create', name: 'review_create')]
-    public function create(Request $request, ReviewTagsRepository $reviewTagsRepository) : Response
+    public function create(Request $request, ReviewTagsRepository $reviewTagsRepository, Review $review = null) : Response
     {
-        $review = new Review();
+        $title = 'Review edit';
+        if($review == null) {
+            $review = new Review();
+            $title = 'Review create';
+        }
 
         $form = $this->createForm(ReviewCreatorType::class, $review);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
             $entityManager = $this->getDoctrine()->getManager();
+            
+            /** @var array $formData */
+            $formData = $request->request->get('review_creator');
+            $tags = $reviewTagsRepository->getEntityFromStringArray($formData['tags']);
 
+            $review->setTags($tags);
             $review->setAuthor($this->getUser());
             $review->setDateOfPublication(new DateTimeImmutable());
 
@@ -70,6 +80,7 @@ class ReviewsController extends AbstractController
 
         return $this->renderForm('reviews/creat.html.twig', [
             'form' => $form,
+            'title' => $title,
         ]);
     }
 

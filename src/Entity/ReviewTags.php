@@ -25,9 +25,10 @@ class ReviewTags
     #[ORM\ManyToMany(targetEntity:Review::class, mappedBy:"tags")]
     private Collection $reviews;
 
-    public function __construct()
+    public function __construct(string $name = '')
     {
         $this->reviews = new ArrayCollection();
+        $this->name = $name;
     }
 
     public function getId(): int
