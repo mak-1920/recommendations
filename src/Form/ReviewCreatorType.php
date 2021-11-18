@@ -8,11 +8,9 @@ use App\Entity\ReviewTags;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -38,6 +36,13 @@ class ReviewCreatorType extends AbstractType
                 'allow_add' => true,
                 'by_reference' => false,
                 'entry_options' => ['label' => false],
+            ])
+            ->add('author_raiting', IntegerType::class, [
+                'attr' => [
+                    'min' => 0,
+                    'max' => 10,
+                    'step' => 1,
+                ]
             ])
             ->add('group', EntityType::class, [
                 'class' => ReviewGroup::class,

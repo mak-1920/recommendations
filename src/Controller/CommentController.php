@@ -28,7 +28,7 @@ class CommentController extends AbstractController
     {
         $comments = $this->commentRepository->getPageComment(
             $page,
-            $this->reviewRepository->find($request->get('id'))
+            $this->reviewRepository->find($request->get('param'))
         );
 
         return $this->render('comment/page.html.twig', [

@@ -7,21 +7,20 @@
 {% endblock %}
 
 {% block body %}
-    <a href="{{ path('reviews', {type: 'relevance'}) }}" 
-        class="nav-link border rounded-pill bg-primary p2 text-white d-inline-block">
-        sort by relevance
-    </a>
-    <a href="{{ path('reviews', {type: 'rating'}) }}"
-        class="nav-link border rounded-pill bg-secondary p2 text-white d-inline-block">
-        sort by rating
-    </a>
+    {% for type in sortedType %}
+        <a href="{{ path('reviews', {type: type } ) }}" 
+            class="nav-link border rounded-pill p2 text-white d-inline-block
+                {{ (type == selectedSortType) ? 'bg-primary' : 'bg-secondary' }}">
+            sort by {{ type }}
+        </a>
+    {% endfor %}
     {% if is_granted('ROLE_USER') %}    
         <a href="{{ path('review_create') }}"
             class="nav-link border rounded-pill bg-success p2 text-white d-inline-block">
             create review
         </a>
     {% endif %}
-    <div class="scrolling-block" scrolling-data-type="reviews">
+    <div class="scrolling-block" scrolling-data-type="reviews" scrolling-id="{{ selectedSortType }}">
 
     </div>
 {% endblock %}

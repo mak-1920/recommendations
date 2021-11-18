@@ -1,13 +1,13 @@
 {% for comment in comments %}
-    <div class="border rounded-2">
-        <div class="container border-bottom p-2">
+    <div class="border rounded-2 fs-4 my-1">
+        <div class="container p-2">
             {{ comment.text }}
         </div>
-        <div class="row p-2">
-            <div class="col text-left">
+        <div class="row p-2 text-secondary fs-6">
+            <div class="col text-start">
                 {{ comment.author.nickname }}
             </div>
-            <div class="col text-right">
+            <div class="col text-end">
                 {{ comment.time | date('Y-m-d H:i', app.request.attributes.get('_locale')) }}
             </div>
         </div>

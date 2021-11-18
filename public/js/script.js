@@ -4,14 +4,14 @@ jQuery(function(){
     var isGeneration = {}
     var isEnd = {}
 
-    function ajaxGenerate(type, id = -1){
+    function ajaxGenerate(type, param = -1){
         if(isGeneration[type]) 
             return
         isGeneration[type] = true
 
         var data = {}
-        if(id != -1)
-            data = {'id': id}
+        if(param != -1)
+            data = {'param': param}
 
         xhr[type] = $.ajax({
             url: "/ajax/" + type + "/page/" + pages[type],
@@ -36,12 +36,12 @@ jQuery(function(){
 
     $('.scrolling-block').each((i, e) => {
         var type = $(e).attr('scrolling-data-type')
-        var id = $(e).attr('scrolling-id')
+        var param = $(e).attr('scrolling-param')
         $(e).after('<div class="loading display-5 text-center" id="generation-status-' + type + '">loading...</div>')
         pages[type] = 1
         isEnd[type] = false
         isGeneration[type] = false
-        ajaxGenerate(type, id)
+        ajaxGenerate(type, param)
     })
 
     $(window).scroll(function() {
@@ -119,6 +119,7 @@ jQuery(function(){
         console.log(1)
         var location = window.location.href
         var reviewId = location.match(/id(\d+)$/i)[1]
+        $(this).attr('disabled', 'disabled')
         $.ajax({
             'url': '/ajax/comment/create',
             'type': 'post',
@@ -128,6 +129,9 @@ jQuery(function(){
             },
             success: function(){
                 $('.comment-text').val('')
+            },
+            complete: function(){
+                $('.add-comment').removeAttr('disabled')
             }
         })
         return false;

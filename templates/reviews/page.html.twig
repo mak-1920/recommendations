@@ -1,20 +1,20 @@
 {% for review in reviews %}
     <div class="container border border-2 rounded-2 p-2 my-2 bg-light">
-        <div class="row">
-            <div class="display-6 col-10">
+        <div class="nav-title">
+            <div class="display-6">
                 <a href="{{ path('review_id', {'id' : review.id}) }}"
                     class="text-black text-decoration-none">
                     {{ review.title }}
                 </a>
             </div>
-            <div class="col-2 text-end">
-                {% if is_granted('ROLE_USER') and app.user.id == review.author.id %}
-                    <a href="{{ path('review_edit', {'id': review.id}) }}">change</a>
-                {% endif %}
-            </div>
         </div>
-        <div class="p-2 border-top border-bottom">
-            <div class="py-2 fs-5 text-truncate mh-10">
+        <div class="text-end nav-link">
+            {% if is_granted('ROLE_USER') and app.user.id == review.author.id %}
+                <a href="{{ path('review_edit', {'id': review.id}) }}">change</a>
+            {% endif %}
+        </div>
+        <div class="p-2">
+            <div class="py-2 fs-5 text-truncate mh-10 text-wrap">
                 {{ review.text | markdown_to_html }}
             </div>
             <div class="fx-5">
@@ -27,14 +27,17 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="row">
-            <div class="col">
+        <div class="row text-secondary fs-6">
+            <div class="col text-center">
                 {{ review.author.nickname }}
             </div>
             <div class="col text-center">
                 {{ review.group.name }}
             </div>
-            <div class="col text-end">
+            <div class="col text-center">
+                {{ review.authorRaiting }}/10
+            </div>
+            <div class="col text-center">
                 {{ review.dateOfPublication | date('Y-m-d H:i', app.request.attributes.get('_locale')) }}
             </div>
         </div>

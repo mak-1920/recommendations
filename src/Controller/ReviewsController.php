@@ -21,6 +21,7 @@ use Twig\Extra\Markdown\MarkdownExtension;
 class ReviewsController extends AbstractController
 {
     private ReviewRepository $reviewRepository;
+    private array $sortedTypes = ['relevance', 'rating'];
 
     public function __construct(
         ReviewRepository $reviewRepository, 
@@ -29,17 +30,29 @@ class ReviewsController extends AbstractController
     }
 
     #[Route('/', name: 'reviews')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $sortedType = $request->get('type') ?? $this->sortedTypes[0];
+
         return $this->render('reviews/index.html.twig', [
             'reviews' => $this->reviewRepository->findAll(),
+            'sortedType' => $this->sortedTypes,
+            'selectedSortType' => $sortedType,
         ]);
     }
 
     #[Route('/ajax/reviews/page/{page}', name: 'review_page', requirements: ['page' => '\d+'], methods: ['GET'])]
-    public function page(int $page, ReviewRepository $reviewRepository) : Response
+    public function page(int $page, ReviewRepository $reviewRepository, Request $request) : Response
     {
-        $reviews = $reviewRepository->getLastReviews($page);
+        $type = $request->get('param');
+        switch($type){
+            case $this->sortedTypes[1]: 
+                $reviews = $reviewRepository->getLastReviews($page, 'authorRaiting');
+                break;
+            default:
+                $reviews = $reviewRepository->getLastReviews($page, 'id');
+                break;
+        }
         return $this->render('reviews/page.html.twig', [
             'reviews' => $reviews,
         ]);
@@ -63,9 +76,12 @@ class ReviewsController extends AbstractController
             
             /** @var array $formData */
             $formData = $request->request->get('review_creator');
-            $tags = $reviewTagsRepository->getEntityFromStringArray($formData['tags']);
 
-            $review->setTags($tags);
+            if(isset($formData['tags'])){
+                $tags = $reviewTagsRepository->getEntityFromStringArray($formData['tags']);
+                $review->setTags($tags);
+            }
+
             $review->setAuthor($this->getUser());
             $review->setDateOfPublication(new DateTimeImmutable());
 

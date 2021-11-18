@@ -27,11 +27,11 @@ class ReviewRepository extends ServiceEntityRepository
     /**
      * @return Review[] Returns an array of Review objects
      */
-    public function getLastReviews($page) : array
+    public function getLastReviews(int $page, string $sortedField) : array
     {
         $query = $this->createQueryBuilder('r')
             ->select('r, u, g, t')
-            ->orderBy('r.id', 'DESC')
+            ->orderBy('r.'.$sortedField, 'DESC')
             ->join('r.Author', 'u')
             ->join('r.group', 'g')
             ->join('r.tags', 't')

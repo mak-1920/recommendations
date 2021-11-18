@@ -19,11 +19,9 @@
             {% for tag in form.tags %}
                 {{ form_row(tag) }}
             {% endfor %}
-            {# <li class="list-group-item border-0 p-0 mb-3 col w-100">
-                <button type="button" class="review-add-tag">Add</button>
-            </li> #}
         </ul>
     </div>
+    {{ form_row(form.author_raiting) }}
     {{ form_row(form.tags_input) }}
     {{ form_row(form.save) }}
     {{ form_row(form._token) }}
