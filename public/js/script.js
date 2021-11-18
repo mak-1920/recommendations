@@ -80,17 +80,13 @@ jQuery(function(){
         var input = $('.tags-input')
         var searchingElement = $(input).find("option:contains('" + data.text + "'):first")
         data.id = +$(searchingElement).val()
+        console.log(data)
         if (!isNaN(data.id))
         {
             if(isNaN($(input).find('option:last').val()))
-                $(input).find('option:last').remove()
+                $(input).find('option:last:contains("' + data.text + '")').remove()
             $(searchingElement).attr('selected', 'true')
         } 
-        // else { 
-        //     $(input).find('option:last').remove()
-        //     var newOption = new Option(data.text, data.text, true, true)
-        //     $(input).append(newOption).trigger('change')
-        // } 
         if($(getTagInput(e.params.data.text)).length)
             return false
         creatTag(e.params.data.text)
@@ -110,12 +106,4 @@ jQuery(function(){
             .val()
     })
     s2.val(tags).trigger('change')
-    // tags.forEach(e => {
-    //     console.log(e)
-    //     $('.select2-search__field').val(
-    //         e + ' '
-    //     )
-    // })
-    // console.log('[' + tags.splice(', ') + ']')
-    // s2.val('[' + tags.splice(', ') + ']').trigger('change')
 })

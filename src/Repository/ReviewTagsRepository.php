@@ -36,13 +36,11 @@ class ReviewTagsRepository extends ServiceEntityRepository
         foreach($tagsArrFromRequest as $tag){
             $tagsArr[] = $tag['name'];
         }
-        dump($tagsArr);
         $tagsEnt = $this->createQueryBuilder('t')
             ->where('t.name IN (:tag_names)')
             ->setParameter('tag_names', $tagsArr, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)
             ->getQuery()
             ->getResult();
-        dump($tagsEnt);
         foreach($tagsEnt as $tag){
             $key = array_search($tag->getName(), $tagsArr);
             unset($tagsArr[$key]);
@@ -50,7 +48,6 @@ class ReviewTagsRepository extends ServiceEntityRepository
         foreach($tagsArr as $tag){
             $tagsEnt[] = new ReviewTags($tag);
         }
-        dump($tagsEnt);
         return $tagsEnt;
     }
 
