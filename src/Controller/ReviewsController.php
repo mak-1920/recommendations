@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Review;
 use App\Entity\ReviewTags;
 use App\Form\ReviewCreatorType;

@@ -1,6 +1,6 @@
 {% for review in reviews %}
-    <div class="container border border-1 rounded-2 p-2 my-2">
-        <div class="border-bottom row">
+    <div class="container border border-2 rounded-2 p-2 my-2 bg-light">
+        <div class="row">
             <div class="display-6 col-10">
                 <a href="{{ path('review_id', {'id' : review.id}) }}"
                     class="text-black text-decoration-none">
@@ -13,17 +13,19 @@
                 {% endif %}
             </div>
         </div>
-        <div class="py-2 fs-5 text-truncate mh-10">
-            {{ review.text | markdown_to_html }}
-        </div>
-        <div class="border-bottom fx-5">
-            tags: 
-            {% for tag in review.tags %}
-                <a href="{{ path('review_tag', {'tag': tag}) }}" 
-                    class="border d-inline-block px-2 bg-primary rounded-2 text-white text-decoration-none py-1">
-                    {{ tag }}
-                </a>
-            {% endfor %}
+        <div class="p-2 border-top border-bottom">
+            <div class="py-2 fs-5 text-truncate mh-10">
+                {{ review.text | markdown_to_html }}
+            </div>
+            <div class="fx-5">
+                tags: 
+                {% for tag in review.tags %}
+                    <a href="{{ path('review_tag', {'tag': tag}) }}" 
+                        class="border d-inline-block px-2 bg-primary rounded-2 text-white text-decoration-none py-1">
+                        {{ tag }}
+                    </a>
+                {% endfor %}
+            </div>
         </div>
         <div class="row">
             <div class="col">

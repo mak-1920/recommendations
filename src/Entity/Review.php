@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\ReviewRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -34,11 +35,11 @@ class Review
     private Collection $Illustrations;
     
     #[ORM\Column(type: "datetimetz_immutable")]
-    private $DateOfPublication;
+    private DateTimeImmutable $DateOfPublication;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "reviews")]
     #[ORM\JoinColumn(nullable: false)]
-    private $Author;
+    private User $Author;
 
     public function __construct()
     {

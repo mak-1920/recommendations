@@ -4,14 +4,20 @@ jQuery(function(){
     var isGeneration = {}
     var isEnd = {}
 
-    function ajaxGenerate(type){
+    function ajaxGenerate(type, id = -1){
         if(isGeneration[type]) 
             return
         isGeneration[type] = true
 
+        var data = {}
+        if(id != -1)
+            data = {'id': id}
+
         xhr[type] = $.ajax({
-            url: "ajax/" + type + "/page/" + pages[type],
+            url: "/ajax/" + type + "/page/" + pages[type],
+            type: "get",
             dataType: "html",
+            data: data,
             beforeSend: function(){
                 $("#generation-status-" + type).removeClass("d-none")
             },
@@ -30,20 +36,22 @@ jQuery(function(){
 
     $('.scrolling-block').each((i, e) => {
         var type = $(e).attr('scrolling-data-type')
+        var id = $(e).attr('scrolling-id')
         $(e).after('<div class="loading display-5 text-center" id="generation-status-' + type + '">loading...</div>')
         pages[type] = 1
         isEnd[type] = false
         isGeneration[type] = false
-        ajaxGenerate(type)
+        ajaxGenerate(type, id)
     })
 
     $(window).scroll(function() {
         if($(window).scrollTop() + $(window).height() >= $(document).height() - 10) 
             $('.scrolling-block').each((i, e) => {
                 var type = $(e).attr('scrolling-data-type')
+                var id = $(e).attr('scrolling-id')
                 if(isEnd[type] || isGeneration[type]) 
                     return
-                ajaxGenerate(type)
+                ajaxGenerate(type, id)
             })
     });
 
@@ -106,4 +114,22 @@ jQuery(function(){
             .val()
     })
     s2.val(tags).trigger('change')
+
+    $('.add-comment').click(function(){
+        console.log(1)
+        var location = window.location.href
+        var reviewId = location.match(/id(\d+)$/i)[1]
+        $.ajax({
+            'url': '/ajax/comment/create',
+            'type': 'post',
+            'data': {
+                'text': $('.comment-text').val(),
+                'reviewId': reviewId
+            },
+            success: function(){
+                $('.comment-text').val('')
+            }
+        })
+        return false;
+    })
 })
