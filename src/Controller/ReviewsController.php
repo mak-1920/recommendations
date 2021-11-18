@@ -35,7 +35,6 @@ class ReviewsController extends AbstractController
         $sortedType = $request->get('type') ?? $this->sortedTypes[0];
 
         return $this->render('reviews/index.html.twig', [
-            'reviews' => $this->reviewRepository->findAll(),
             'sortedType' => $this->sortedTypes,
             'selectedSortType' => $sortedType,
         ]);

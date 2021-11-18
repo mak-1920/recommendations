@@ -48,7 +48,7 @@ jQuery(function(){
         if($(window).scrollTop() + $(window).height() >= $(document).height() - 10) 
             $('.scrolling-block').each((i, e) => {
                 var type = $(e).attr('scrolling-data-type')
-                var id = $(e).attr('scrolling-id')
+                var id = $(e).attr('scrolling-param')
                 if(isEnd[type] || isGeneration[type]) 
                     return
                 ajaxGenerate(type, id)

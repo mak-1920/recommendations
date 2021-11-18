@@ -32,9 +32,9 @@ class ReviewRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('r')
             ->select('r, u, g, t')
             ->orderBy('r.'.$sortedField, 'DESC')
-            ->join('r.Author', 'u')
-            ->join('r.group', 'g')
-            ->join('r.tags', 't')
+            ->leftjoin('r.Author', 'u')
+            ->leftjoin('r.group', 'g')
+            ->leftjoin('r.tags', 't')
             ->setFirstResult(($page - 1) * 10)
             ->setMaxResults(10)
             ;

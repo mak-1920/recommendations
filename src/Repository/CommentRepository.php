@@ -23,7 +23,8 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    public function getPageComment($page, $review){
+    public function getPageComment($page, $review) : array
+    {
         $query = $this->createQueryBuilder('c')
             ->select('c, u, r')
             ->join('c.author', 'u')
