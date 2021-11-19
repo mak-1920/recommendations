@@ -37,7 +37,7 @@ class ReviewCreatorType extends AbstractType
                 'by_reference' => false,
                 'entry_options' => ['label' => false],
             ])
-            ->add('author_raiting', IntegerType::class, [
+            ->add('author_rating', IntegerType::class, [
                 'attr' => [
                     'min' => 0,
                     'max' => 10,

@@ -8,12 +8,21 @@
         {{ review.title }}
     </div>
     <div class="p-2">
+        {% if review.author == app.user %}
+            <p class="mb-1">
+                <a href="{{ path('review_edit', {'id': review.id})}}" 
+                    class="border rounded-pill bg-primary text-white text-decoration-none px-2 py-1">
+                    Изменить
+                </a>
+            </p>
+        {% endif %}
         <p class="mb-1">Author: {{ review.author.nickname }}</p>
         <p class="mb-1">Group: {{ review.group.name }}</p>
+        <p class="mb-1">Author rating: {{ review.authorRating }}/10</p>
         <p class="mb-1">
-            Raiting: 
-            <span class="review-raiting-value">
-                {{ review.authorRaiting }}
+            Community rating:
+            <span class="review-rating-value">
+                {{ review.AverageRating }}
             </span>
         </p>
         <p class="mb-1">
@@ -49,13 +58,8 @@
                 </button>
             </div>
             <div class="col">
-                <div class="review-raiting text-end">
-                    <button class="btn btn-secondary">0</button>
-                    <button class="btn btn-secondary">1</button>
-                    <button class="btn btn-secondary">2</button>
-                    <button class="btn btn-secondary">3</button>
-                    <button class="btn btn-secondary">4</button>
-                    <button class="btn btn-secondary">5</button>
+                <div class="review-raiting-buttons text-end">
+                    <button class="btn btn-secondary review-raiting-button-0">0</button><button class="btn btn-secondary review-raiting-button-1">1</button><button class="btn btn-secondary review-raiting-button-2">2</button><button class="btn btn-secondary review-raiting-button-3">3</button><button class="btn btn-secondary review-raiting-button-4">4</button><button class="btn btn-secondary review-raiting-button-5">5</button>
                 </div>
             </div>
         </div>

@@ -43,16 +43,20 @@ class Review
     private User $Author;
 
     #[ORM\Column(type: 'integer')]
-    private $authorRaiting;
+    private int $authorRating;
 
     #[ORM\ManyToMany(targetEntity: User::class)]
-    private $likes;
+    private Collection $likes;
+
+    #[ORM\OneToMany(mappedBy: 'Review', targetEntity: ReviewRating::class, orphanRemoval: true)]
+    private Collection $reviewRatings;
 
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->Illustrations = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->reviewRatings = new ArrayCollection();
     }
 
     public function getId(): int
@@ -185,14 +189,14 @@ class Review
         return $this;
     }
 
-    public function getAuthorRaiting(): ?int
+    public function getAuthorRating(): ?int
     {
-        return $this->authorRaiting;
+        return $this->authorRating;
     }
 
-    public function setAuthorRaiting(int $authorRaiting): self
+    public function setAuthorRating(int $authorRating): self
     {
-        $this->authorRaiting = $authorRaiting;
+        $this->authorRating = $authorRating;
 
         return $this;
     }
@@ -200,7 +204,7 @@ class Review
     /**
      * @return Collection|User[]
      */
-    public function getLikes(): Collection
+    public function getLikes(): ?Collection
     {
         return $this->likes;
     }
@@ -219,5 +223,49 @@ class Review
         $this->likes->removeElement($like);
 
         return $this;
+    }
+
+    /**
+     * @return Collection|ReviewRating[]
+     */
+    public function getReviewRatings(): Collection
+    {
+        return $this->reviewRatings;
+    }
+
+    public function addReviewRating(ReviewRating $reviewRating): self
+    {
+        if (!$this->reviewRatings->contains($reviewRating)) {
+            $this->reviewRatings[] = $reviewRating;
+            $reviewRating->setReview($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReviewRating(ReviewRating $reviewRating): self
+    {
+        if ($this->reviewRatings->removeElement($reviewRating)) {
+            // set the owning side to null (unless already changed)
+            if ($reviewRating->getReview() === $this) {
+                $reviewRating->setReview(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAverageRating() : float
+    {
+        if($this->reviewRatings->count() == 0){
+            return 0;
+        }
+
+        $average = 0;
+        /** @var ReviewRating $rating */
+        foreach($this->reviewRatings as $rating){
+            $average += $rating->getValue();
+        }
+        return $average / $this->reviewRatings->count();
     }
 }

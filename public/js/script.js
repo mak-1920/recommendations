@@ -168,4 +168,21 @@ jQuery(function(){
             }
         })
     })
+
+    $('.review-raiting-buttons button').hover(function(){
+        var buttons = $(this).parent()
+        var val = $(this).html()
+        $(buttons).find('button').each((i, e) => {
+            $(e).removeClass('btn-primary').addClass('btn-secondary')
+        })
+        for(i=0; i<=val; i++){
+            $('.review-raiting-button-' + i)
+                .addClass('btn-primary')
+                .removeClass('btn-secondary')
+        }
+    }, function(){
+        $(this).parent().find('button')
+            .removeClass('btn-primary')
+            .addClass('btn-secondary')
+    })
 })

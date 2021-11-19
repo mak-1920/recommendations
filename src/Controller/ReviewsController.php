@@ -6,8 +6,10 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Review;
+use App\Entity\ReviewRating;
 use App\Entity\ReviewTags;
 use App\Form\ReviewCreatorType;
+use App\Repository\ReviewRatingRepository;
 use App\Repository\ReviewRepository;
 use App\Repository\ReviewTagsRepository;
 use DateTimeImmutable;
@@ -44,7 +46,7 @@ class ReviewsController extends AbstractController
         $type = $request->get('param');
         switch($type){
             case $this->sortedTypes[1]: 
-                $reviews = $reviewRepository->getLastReviews($page, 'authorRaiting');
+                $reviews = $reviewRepository->getLastReviews($page, 'authorRating');
                 break;
             default:
                 $reviews = $reviewRepository->getLastReviews($page, 'id');
@@ -139,5 +141,31 @@ class ReviewsController extends AbstractController
         $em->persist($review);
         $em->flush();
         return $this->json(['result' => $result, 'likesCount' => $review->getLikes()->count()]);
+    }
+
+    #[Route('ajax/review/set-rating/id{id}', 
+        name: 'review_set_rating',
+        requirements: ['id' => '\d+'],
+        methods: ['GET'])]
+    public function reviewSetRating(int $id, ReviewRatingRepository $reviewRatingRepository, Request $request) : Response
+    {
+        $value = $request->get('value');
+        $review = $this->reviewRepository->findByID($id);
+        $rating = $reviewRatingRepository->findOneByUserAndReview($this->getUser(), $review);
+        $add = true;
+
+        if($rating == null){
+            $rating = new ReviewRating($review, $this->getUser(), $value);
+            $review->addReviewRating($rating);
+        } else {
+            $review->removeReviewRating($rating);
+            $add = false;
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($review);
+        $em->flush();
+
+        return $this->json(['add' => $add, 'rateValue' => $review->getAverageRating()]);
     }
 }

@@ -29,11 +29,11 @@ class ReviewRepository extends ServiceEntityRepository
     public function findByID($id) : ?Review
     {
         return $this->createQueryBuilder('r')
-            ->select('r, u, g, t, l')
+            ->select('r, u, g, t, rait')
             ->leftjoin('r.Author', 'u')
             ->leftjoin('r.group', 'g')
             ->leftjoin('r.tags', 't')
-            ->leftJoin('r.likes', 'l')
+            ->leftJoin('r.reviewRatings', 'rait')
             ->where('r.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
@@ -47,12 +47,12 @@ class ReviewRepository extends ServiceEntityRepository
     public function getLastReviews(int $page, string $sortedField) : array
     {
         $query = $this->createQueryBuilder('r')
-            ->select('r, u, g, t, l')
+            ->select('r, u, g, t, rait')
             ->orderBy('r.'.$sortedField, 'DESC')
             ->leftjoin('r.Author', 'u')
             ->leftjoin('r.group', 'g')
             ->leftjoin('r.tags', 't')
-            ->leftJoin('r.likes', 'l')
+            ->leftJoin('r.reviewRatings', 'rait')
             ->setFirstResult(($page - 1) * 10)
             ->setMaxResults(10)
             ;
