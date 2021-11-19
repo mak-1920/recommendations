@@ -26,14 +26,11 @@ class CommentController extends AbstractController
     #[Route('/ajax/comment/page/{page}', name: 'comment', requirements: ['page' => '\d+'], methods: ['GET'])]
     public function index(int $page, Request $request) : Response
     {
-        // $comments = [];
-        // if($request->get('param') != null){
-            $review = $this->reviewRepository->find($request->get('param'));
-            $comments = $this->commentRepository->getPageComment(
-                $page,
-                $review ?? [],
-            );
-        // } 
+        $review = $this->reviewRepository->find($request->get('param'));
+        $comments = $this->commentRepository->getPageComment(
+            $page,
+            $review ?? [],
+        );
 
         return $this->render('comment/page.html.twig', [
             'comments' => $comments,

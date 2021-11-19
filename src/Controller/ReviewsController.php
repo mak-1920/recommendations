@@ -20,13 +20,11 @@ use Twig\Extra\Markdown\MarkdownExtension;
 
 class ReviewsController extends AbstractController
 {
-    private ReviewRepository $reviewRepository;
     private array $sortedTypes = ['relevance', 'rating'];
 
     public function __construct(
-        ReviewRepository $reviewRepository, 
+        private ReviewRepository $reviewRepository, 
     ){
-        $this->reviewRepository = $reviewRepository;
     }
 
     #[Route('/', name: 'reviews')]
@@ -110,10 +108,36 @@ class ReviewsController extends AbstractController
         '/review/id{id}', 
         name: 'review_id', 
         requirements: ['id' => '\d+'])]
-    public function reviewId(Review $review) : Response
+    public function reviewId(int $id) : Response
     {
+        $review = $this->reviewRepository->findByID($id);
+        $isLiked = $review->getLikes()->contains($this->getUser());
         return $this->render('reviews/review.html.twig', [
             'review' => $review,
+            'isLiked' => $isLiked,
         ]);
+    }
+
+    #[Route(
+        'ajax/review/like/id{id}',
+        name: 'review_like',
+        requirements: ['id' => '\d+'],
+        methods: ['GET'])]
+    public function reviewLike(int $id) : Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var Review $review */
+        $review = $this->reviewRepository->findOneWithLikes($id);
+        $user = $this->getUser();
+        $result = true;
+        if($review->getLikes()->contains($user)){
+            $review->removeLike($user);
+            $result = false;
+        } else {
+            $review->addLike($user);
+        }
+        $em->persist($review);
+        $em->flush();
+        return $this->json(['result' => $result, 'likesCount' => $review->getLikes()->count()]);
     }
 }

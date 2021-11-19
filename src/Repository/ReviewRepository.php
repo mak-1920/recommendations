@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Review;
@@ -24,17 +26,33 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
+    public function findByID($id) : ?Review
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r, u, g, t, l')
+            ->leftjoin('r.Author', 'u')
+            ->leftjoin('r.group', 'g')
+            ->leftjoin('r.tags', 't')
+            ->leftJoin('r.likes', 'l')
+            ->where('r.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
     /**
      * @return Review[] Returns an array of Review objects
      */
     public function getLastReviews(int $page, string $sortedField) : array
     {
         $query = $this->createQueryBuilder('r')
-            ->select('r, u, g, t')
+            ->select('r, u, g, t, l')
             ->orderBy('r.'.$sortedField, 'DESC')
             ->leftjoin('r.Author', 'u')
             ->leftjoin('r.group', 'g')
             ->leftjoin('r.tags', 't')
+            ->leftJoin('r.likes', 'l')
             ->setFirstResult(($page - 1) * 10)
             ->setMaxResults(10)
             ;
@@ -48,6 +66,20 @@ class ReviewRepository extends ServiceEntityRepository
         }
 
         return $result;
+    }
+
+    public function findOneWithLikes(int $id) : ?Review
+    {
+        $queryBuilder = $this->createQueryBuilder('r');
+
+        return $queryBuilder
+            ->select('r, l')
+            ->leftJoin('r.likes', 'l')
+            ->where('r.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
     /*

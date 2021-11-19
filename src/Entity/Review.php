@@ -42,11 +42,11 @@ class Review
     #[ORM\JoinColumn(nullable: false)]
     private User $Author;
 
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: ReviewLike::class, orphanRemoval: true)]
-    private $likes;
-
     #[ORM\Column(type: 'integer')]
     private $authorRaiting;
+
+    #[ORM\ManyToMany(targetEntity: User::class)]
+    private $likes;
 
     public function __construct()
     {
@@ -185,36 +185,6 @@ class Review
         return $this;
     }
 
-    /**
-     * @return Collection|ReviewLike[]
-     */
-    public function getLikes(): Collection
-    {
-        return $this->likes;
-    }
-
-    public function addLike(ReviewLike $like): self
-    {
-        if (!$this->likes->contains($like)) {
-            $this->likes[] = $like;
-            $like->setReview($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLike(ReviewLike $like): self
-    {
-        if ($this->likes->removeElement($like)) {
-            // set the owning side to null (unless already changed)
-            if ($like->getReview() === $this) {
-                $like->setReview(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getAuthorRaiting(): ?int
     {
         return $this->authorRaiting;
@@ -223,6 +193,30 @@ class Review
     public function setAuthorRaiting(int $authorRaiting): self
     {
         $this->authorRaiting = $authorRaiting;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(User $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+        }
+
+        return $this;
+    }
+
+    public function removeLike(User $like): self
+    {
+        $this->likes->removeElement($like);
 
         return $this;
     }

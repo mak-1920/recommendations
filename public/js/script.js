@@ -4,6 +4,11 @@ jQuery(function(){
     var isGeneration = {}
     var isEnd = {}
 
+    function getReviewID(){
+        var location = window.location.href
+        return location.match(/id(\d+)$/i)[1]
+    }
+
     function ajaxGenerate(type, param = -1){
         if(isGeneration[type]) 
             return
@@ -117,8 +122,7 @@ jQuery(function(){
 
     $('.add-comment').click(function(){
         console.log(1)
-        var location = window.location.href
-        var reviewId = location.match(/id(\d+)$/i)[1]
+        var reviewId = getReviewID()
         $(this).attr('disabled', 'disabled')
         $.ajax({
             'url': '/ajax/comment/create',
@@ -135,5 +139,33 @@ jQuery(function(){
             }
         })
         return false;
+    })
+
+    $('.review-like-button').click(function(){
+        var reviewId = getReviewID()
+        var button = $(this)
+        $.ajax({
+            url: '/ajax/review/like/id' + reviewId,
+            type: 'get',
+            dataType: 'json',
+            beforeSend: function(){
+                $(button).attr('disabled', 'disabled')
+            },
+            success: function(res){
+                if(res.result){
+                    $(button)
+                        .removeClass('btn-secondary')
+                        .addClass('btn-success')
+                } else {
+                    $(button)
+                        .addClass('btn-secondary')
+                        .removeClass('btn-success')
+                }
+                $('.review-likes-count').html(res.likesCount)
+            },
+            complete: function(){
+                $(button).removeAttr('disabled')
+            }
+        })
     })
 })
