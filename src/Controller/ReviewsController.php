@@ -110,12 +110,15 @@ class ReviewsController extends AbstractController
         '/review/id{id}', 
         name: 'review_id', 
         requirements: ['id' => '\d+'])]
-    public function reviewId(int $id) : Response
+    public function reviewId(int $id, ReviewRatingRepository $reviewRatingRepository) : Response
     {
         $review = $this->reviewRepository->findByID($id);
         $isLiked = $review->getLikes()->contains($this->getUser());
-        /** @var ReviewRating $rating */
-        $rating = $review->getReviewRatings()->first($this->getUser());
+        // $rating = $reviewRatingRepository->findOneByUserAndReview($this->getUser(), $review);
+        /** @var ?ReviewRating $rating */
+        $rating = $review->getReviewRatings()
+            ->filter(fn (ReviewRating $r) => $r->getValuer() == $this->getUser())
+            ->first();
         $ratingValue = $rating == null ? -1 : $rating->getValue();
         return $this->render('reviews/review.html.twig', [
             'review' => $review,
