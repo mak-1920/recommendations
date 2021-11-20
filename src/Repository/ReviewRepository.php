@@ -47,12 +47,13 @@ class ReviewRepository extends ServiceEntityRepository
     public function getLastReviews(int $page, string $sortedField) : array
     {
         $query = $this->createQueryBuilder('r')
-            ->select('r, u, g, t, rait')
+            ->select('r, u, g, t')
             ->orderBy('r.'.$sortedField, 'DESC')
             ->leftjoin('r.Author', 'u')
             ->leftjoin('r.group', 'g')
             ->leftjoin('r.tags', 't')
             ->leftJoin('r.reviewRatings', 'rait')
+            // ->leftJoin('')
             ->setFirstResult(($page - 1) * 10)
             ->setMaxResults(10)
             ;

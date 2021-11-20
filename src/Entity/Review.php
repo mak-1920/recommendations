@@ -51,6 +51,8 @@ class Review
     #[ORM\OneToMany(mappedBy: 'Review', targetEntity: ReviewRating::class, orphanRemoval: true)]
     private Collection $reviewRatings;
 
+    private float $averageRating = -1;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -257,15 +259,21 @@ class Review
 
     public function getAverageRating() : float
     {
-        if($this->reviewRatings->count() == 0){
-            return 0;
+        if($this->averageRating != -1) {
+            return $this->averageRating;
         }
 
-        $average = 0;
+        if($this->reviewRatings->count() == 0){
+            $this->averageRating = 0;
+            return $this->averageRating;
+        }
+
+        $sum = 0;
         /** @var ReviewRating $rating */
         foreach($this->reviewRatings as $rating){
-            $average += $rating->getValue();
+            $sum += $rating->getValue();
         }
-        return $average / $this->reviewRatings->count();
+        $this->averageRating = $sum / $this->reviewRatings->count();
+        return $this->averageRating;
     }
 }

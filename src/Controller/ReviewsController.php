@@ -114,9 +114,11 @@ class ReviewsController extends AbstractController
     {
         $review = $this->reviewRepository->findByID($id);
         $isLiked = $review->getLikes()->contains($this->getUser());
+        $ratingValue = $review->getReviewRatings()->first($this->getUser())?->getValue() ?? -1;
         return $this->render('reviews/review.html.twig', [
             'review' => $review,
             'isLiked' => $isLiked,
+            'ratingValue' => $ratingValue,
         ]);
     }
 
@@ -146,10 +148,10 @@ class ReviewsController extends AbstractController
     #[Route('ajax/review/set-rating/id{id}', 
         name: 'review_set_rating',
         requirements: ['id' => '\d+'],
-        methods: ['GET'])]
+        methods: ['POST'])]
     public function reviewSetRating(int $id, ReviewRatingRepository $reviewRatingRepository, Request $request) : Response
     {
-        $value = $request->get('value');
+        $value = (int) $request->request->get('value');
         $review = $this->reviewRepository->findByID($id);
         $rating = $reviewRatingRepository->findOneByUserAndReview($this->getUser(), $review);
         $add = true;
@@ -163,6 +165,7 @@ class ReviewsController extends AbstractController
         }
         
         $em = $this->getDoctrine()->getManager();
+        $em->persist($rating);
         $em->persist($review);
         $em->flush();
 

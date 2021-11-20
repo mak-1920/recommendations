@@ -21,16 +21,18 @@ class ReviewRatingRepository extends ServiceEntityRepository
         parent::__construct($registry, ReviewRating::class);
     }
 
-    public function findOneByUserAndReview(User $user, Review $review) : ReviewRating
+    public function findOneByUserAndReview(User $user, Review $review) : ?ReviewRating
     {
         $qb = $this->createQueryBuilder('r');
         return $qb
-            ->where(
-                $qb->expr()->andX(
-                    $qb->expr()->eq('r.valuer', $user),
-                    $qb->expr()->eq('r.review', $review),
-                )
+            ->where('r.valuer = :user AND r.Review = :review'
+                // $qb->expr()->andX(
+                //     $qb->expr()->eq('r.valuer', ':user'),
+                //     $qb->expr()->eq('r.review', ':reveiw'),
+                // )
             )
+            ->setParameter('user', $user)
+            ->setParameter('review', $review)
             ->getQuery()
             ->getOneOrNullResult()
             ;

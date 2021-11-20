@@ -11,16 +11,28 @@ use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class ReviewCreatorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
-            ->add('text')
+            ->add('title', options:[
+                'constraints' => [
+                    new NotBlank(),
+                ]
+            ])
+            ->add('text', options: [
+                'constraints' => [
+                    new NotBlank(),
+                ]
+            ])
             ->add('tags_input', EntityType::class, [
                 'mapped' => false,
                 'class' => ReviewTags::class,
@@ -42,10 +54,17 @@ class ReviewCreatorType extends AbstractType
                     'min' => 0,
                     'max' => 10,
                     'step' => 1,
+                ],
+                'constraints' => [
+                    new NotBlank(),
+                    new Regex('/\d+/', "String must be digits"),
                 ]
             ])
             ->add('group', EntityType::class, [
                 'class' => ReviewGroup::class,
+                'constraints' => [
+                    new NotBlank(),
+                ]
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Save',

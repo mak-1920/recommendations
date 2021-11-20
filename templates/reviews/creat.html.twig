@@ -7,7 +7,7 @@
 <div class="display-3 mb-2">
     {{ title }}
 </div>
-{{ form_start(form) }}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
     {{ form_errors(form) }}
     {{ form_row(form.title) }}
     {{ form_row(form.text) }}

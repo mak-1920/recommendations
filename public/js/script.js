@@ -6,7 +6,7 @@ jQuery(function(){
 
     function getReviewID(){
         var location = window.location.href
-        return location.match(/id(\d+)$/i)[1]
+        return (location.match(/id(\d+)$/i)[1])
     }
 
     function ajaxGenerate(type, param = -1){
@@ -169,14 +169,14 @@ jQuery(function(){
         })
     })
 
-    $('.review-raiting-buttons button').hover(function(){
+    $('.review-rating-buttons:not(.appreciated) button').hover(function(){
         var buttons = $(this).parent()
         var val = $(this).html()
         $(buttons).find('button').each((i, e) => {
             $(e).removeClass('btn-primary').addClass('btn-secondary')
         })
-        for(i=0; i<=val; i++){
-            $('.review-raiting-button-' + i)
+        for(i=1; i<=val; i++){
+            $('.review-rating-button-' + i)
                 .addClass('btn-primary')
                 .removeClass('btn-secondary')
         }
@@ -184,5 +184,39 @@ jQuery(function(){
         $(this).parent().find('button')
             .removeClass('btn-primary')
             .addClass('btn-secondary')
+    })
+    $('.review-rating-buttons button').click(function(){
+        var id = getReviewID()
+        var buttons = $(this).parent()
+        var value = $(this).html()
+
+        $.ajax({
+            url: '/ajax/review/set-rating/id' + id,
+            type: 'post',
+            data: {
+                'value': value
+            },
+            dataType: 'json',
+            beforeSend: function(){
+                $(buttons).children().attr('disabled', 'disabled')
+            },
+            success: function(res){
+                $('.review-rating-value').html(res.rateValue)
+                if(!res.add){
+                    $(buttons).children()
+                        .removeClass('btn-success')
+                        .addClass('btn-secondary')
+                } else {
+                    for(i=1; i<=value; i++){
+                        $('.review-rating-button-' + i)
+                            .addClass('btn-success')
+                            .removeClass('btn-secondary')
+                    }
+                }
+            },
+            complete: function(){
+                $(buttons).children().removeAttr('disabled')
+            }
+        })
     })
 })
