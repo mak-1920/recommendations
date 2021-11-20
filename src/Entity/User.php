@@ -33,7 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /** @var string The hashed password */
     #[ORM\Column(type:"string", nullable:true)]
-    private string $password;
+    private ?string $password;
 
     #[ORM\Column(type:"string", length:100)]
     private string $nickname;
@@ -112,7 +112,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
