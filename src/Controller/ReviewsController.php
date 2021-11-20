@@ -114,7 +114,9 @@ class ReviewsController extends AbstractController
     {
         $review = $this->reviewRepository->findByID($id);
         $isLiked = $review->getLikes()->contains($this->getUser());
-        $ratingValue = $review->getReviewRatings()->first($this->getUser())?->getValue() ?? -1;
+        /** @var ReviewRating $rating */
+        $rating = $review->getReviewRatings()->first($this->getUser());
+        $ratingValue = $rating == null ? -1 : $rating->getValue();
         return $this->render('reviews/review.html.twig', [
             'review' => $review,
             'isLiked' => $isLiked,
