@@ -91,19 +91,28 @@ jQuery(function(){
     }).on('select2:select', e => {
         var data = e.params.data
         var input = $('.tags-input')
-        var searchingElement = $(input).find("option:contains('" + data.text + "'):first")
-        console.log(searchingElement)
-        data.id = +$(searchingElement).val()
-        console.log(data)
-        if (!isNaN(data.id))
-        {
-            var lastOption = $(input).find('option:last:contains("' + data.text + '")')
-            console.log($(lastOption).val())
-            if(isNaN(lastOption.val())) {
-                lastOption.remove()
-                console.log('removed')
+        var options = []
+        $(input).find("option").each(function(){
+            if($(this).text() == data.text){
+                options.push(this)
             }
-            $(searchingElement).attr('selected', 'true')
+        })
+        var searchingElement = $(options).first()
+        console.log(options)
+        // $(searchingElement).attr('data-select2-tag', 'true')
+        console.log(searchingElement)
+        data.id = +($(searchingElement).val())
+        console.log(data)
+        if (options.length == 2)
+        {
+            $(searchingElement).remove()
+            // var lastOption = $(options).last()
+            // console.log($(lastOption).val())
+            // if(isNaN($(lastOption).val())) {
+            //     lastOption.remove()
+            //     console.log('removed')
+            //     $(searchingElement).attr('selected', 'selected')
+            // }
         } 
         if($(getTagInput(e.params.data.text)).length)
             return false

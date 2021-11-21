@@ -40,6 +40,7 @@ class ReviewCreatorType extends AbstractType
                 'attr' => [
                     'class' => 'tags-input',
                     'name' => null,
+                    'placeholder' => '',
                 ],
             ])
             ->add('tags', CollectionType::class, [
