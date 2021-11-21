@@ -100,6 +100,7 @@ class ReviewRepository extends ServiceEntityRepository
             ->innerJoin('r.tag', 't')
             ->where('t.name = :tagName')
             ->setParameter('tagName', $name)
+            ->orderBy('r.id', 'DESC')
             ->setFirstResult(($page - 1) * self::REVIEW_ON_PAGE)
             ->setMaxResults(self::REVIEW_ON_PAGE)
             ;
@@ -114,6 +115,7 @@ class ReviewRepository extends ServiceEntityRepository
 
         return $this->getMainQuery('r')
             ->where('r.id in (:ids)')
+            ->orderBy('r.id', 'DESC')
             ->setParameter('ids', $ids)
             ->getQuery()
             ->getResult()
