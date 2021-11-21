@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Security;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Entity\Users\User;
+use App\Repository\User\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2Client;
@@ -38,7 +38,7 @@ class OAuthFacebookAuthenticator extends AbstractOAuthAuthenticator
         /** @var Facebook $facebookUser */
         $facebookUser = $this->getClient()
             ->fetchUserFromToken($credentials);
-
+        
         $email = $facebookUser->getEmail();
 
         /** @var User $existingUser */

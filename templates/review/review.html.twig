@@ -1,0 +1,85 @@
+{% extends 'bases/base.html.twig' %}
+
+{% block title %}{{ review.title }}{% endblock %}
+
+
+{% block body %}
+    <div class="display-5 text-center mb-3">
+        {{ review.title }}
+    </div>
+    <div class="container">
+        <div class="">
+            {% if review.author == app.user %}
+                <p class="mb-1">
+                    <a href="{{ path('review_edit', {'id': review.id})}}" 
+                        class="border rounded-pill bg-primary text-white text-decoration-none px-2 py-1">
+                        Изменить
+                    </a>
+                </p>
+            {% endif %}
+            <p class="mb-1">Author: {{ review.author.nickname }}</p>
+            <p class="mb-1">Group: {{ review.group.name }}</p>
+            <p class="mb-1">Author rating: {{ review.authorRating }}/10</p>
+            <p class="mb-1">
+                Community rating:
+                <span class="review-rating-value">
+                    {{ review.AverageRating }}
+                </span>
+            </p>
+            <p class="mb-1">
+                Likes: 
+                <span class="review-likes-count">
+                    {{ review.likes.count }}
+                </span>
+            </p>
+        </div>
+    </div>
+    <div class="fs-4 container border border-2 p-2 rounded-2 bg-light">
+        <div class="border rounded-2 bg-white my-2 p-1">
+            {{ review.text | markdown_to_html }}
+        </div>
+        <div class="fs-6">
+            Tags: 
+            {% for tag in review.tags %}
+                <a href="{{ path('review_tag', {'tag': tag}) }}" 
+                    class="border d-inline-block px-2 rounded-2 text-white text-decoration-none py-1 bg-primary">
+                    {{ tag }}
+                </a>
+            {% endfor %}
+            <div class="col text-end text-secondary">
+                {{ review.dateOfPublication | date('d.m.Y H:i', app.request.attributes.get('_locale')) }}
+            </div>
+        </div>
+    </div>
+    {% if is_granted('ROLE_USER') %}
+        <div class="container">
+            <div class="my-2 row">
+                <div class="col-2">
+                    <button class="review-like-button btn {{ isLiked ? 'btn-success' : 'btn-secondary' }}">
+                        Like
+                    </button>
+                </div>
+                <div class="col">
+                    <div class="review-rating-buttons text-end 
+                        {{ ratingValue ? 'appreciated' : '' }}">
+                        {% for i in 1..5 %}
+                            <button class="btn review-rating-button-{{ i }} {{ (ratingValue >= i) ? 'btn-success' : 'btn-secondary' }}">
+                                {{ i }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="display-6 m-2 text-center">
+            Comments
+        </div>
+        <div class="border border-2 bg-light p-2 container rounded-2">
+            <form>
+                <textarea class="comment-text w-100 form-control" rows="3"></textarea>
+                <button class="add-comment btn btn-primary mx-auto d-block w-50">Add</button>
+            </form>
+            <div class="scrolling-block" scrolling-data-type="comment" scrolling-param="{{ review.id }}"></div>
+        </div>
+    {% endif %}
+{% endblock %}

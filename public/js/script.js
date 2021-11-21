@@ -92,16 +92,22 @@ jQuery(function(){
         var data = e.params.data
         var input = $('.tags-input')
         var searchingElement = $(input).find("option:contains('" + data.text + "'):first")
+        console.log(searchingElement)
         data.id = +$(searchingElement).val()
         console.log(data)
         if (!isNaN(data.id))
         {
-            if(isNaN($(input).find('option:last').val()))
-                $(input).find('option:last:contains("' + data.text + '")').remove()
+            var lastOption = $(input).find('option:last:contains("' + data.text + '")')
+            console.log($(lastOption).val())
+            if(isNaN(lastOption.val())) {
+                lastOption.remove()
+                console.log('removed')
+            }
             $(searchingElement).attr('selected', 'true')
         } 
         if($(getTagInput(e.params.data.text)).length)
             return false
+        console.log('tudu')
         creatTag(e.params.data.text)
         return false
     }).on('select2:unselect', e => {
