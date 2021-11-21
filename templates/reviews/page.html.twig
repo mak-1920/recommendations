@@ -35,10 +35,10 @@
                 {{ review.group.name }}
             </div>
             <div class="col text-center">
-                {{ review.AuthorRating }}/10
+                {{ review.averageRating }}/5
             </div>
-            <div class="col text-center">
-                {{ review.dateOfPublication | date('Y-m-d H:i', app.request.attributes.get('_locale')) }}
+            <div class="col text-center" title={{ review.dateOfPublication | date('d.m.Y/H:i', app.request.attributes.get('_locale')) }}>
+                {{ review.dateOfPublication | date('d.m', app.request.attributes.get('_locale')) }}
             </div>
         </div>
     </div>

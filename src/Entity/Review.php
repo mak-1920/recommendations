@@ -51,7 +51,8 @@ class Review
     #[ORM\OneToMany(mappedBy: 'Review', targetEntity: ReviewRating::class, orphanRemoval: true)]
     private Collection $reviewRatings;
 
-    private float $averageRating = -1;
+    #[ORM\Column(type: 'float', options: ['default' => 0])]
+    private float $averageRating;
 
     public function __construct()
     {
@@ -240,6 +241,7 @@ class Review
         if (!$this->reviewRatings->contains($reviewRating)) {
             $this->reviewRatings[] = $reviewRating;
             $reviewRating->setReview($this);
+            $this->changeAverageRating();
         }
 
         return $this;
@@ -251,29 +253,29 @@ class Review
             // set the owning side to null (unless already changed)
             if ($reviewRating->getReview() === $this) {
                 $reviewRating->setReview(null);
+                $this->changeAverageRating();
             }
         }
 
         return $this;
     }
 
-    public function getAverageRating() : float
+    public function getAverageRating(): float
     {
-        if($this->averageRating != -1) {
-            return $this->averageRating;
-        }
+        return $this->averageRating;
+    }
 
+    private function changeAverageRating(): void
+    {
         if($this->reviewRatings->count() == 0){
             $this->averageRating = 0;
-            return $this->averageRating;
+            return;
         }
 
         $sum = 0;
-        /** @var ReviewRating $rating */
         foreach($this->reviewRatings as $rating){
             $sum += $rating->getValue();
         }
-        $this->averageRating = $sum / $this->reviewRatings->count();
-        return $this->averageRating;
+        $this->averageRating = round($sum / $this->reviewRatings->count(), 2);
     }
 }

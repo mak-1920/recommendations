@@ -46,10 +46,10 @@ class ReviewsController extends AbstractController
         $type = $request->get('param');
         switch($type){
             case $this->sortedTypes[1]: 
-                $reviews = $reviewRepository->getLastReviews($page, 'authorRating');
+                $reviews = $reviewRepository->getLastReviews($page, 'averageRating');
                 break;
             default:
-                $reviews = $reviewRepository->getLastReviews($page, 'id');
+                $reviews = $reviewRepository->getLastReviews($page);
                 break;
         }
         return $this->render('reviews/page.html.twig', [

@@ -6,12 +6,15 @@ namespace App\Repository;
 
 use App\Entity\Review;
 use App\Entity\ReviewGroup;
+use App\Entity\ReviewRating;
 use App\Entity\ReviewTags;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Egulias\EmailValidator\Warning\AddressLiteral;
 
 /**
  * @method Review|null find($id, $lockMode = null, $lockVersion = null)
@@ -44,27 +47,35 @@ class ReviewRepository extends ServiceEntityRepository
     /**
      * @return Review[] Returns an array of Review objects
      */
-    public function getLastReviews(int $page, string $sortedField) : array
+    public function getLastReviews(int $page, string $sortedBy = null) : array
     {
-        $query = $this->createQueryBuilder('r')
-            ->select('r, u, g, t')
-            ->orderBy('r.'.$sortedField, 'DESC')
-            ->leftjoin('r.Author', 'u')
+        /** @var QueryBuilder $qb */
+        $qb = $this->getEntityManager()->createQueryBuilder()
+            ->from(Review::class, 'r')
+            ->select('r, u, g, t, l, rait');
+        if($sortedBy != null){
+            $qb->OrderBy('r.'.$sortedBy, 'DESC')
+                ->addOrderBy('r.id', 'DESC');
+        } else {
+            $qb->orderBy('r.id', 'DESC');
+        }
+        $qb->leftjoin('r.Author', 'u')
             ->leftjoin('r.group', 'g')
             ->leftjoin('r.tags', 't')
             ->leftJoin('r.reviewRatings', 'rait')
-            // ->leftJoin('')
+            ->leftJoin('r.likes', 'l')
             ->setFirstResult(($page - 1) * 10)
             ->setMaxResults(10)
             ;
 
-        $paginator = new Paginator($query, true);
+        $paginator = new Paginator($qb, true);
 
         $result = [];
 
         foreach($paginator as $post) {
             $result[] = $post;
         }
+        // dump($result);
 
         return $result;
     }

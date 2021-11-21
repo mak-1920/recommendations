@@ -47,7 +47,7 @@
                 </a>
             {% endfor %}
             <div class="col text-end text-secondary">
-                {{ review.dateOfPublication | date('Y-m-d H:i', app.request.attributes.get('_locale')) }}
+                {{ review.dateOfPublication | date('d.m.Y H:i', app.request.attributes.get('_locale')) }}
             </div>
         </div>
     </div>
