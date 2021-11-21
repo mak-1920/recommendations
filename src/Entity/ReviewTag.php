@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\ReviewTagsRepository;
+use App\Repository\ReviewTagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass:ReviewTagsRepository::class)]
+#[ORM\Entity(repositoryClass:ReviewTagRepository::class)]
 #[UniqueEntity(fields:["name"], message:"This tag was created")]
-class ReviewTags
+class ReviewTag
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,7 +22,7 @@ class ReviewTags
     #[ORM\Column(type:"string", length:255)]
     private string $name;
 
-    #[ORM\ManyToMany(targetEntity:Review::class, mappedBy:"tags")]
+    #[ORM\ManyToMany(targetEntity:Review::class, mappedBy:"tag")]
     private Collection $reviews;
 
     public function __construct(string $name = '')

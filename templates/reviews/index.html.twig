@@ -1,26 +1,5 @@
-{% extends 'base.html.twig' %}
+{% extends 'reviews/reviewsBase.html.twig' %}
 
-{% block title %}Reviews{% endblock %}
-
-{% block filesForPage %}
-    
-{% endblock %}
-
-{% block body %}
-    {% for type in sortedType %}
-        <a href="{{ path('reviews', {type: type } ) }}" 
-            class="nav-link border rounded-pill p2 text-white d-inline-block
-                {{ (type == selectedSortType) ? 'bg-primary' : 'bg-secondary' }}">
-            sort by {{ type }}
-        </a>
-    {% endfor %}
-    {% if is_granted('ROLE_USER') %}    
-        <a href="{{ path('review_create') }}"
-            class="nav-link border rounded-pill bg-success p2 text-white d-inline-block">
-            create review
-        </a>
-    {% endif %}
-    <div class="scrolling-block" scrolling-data-type="reviews" scrolling-param="{{ selectedSortType }}">
-
-    </div>
+{% block scrollingBlock %}
+    <div class="scrolling-block" scrolling-data-type="sortable-reviews" scrolling-param="{{ selectedSortType }}"></div>
 {% endblock %}

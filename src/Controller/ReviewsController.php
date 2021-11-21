@@ -7,18 +7,17 @@ namespace App\Controller;
 use App\Entity\Comment;
 use App\Entity\Review;
 use App\Entity\ReviewRating;
-use App\Entity\ReviewTags;
+use App\Entity\ReviewTag;
 use App\Form\ReviewCreatorType;
 use App\Repository\ReviewRatingRepository;
 use App\Repository\ReviewRepository;
-use App\Repository\ReviewTagsRepository;
+use App\Repository\ReviewTagRepository;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Extra\Markdown\MarkdownExtension;
 
 class ReviewsController extends AbstractController
 {
@@ -26,30 +25,55 @@ class ReviewsController extends AbstractController
 
     public function __construct(
         private ReviewRepository $reviewRepository, 
+        private ReviewTagRepository $reviewTagRepository,
     ){
+    }
+
+    #[Route('/review/tag-{name}', name: 'review_tag')]
+    public function reviewTag(string $name) : Response
+    {
+        $tag = $this->reviewTagRepository->findReviewByTagName($name);
+
+        return $this->render($name);
     }
 
     #[Route('/', name: 'reviews')]
     public function index(Request $request): Response
     {
         $sortedType = $request->get('type') ?? $this->sortedTypes[0];
-
+        
+        $tags = $this->reviewTagRepository->findAllOrderByName();
+        
         return $this->render('reviews/index.html.twig', [
             'sortedType' => $this->sortedTypes,
             'selectedSortType' => $sortedType,
+            'tags' => $tags,
         ]);
     }
-
-    #[Route('/ajax/reviews/page/{page}', name: 'review_page', requirements: ['page' => '\d+'], methods: ['GET'])]
-    public function page(int $page, ReviewRepository $reviewRepository, Request $request) : Response
+    
+    #[Route('/review/tag-{tagName}', name: 'review_tag', requirements: ['name' => '.+'])]
+    public function byTag(?string $tagName = null) : Response
+    {
+        $tags = $this->reviewTagRepository->findAllOrderByName();
+        
+        return $this->render('reviews/tag.html.twig', [
+            'sortedType' => $this->sortedTypes,
+            'selectedSortType' => '',
+            'tags' => $tags,
+            'tagName' => $tagName,
+        ]);
+    }
+    
+    #[Route('/ajax/sortable-reviews/page/{page}', name: 'review_sortable_page', requirements: ['page' => '\d+'], methods: ['GET'])]
+    public function reviewSortablePage(int $page, Request $request) : Response
     {
         $type = $request->get('param');
         switch($type){
             case $this->sortedTypes[1]: 
-                $reviews = $reviewRepository->getLastReviews($page, 'averageRating');
+                $reviews = $this->reviewRepository->getLastReviews($page, 'averageRating');
                 break;
             default:
-                $reviews = $reviewRepository->getLastReviews($page);
+                $reviews = $this->reviewRepository->getLastReviews($page);
                 break;
         }
         return $this->render('reviews/page.html.twig', [
@@ -57,9 +81,21 @@ class ReviewsController extends AbstractController
         ]);
     }
 
+    #[Route('/ajax/reviews-by-tag/page/{page}', name: 'review_page_by_tag', requirements: ['page' => '\d+'], methods: ['GET'])]
+    public function reviewPageByTag(int $page, Request $request) : Response
+    {
+        $name = mb_substr($request->get('param'), 4);
+
+        $reviews = $this->reviewRepository->findByTagName($name, $page);
+
+        return $this->render('reviews/page.html.twig', [
+            'reviews' => $reviews,
+        ]);
+    }
+
     #[Route('/review/edit/id{id}', name: 'review_edit', requirements: ['id' => '\d+'], defaults: ['id' => '0'])]
     #[Route('/review/create', name: 'review_create')]
-    public function create(Request $request, ReviewTagsRepository $reviewTagsRepository, Review $review = null) : Response
+    public function create(Request $request, Review $review = null) : Response
     {
         $title = 'Review edit';
         if($review == null) {
@@ -77,7 +113,7 @@ class ReviewsController extends AbstractController
             $formData = $request->request->get('review_creator');
 
             if(isset($formData['tags'])){
-                $tags = $reviewTagsRepository->getEntityFromStringArray($formData['tags']);
+                $tags = $this->reviewTagsRepository->getEntityFromStringArray($formData['tags']);
                 $review->setTags($tags);
             }
 
@@ -98,12 +134,6 @@ class ReviewsController extends AbstractController
             'form' => $form,
             'title' => $title,
         ]);
-    }
-
-    #[Route('/review/tag-{tag}', name: 'review_tag')]
-    public function reviewTag(ReviewTags $tag) : Response
-    {
-        return $this->render($tag->getName());
     }
 
     #[Route(

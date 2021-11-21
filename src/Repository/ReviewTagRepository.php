@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\ReviewTags;
+use App\Entity\ReviewTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method ReviewTags|null find($id, $lockMode = null, $lockVersion = null)
- * @method ReviewTags|null findOneBy(array $criteria, array $orderBy = null)
- * @method ReviewTags[]    findAll()
- * @method ReviewTags[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ReviewTag|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ReviewTag|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ReviewTag[]    findAll()
+ * @method ReviewTag[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ReviewTagsRepository extends ServiceEntityRepository
+class ReviewTagRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ReviewTags::class);
+        parent::__construct($registry, ReviewTag::class);
     }
 
     public function getTagsNames() : array
@@ -46,37 +46,16 @@ class ReviewTagsRepository extends ServiceEntityRepository
             unset($tagsArr[$key]);
         }
         foreach($tagsArr as $tag){
-            $tagsEnt[] = new ReviewTags($tag);
+            $tagsEnt[] = new ReviewTag($tag);
         }
         return $tagsEnt;
     }
 
-    // /**
-    //  * @return ReviewTags[] Returns an array of ReviewTags objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllOrderByName() : array
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('t')
+            ->orderBy('t.name', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?ReviewTags
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

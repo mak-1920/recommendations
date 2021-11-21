@@ -7,7 +7,6 @@ namespace App\Repository;
 use App\Entity\Review;
 use App\Entity\ReviewGroup;
 use App\Entity\ReviewRating;
-use App\Entity\ReviewTags;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Collection;
@@ -24,19 +23,29 @@ use Egulias\EmailValidator\Warning\AddressLiteral;
  */
 class ReviewRepository extends ServiceEntityRepository
 {
+    private const REVIEW_ON_PAGE = 10;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Review::class);
     }
 
+    private function getMainQuery(string $alias) : QueryBuilder
+    {
+        return $this->getEntityManager()->createQueryBuilder()
+            ->from(Review::class, $alias)
+            ->select('r, u, g, t, l, rait')
+            ->leftJoin('r.author', 'u')
+            ->leftjoin('r.group', 'g')
+            ->leftjoin('r.tag', 't')
+            ->leftJoin('r.reviewRatings', 'rait')
+            ->leftJoin('r.likes', 'l')
+            ;
+    }
+
     public function findByID($id) : ?Review
     {
-        return $this->createQueryBuilder('r')
-            ->select('r, u, g, t, rait')
-            ->leftjoin('r.Author', 'u')
-            ->leftjoin('r.group', 'g')
-            ->leftjoin('r.tags', 't')
-            ->leftJoin('r.reviewRatings', 'rait')
+        return $this->getMainQuery('r')
             ->where('r.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
@@ -50,22 +59,15 @@ class ReviewRepository extends ServiceEntityRepository
     public function getLastReviews(int $page, string $sortedBy = null) : array
     {
         /** @var QueryBuilder $qb */
-        $qb = $this->getEntityManager()->createQueryBuilder()
-            ->from(Review::class, 'r')
-            ->select('r, u, g, t, l, rait');
+        $qb = $this->getMainQuery('r');
         if($sortedBy != null){
             $qb->OrderBy('r.'.$sortedBy, 'DESC')
                 ->addOrderBy('r.id', 'DESC');
         } else {
             $qb->orderBy('r.id', 'DESC');
         }
-        $qb->leftjoin('r.Author', 'u')
-            ->leftjoin('r.group', 'g')
-            ->leftjoin('r.tags', 't')
-            ->leftJoin('r.reviewRatings', 'rait')
-            ->leftJoin('r.likes', 'l')
-            ->setFirstResult(($page - 1) * 10)
-            ->setMaxResults(10)
+        $qb->setFirstResult(($page - 1) * self::REVIEW_ON_PAGE)
+            ->setMaxResults(self::REVIEW_ON_PAGE)
             ;
 
         $paginator = new Paginator($qb, true);
@@ -75,16 +77,13 @@ class ReviewRepository extends ServiceEntityRepository
         foreach($paginator as $post) {
             $result[] = $post;
         }
-        // dump($result);
 
         return $result;
     }
 
     public function findOneWithLikes(int $id) : ?Review
     {
-        $queryBuilder = $this->createQueryBuilder('r');
-
-        return $queryBuilder
+        return $this->createQueryBuilder('r')
             ->select('r, l')
             ->leftJoin('r.likes', 'l')
             ->where('r.id = :id')
@@ -94,15 +93,30 @@ class ReviewRepository extends ServiceEntityRepository
         ;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Review
+    public function findByTagName(string $name, int $page) : array
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
+        $qb = $this->createQueryBuilder('r')
+            ->select('r')
+            ->innerJoin('r.tag', 't')
+            ->where('t.name = :tagName')
+            ->setParameter('tagName', $name)
+            ->setFirstResult(($page - 1) * self::REVIEW_ON_PAGE)
+            ->setMaxResults(self::REVIEW_ON_PAGE)
+            ;
+
+        $paginator = new Paginator($qb, true);
+
+        $ids = [];
+
+        foreach($paginator as $post) {
+            $ids[] = $post->getId();
+        }
+
+        return $this->getMainQuery('r')
+            ->where('r.id in (:ids)')
+            ->setParameter('ids', $ids)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult()
+            ;
     }
-    */
 }

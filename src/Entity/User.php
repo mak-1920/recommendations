@@ -47,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type:"string", length:255, nullable:true)]
     private ?string $facebook_id;
 
-    #[ORM\OneToMany(targetEntity:Review::class, mappedBy:"Author")]
+    #[ORM\OneToMany(targetEntity:Review::class, mappedBy:"author")]
     private Collection $reviews;
 
     public function __construct()

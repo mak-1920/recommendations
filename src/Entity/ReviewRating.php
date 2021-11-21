@@ -22,7 +22,7 @@ class ReviewRating
 
     #[ORM\ManyToOne(targetEntity: Review::class, inversedBy: 'reviewRatings')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Review $Review;
+    private ?Review $review;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -54,12 +54,12 @@ class ReviewRating
 
     public function getReview(): Review
     {
-        return $this->Review;
+        return $this->review;
     }
 
     public function setReview(?Review $Review): self
     {
-        $this->Review = $Review;
+        $this->review = $Review;
 
         return $this;
     }

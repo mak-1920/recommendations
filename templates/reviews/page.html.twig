@@ -20,7 +20,7 @@
             <div class="fx-5">
                 tags: 
                 {% for tag in review.tags %}
-                    <a href="{{ path('review_tag', {'tag': tag}) }}" 
+                    <a href="{{ path('review_tag', {'tagName': tag}) }}" 
                         class="border d-inline-block px-2 bg-primary rounded-2 text-white text-decoration-none py-1">
                         {{ tag }}
                     </a>

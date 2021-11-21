@@ -18,7 +18,7 @@ class ReviewIllustration
     #[ORM\Column(type:"string", length:255)]
     private string $img;
 
-    #[ORM\ManyToOne(targetEntity:Review::class, inversedBy:"Illustrations")]
+    #[ORM\ManyToOne(targetEntity:Review::class, inversedBy:"illustrations")]
     private $review;
 
     public function getId(): int

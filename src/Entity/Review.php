@@ -24,23 +24,23 @@ class Review
     #[ORM\Column(type: "text")]
     private string $text;
 
-    #[ORM\ManyToMany(targetEntity: ReviewTags::class, inversedBy: "reviews", cascade: ["persist"])]
+    #[ORM\ManyToMany(targetEntity: ReviewTag::class, inversedBy: "reviews", cascade: ["persist"])]
     #[ORM\JoinColumn(nullable: false)]
-    private Collection $tags;
+    private Collection $tag;
 
     #[ORM\ManyToOne(targetEntity: ReviewGroup::class, inversedBy: "reviews")]
     #[ORM\JoinColumn(nullable: false)]
     private ReviewGroup $group;
 
     #[ORM\OneToMany(targetEntity: ReviewIllustration::class, mappedBy: "review")]
-    private Collection $Illustrations;
+    private Collection $illustrations;
     
     #[ORM\Column(type: "datetimetz_immutable")]
-    private DateTimeImmutable $DateOfPublication;
+    private DateTimeImmutable $dateOfPublication;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "reviews")]
     #[ORM\JoinColumn(nullable: false)]
-    private User $Author;
+    private User $author;
 
     #[ORM\Column(type: 'integer')]
     private int $authorRating;
@@ -48,7 +48,7 @@ class Review
     #[ORM\ManyToMany(targetEntity: User::class)]
     private Collection $likes;
 
-    #[ORM\OneToMany(mappedBy: 'Review', targetEntity: ReviewRating::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: ReviewRating::class, orphanRemoval: true)]
     private Collection $reviewRatings;
 
     #[ORM\Column(type: 'float', options: ['default' => 0])]
@@ -56,8 +56,8 @@ class Review
 
     public function __construct()
     {
-        $this->tags = new ArrayCollection();
-        $this->Illustrations = new ArrayCollection();
+        $this->tag = new ArrayCollection();
+        $this->illustrations = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->reviewRatings = new ArrayCollection();
     }
@@ -95,32 +95,32 @@ class Review
     /** @return Collection<ReviewTags> */
     public function getTags(): Collection
     {
-        return $this->tags;
+        return $this->tag;
     }
 
-    public function addTag(ReviewTags $tag): self
+    public function addTag(ReviewTag $tag): self
     {
-        if (!$this->tags->contains($tag)) {
-            $this->tags[] = $tag;
+        if (!$this->tag->contains($tag)) {
+            $this->tag[] = $tag;
         }
 
         return $this;
     }
 
-    public function removeTag(ReviewTags $tag): self
+    public function removeTag(ReviewTag $tag): self
     {
-        $this->tags->removeElement($tag);
+        $this->tag->removeElement($tag);
 
         return $this;
     }
 
-    public function setTags(array $tags): self
+    public function setTags(array $tag): self
     {
-        foreach($this->tags as $tag){
+        foreach($this->tag as $tag){
             $this->removeTag($tag);
         }
 
-        foreach($tags as $tag){
+        foreach($tag as $tag){
             $this->addTag($tag);
         }
 
@@ -143,13 +143,13 @@ class Review
     /** @return Collection<ReviewIllustration> */
     public function getIllustrations(): Collection
     {
-        return $this->Illustrations;
+        return $this->illustrations;
     }
 
     public function addIllustration(ReviewIllustration $illustration): self
     {
-        if (!$this->Illustrations->contains($illustration)) {
-            $this->Illustrations[] = $illustration;
+        if (!$this->illustrations->contains($illustration)) {
+            $this->illustrations[] = $illustration;
             $illustration->setReview($this);
         }
 
@@ -158,7 +158,7 @@ class Review
 
     public function removeIllustration(ReviewIllustration $illustration): self
     {
-        if ($this->Illustrations->removeElement($illustration)) {
+        if ($this->illustrations->removeElement($illustration)) {
             // set the owning side to null (unless already changed)
             if ($illustration->getReview() === $this) {
                 $illustration->setReview(null);
@@ -168,26 +168,26 @@ class Review
         return $this;
     }
 
-    public function getDateOfPublication(): \DateTimeImmutable
+    public function getdateOfPublication(): \DateTimeImmutable
     {
-        return $this->DateOfPublication;
+        return $this->dateOfPublication;
     }
 
-    public function setDateOfPublication(\DateTimeImmutable $DateOfPublication): self
+    public function setdateOfPublication(\DateTimeImmutable $dateOfPublication): self
     {
-        $this->DateOfPublication = $DateOfPublication;
+        $this->dateOfPublication = $dateOfPublication;
 
         return $this;
     }
 
     public function getAuthor(): User
     {
-        return $this->Author;
+        return $this->author;
     }
 
-    public function setAuthor(User $Author): self
+    public function setAuthor(User $author): self
     {
-        $this->Author = $Author;
+        $this->author = $author;
 
         return $this;
     }
