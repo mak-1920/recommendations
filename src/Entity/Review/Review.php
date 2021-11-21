@@ -57,7 +57,7 @@ class Review
 
     public function __construct()
     {
-        $this->tag = new ArrayCollection();
+        $this->tags = new ArrayCollection();
         $this->illustrations = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->reviewRatings = new ArrayCollection();
