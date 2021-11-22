@@ -6,6 +6,7 @@ namespace App\Entity\Review;
 
 use App\Repository\Review\ReviewGroupRepository;
 use App\Services\Converter;
+use App\Services\Locale;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ReviewGroup
 {
     public function __toString() : string
-    {
+    { 
         return $this->name;
     }
 
@@ -23,11 +24,11 @@ class ReviewGroup
     #[ORM\Column(type:"integer")]
     private int $id;
 
-    #[ORM\Column(type:"string", length:255)]
-    private string $name;
-
     #[ORM\OneToMany(targetEntity:Review::class, mappedBy:"group", orphanRemoval:true)]
     private Collection $reviews;
+
+    #[ORM\Column(type: 'string', length: 25, options: ['default' => ''])]
+    private $name;
 
     public function __construct()
     {
@@ -37,18 +38,6 @@ class ReviewGroup
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     /** @return Collection|Review[] */
@@ -75,6 +64,18 @@ class ReviewGroup
                 $review->setGroup(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

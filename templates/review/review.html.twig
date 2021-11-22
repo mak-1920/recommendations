@@ -20,7 +20,9 @@
                 </p>
             {% endif %}
             <p class="mb-1">{{ 'review_author'|trans|u.title }}: {{ review.author.nickname }}</p>
-            <p class="mb-1">{{ 'review_group'|trans|u.title }}: {{ review.group.name }}</p>
+            <p class="mb-1">
+                {{ 'review_group'|trans|u.title }}: {{ review.group.name | trans }}
+            </p>
             <p class="mb-1">{{ 'review_author_rating'|trans|u.title }}: {{ review.authorRating }}/10</p>
             <p class="mb-1">
                 {{ 'review_community_rating'|trans|u.title }}:
@@ -49,7 +51,7 @@
                 </a>
             {% endfor %}
             <div class="col text-end text-secondary">
-                {{ review.dateOfPublication | format_datetime('medium', 'short') }}
+                {{ review.dateOfPublication | format_datetime('medium', 'short', locale=app.request.locale) }}
             </div>
         </div>
     </div>

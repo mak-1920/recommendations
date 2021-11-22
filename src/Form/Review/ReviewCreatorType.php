@@ -62,6 +62,8 @@ class ReviewCreatorType extends AbstractType
             ])
             ->add('group', EntityType::class, [
                 'class' => ReviewGroup::class,
+                'translation_domain' => 'messages',
+                'choice_translation_domain' => true,
                 'constraints' => [
                     new NotBlank(),
                 ]

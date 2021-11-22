@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class ReviewController extends BaseController
 {
     #[Route('/{_locale<%app.locales%>}/', name: 'reviews')]
-    public function index(Request $request): Response
+    public function index(Request $request) : Response
     {
         $sortedType = $request->get('type') ?? $this->sortedTypes[0];
         
@@ -26,6 +26,7 @@ class ReviewController extends BaseController
         return $this->render('review/index.html.twig', [
             'sortedType' => $this->sortedTypes,
             'selectedSortType' => $sortedType,
+            'selectedSortTypeName' => $this->translator->trans($sortedType),
             'tags' => $tags,
         ]);
     }

@@ -7,147 +7,147 @@
     <body>
       <trans-unit id="twhUSCq" resname="review_tags">
         <source>review_tags</source>
-        <target>tags</target>
+        <target>тэги</target>
       </trans-unit>
       <trans-unit id="pOjnBih" resname="sign_in_with">
         <source>sign_in_with</source>
-        <target>sign in with</target>
+        <target>войти через</target>
       </trans-unit>
       <trans-unit id="ACcM9j_" resname="logout">
         <source>logout</source>
-        <target>logout</target>
+        <target>выход</target>
       </trans-unit>
       <trans-unit id="vfScPDi" resname="auth">
         <source>auth</source>
-        <target>auth</target>
+        <target>войти</target>
       </trans-unit>
       <trans-unit id="KcnDDgY" resname="registration">
         <source>registration</source>
-        <target>registration</target>
+        <target>регистрация</target>
       </trans-unit>
       <trans-unit id="VGQQUSA" resname="reviews">
         <source>reviews</source>
-        <target>reviews</target>
+        <target>обзоры</target>
       </trans-unit>
       <trans-unit id="lzHloaU" resname="sort_by">
         <source>sort_by</source>
-        <target>sort by</target>
+        <target>сортировка по</target>
       </trans-unit>
       <trans-unit id="gI5byZF" resname="review_edit">
         <source>create_review</source>
-        <target>create review</target>
+        <target>создать обзор</target>
       </trans-unit>
       <trans-unit id="Y3yFh8L" resname="tags_show">
         <source>tags_show</source>
-        <target>show tags</target>
+        <target>показать тэги</target>
       </trans-unit>
       <trans-unit id="yI21R2F" resname="review_author">
         <source>review_author</source>
-        <target>author</target>
+        <target>автор</target>
       </trans-unit>
       <trans-unit id="2BgI_sB" resname="review_group">
         <source>review_group</source>
-        <target>group</target>
+        <target>группа</target>
       </trans-unit>
       <trans-unit id="rF5gQ79" resname="review_author_rating">
         <source>review_author_rating</source>
-        <target>author rating</target>
+        <target>рейтинг автора</target>
       </trans-unit>
       <trans-unit id="70CPO2v" resname="review_community_rating">
         <source>review_community_rating</source>
-        <target>community rating</target>
+        <target>рейтинг сообщества</target>
       </trans-unit>
       <trans-unit id="hKtAVTG" resname="review_likes">
         <source>review_likes</source>
-        <target>likes</target>
+        <target>лайки</target>
       </trans-unit>
       <trans-unit id="ahpNv6x" resname="review_button_like">
         <source>review_button_like</source>
-        <target>like</target>
+        <target>нравится</target>
       </trans-unit>
       <trans-unit id="kPkxvoM" resname="review_comments">
         <source>review_comments</source>
-        <target>comments</target>
+        <target>комментарии</target>
       </trans-unit>
       <trans-unit id="ai80bcv" resname="review_button_add_comment">
         <source>review_button_add_comment</source>
-        <target>add</target>
+        <target>добавить</target>
       </trans-unit>
       <trans-unit id="cmKOg4D" resname="reviews_with">
         <source>reviews_with</source>
-        <target>reviews with</target>
+        <target>обзоры с</target>
       </trans-unit>
       <trans-unit id="Title" resname="Title">
         <source>Title</source>
-        <target>Title</target>
+        <target>Название</target>
       </trans-unit>
       <trans-unit id="Text" resname="Text">
         <source>Text</source>
-        <target>Text</target>
+        <target>Текст</target>
       </trans-unit>
       <trans-unit id="Group" resname="Group">
         <source>Group</source>
-        <target>Group</target>
+        <target>Группа</target>
       </trans-unit>
       <trans-unit id="Author rating" resname="Author rating">
         <source>Author rating</source>
-        <target>Author rating</target>
+        <target>Оценка</target>
       </trans-unit>
       <trans-unit id="Tags" resname="Tags">
         <source>Tags</source>
-        <target>Tags</target>
+        <target>Тэги</target>
       </trans-unit>
       <trans-unit id="Save" resname="Save">
         <source>Save</source>
-        <target>Save</target>
+        <target>Сохранить</target>
       </trans-unit>
       <trans-unit id="Nickname" resname="Nickname">
         <source>Nickname</source>
-        <target>Nickname</target>
+        <target>Ник</target>
       </trans-unit>
       <trans-unit id="Email" resname="Email">
         <source>Email</source>
-        <target>Email</target>
+        <target>Эл. почта</target>
       </trans-unit>
       <trans-unit id="Password" resname="Password">
         <source>Password</source>
-        <target>Password</target>
+        <target>Пароль</target>
       </trans-unit>
       <trans-unit id="Repeat Password" resname="Repeat Password">
         <source>Repeat Password</source>
-        <target>Repeat Password</target>
+        <target>Повторите пароль</target>
       </trans-unit>
       <trans-unit id="registration_button" resname="registration_button">
         <source>registration_button</source>
-        <target>registration</target>
+        <target>зарегистрироваться</target>
       </trans-unit>
       <trans-unit id="sign_in" resname="sign_in">
         <source>sign_in</source>
-        <target>sign in</target>
+        <target>авторизация</target>
       </trans-unit>
       <trans-unit id="login_button" resname="login_button">
         <source>login_button</source>
-        <target>login</target>
+        <target>войти</target>
       </trans-unit>
       <trans-unit id="relevance" resname="relevance">
         <source>relevance</source>
-        <target>relevance</target>
+        <target>релевантности</target>
       </trans-unit>
       <trans-unit id="rating" resname="rating">
         <source>rating</source>
-        <target>rating</target>
+        <target>рейтингу</target>
       </trans-unit>
       <trans-unit id="group_1" resname="group_1">
         <source>group_1</source>
-        <target>films</target>
+        <target>фильмы</target>
       </trans-unit>
       <trans-unit id="group_2" resname="group_2">
         <source>group_2</source>
-        <target>books</target>
+        <target>книги</target>
       </trans-unit>
       <trans-unit id="group_3" resname="group_3">
         <source>group_3</source>
-        <target>games</target>
+        <target>игры</target>
       </trans-unit>
     </body>
   </file>

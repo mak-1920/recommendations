@@ -9,6 +9,7 @@ use App\Repository\Review\ReviewRatingRepository;
 use App\Repository\Review\ReviewRepository;
 use App\Repository\Review\ReviewTagRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class BaseController extends AbstractController
 {
@@ -19,6 +20,7 @@ abstract class BaseController extends AbstractController
         protected ReviewTagRepository $reviewTagRepository,
         protected ReviewRatingRepository $reviewRatingRepository,
         protected CommentRepository $commentRepository,
+        protected TranslatorInterface $translator,
     ){
     }
 }

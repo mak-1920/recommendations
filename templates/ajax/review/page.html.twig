@@ -24,7 +24,7 @@
                 {{ 'review_author' | trans | u.title }}: {{ review.author.nickname }}
             </div>
             <div>
-                {{ 'review_group' | trans | u.title }}: {{ review.group.name }}
+                {{ 'review_group' | trans | u.title }}: {{ review.group.name | trans }}
             </div>
         </div>
         <div class="p-2">
@@ -45,7 +45,7 @@
             <div class="col text-center">
                 {{ review.averageRating }}/5
             </div>
-            <div class="col text-center" title={{ review.dateOfPublication | format_datetime('medium', 'short') }}>
+            <div class="col text-center" title="{{ review.dateOfPublication | format_datetime('medium', 'short') }}">
                 {{ review.dateOfPublication | format_datetime('short', 'none') }}
             </div>
         </div>
