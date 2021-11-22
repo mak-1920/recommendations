@@ -10,21 +10,21 @@
 
 {% block form %}
     <div class="display-4 text-center mb-2">
-        {{ 'sign_in_with'|trans|u.title }}
+        {{ 'sign_in'|trans|u.title }}
     </div>
     <form action="{{ path('app_login') }}" method="post">
         <div class="form-floating my-2">
             <input type="email" id="username" name="_username" value="{{ last_username }}"
                 class="form-control rounded-pill" placeholder="some@mail.ru"/>
-            <label for="username">Email:</label>
+            <label for="username">{{ 'Email' | trans | u.title}}:</label>
         </div>
         <div class="form-floating my-2">
             <input type="password" id="password" name="_password"
                 class="form-control rounded-pill" placeholder="password"/>
-            <label for="password">Password:</label>
+            <label for="password">{{ 'Password' | trans | u.title }}:</label>
         </div>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-        <button type="submit" class="btn btn-primary btn-lg w-100 my-2">login</button>
+        <button type="submit" class="btn btn-primary btn-lg w-100 my-2">{{ 'login_button' | trans | u.title }}</button>
     </form>
 {% endblock %}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Review;
 
 use App\Repository\Review\ReviewTagRepository;
+use App\Services\Converter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;

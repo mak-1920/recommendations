@@ -3,7 +3,7 @@
 {% block title %}{{ 'registration'|trans|u.title }}{% endblock %}
 
 {% block form %}
-    <div class="display-4 text-center mb-2">{{ 'registration'|tras|u.title }}</div>
+    <div class="display-4 text-center mb-2">{{ 'registration'|trans|u.title }}</div>
         {{ form_start(registrationForm) }}
             {{ form_row(registrationForm.nickname) }}
             {{ form_row(registrationForm.email) }}

@@ -7,13 +7,13 @@
         <a href="{{ path('reviews', {type: type } ) }}" 
             class="nav-link border rounded-pill p2 text-white d-inline-block
                 {{ (type == selectedSortType) ? 'bg-primary' : 'bg-secondary' }}">
-            {{ 'sort by'|trans }} {{ type }}
+            {{ 'sort_by'|trans }} {{ type }}
         </a>
     {% endfor %}
     {% if is_granted('ROLE_USER') %}    
         <a href="{{ path('review_create') }}"
             class="nav-link border rounded-pill bg-success p2 text-white d-inline-block">
-            {{ 'create review'|trans }}
+            {{ 'review_edit'|trans }}
         </a>
     {% endif %}
     

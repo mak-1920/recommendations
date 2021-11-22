@@ -94,7 +94,7 @@ class ReviewRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('r')
             ->select('r')
-            ->innerJoin('r.tag', 't')
+            ->innerJoin('r.tags', 't')
             ->where('t.name = :tagName')
             ->setParameter('tagName', $name)
             ->orderBy('r.id', 'DESC')

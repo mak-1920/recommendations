@@ -48,7 +48,7 @@ jQuery(function(){
     $('.scrolling-block').each((i, e) => {
         var type = $(e).attr('scrolling-data-type')
         var param = $(e).attr('scrolling-param')
-        $(e).after('<div class="my2- d-flex justify-content-center">'
+        $(e).after('<div class="my-2 d-flex justify-content-center">'
             + '<div class="spinner-border text-primary" id="generation-status-' 
             + type 
             + '"><span class="sr-only"></span></div></div>')

@@ -8,7 +8,7 @@
                 {{ comment.author.nickname }}
             </div>
             <div class="col text-end">
-                {{ comment.time | date('Y-m-d H:i', app.request.attributes.get('_locale')) }}
+                {{ comment.time | format_datetime('short', 'short') }}
             </div>
         </div>
     </div>

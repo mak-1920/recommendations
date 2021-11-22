@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="twhUSCq" resname="review_tags">
+        <source>review_tags</source>
+        <target>tags</target>
+      </trans-unit>
+      <trans-unit id="pOjnBih" resname="sign_in_with">
+        <source>sign_in_with</source>
+        <target>sign in with</target>
+      </trans-unit>
+      <trans-unit id="ACcM9j_" resname="logout">
+        <source>logout</source>
+        <target>logout</target>
+      </trans-unit>
+      <trans-unit id="vfScPDi" resname="auth">
+        <source>auth</source>
+        <target>auth</target>
+      </trans-unit>
+      <trans-unit id="KcnDDgY" resname="registration">
+        <source>registration</source>
+        <target>registration</target>
+      </trans-unit>
+      <trans-unit id="VGQQUSA" resname="reviews">
+        <source>reviews</source>
+        <target>reviews</target>
+      </trans-unit>
+      <trans-unit id="lzHloaU" resname="sort_by">
+        <source>sort_by</source>
+        <target>sort by</target>
+      </trans-unit>
+      <trans-unit id="gI5byZF" resname="review_edit">
+        <source>create_review</source>
+        <target>create review</target>
+      </trans-unit>
+      <trans-unit id="Y3yFh8L" resname="tags_show">
+        <source>tags_show</source>
+        <target>show tags</target>
+      </trans-unit>
+      <trans-unit id="yI21R2F" resname="review_author">
+        <source>review_author</source>
+        <target>author</target>
+      </trans-unit>
+      <trans-unit id="2BgI_sB" resname="review_group">
+        <source>review_group</source>
+        <target>group</target>
+      </trans-unit>
+      <trans-unit id="rF5gQ79" resname="review_author_rating">
+        <source>review_author_rating</source>
+        <target>author rating</target>
+      </trans-unit>
+      <trans-unit id="70CPO2v" resname="review_community_rating">
+        <source>review_community_rating</source>
+        <target>community rating</target>
+      </trans-unit>
+      <trans-unit id="hKtAVTG" resname="review_likes">
+        <source>review_likes</source>
+        <target>likes</target>
+      </trans-unit>
+      <trans-unit id="ahpNv6x" resname="review_button_like">
+        <source>review_button_like</source>
+        <target>like</target>
+      </trans-unit>
+      <trans-unit id="kPkxvoM" resname="review_comments">
+        <source>review_comments</source>
+        <target>comments</target>
+      </trans-unit>
+      <trans-unit id="ai80bcv" resname="review_button_add_comment">
+        <source>review_button_add_comment</source>
+        <target>add</target>
+      </trans-unit>
+      <trans-unit id="cmKOg4D" resname="reviews_with">
+        <source>reviews_with</source>
+        <target>reviews with</target>
+      </trans-unit>
+      <trans-unit id="Title" resname="Title">
+        <source>Title</source>
+        <target>Title</target>
+      </trans-unit>
+      <trans-unit id="Text" resname="Text">
+        <source>Text</source>
+        <target>Text</target>
+      </trans-unit>
+      <trans-unit id="Group" resname="Group">
+        <source>Group</source>
+        <target>Group</target>
+      </trans-unit>
+      <trans-unit id="Author rating" resname="Author rating">
+        <source>Author rating</source>
+        <target>Author rating</target>
+      </trans-unit>
+      <trans-unit id="Tags" resname="Tags">
+        <source>Tags</source>
+        <target>Tags</target>
+      </trans-unit>
+      <trans-unit id="Save" resname="Save">
+        <source>Save</source>
+        <target>Save</target>
+      </trans-unit>
+      <trans-unit id="Nickname" resname="Nickname">
+        <source>Nickname</source>
+        <target>Nickname</target>
+      </trans-unit>
+      <trans-unit id="Email" resname="Email">
+        <source>Email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="Password" resname="Password">
+        <source>Password</source>
+        <target>Password</target>
+      </trans-unit>
+      <trans-unit id="Repeat Password" resname="Repeat Password">
+        <source>Repeat Password</source>
+        <target>Repeat Password</target>
+      </trans-unit>
+      <trans-unit id="registration_button" resname="registration_button">
+        <source>registration_button</source>
+        <target>registration</target>
+      </trans-unit>
+      <trans-unit id="sign_in" resname="sign_in">
+        <source>sign_in</source>
+        <target>sign in</target>
+      </trans-unit>
+      <trans-unit id="login_button" resname="login_button">
+        <source>login_button</source>
+        <target>login</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
