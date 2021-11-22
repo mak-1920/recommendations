@@ -52,9 +52,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity:Review::class, mappedBy:"author")]
     private Collection $reviews;
 
+    private int $likesCount = -1;
+
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
+    }
+
+    public function __toString() : string
+    {
+        return sprintf('%s (%d)', $this->getNickname(), $this->getLikesCount());
+    }
+
+    public function getLikesCount() : int
+    {
+        if($this->likesCount != -1){
+            return $this->likesCount;
+        }
+        $sum = 0;
+        /** @var Review $review */
+        foreach($this->getReviews() as $review){
+            $sum += $review->getLikes()->count();
+        }
+        return $sum;
     }
 
     public function getId(): int

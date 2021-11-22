@@ -20,7 +20,7 @@ use Egulias\EmailValidator\Warning\AddressLiteral;
  */
 class ReviewRepository extends ServiceEntityRepository
 {
-    private const REVIEW_ON_PAGE = 10;
+    private const REVIEW_ON_PAGE = 20;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -31,12 +31,13 @@ class ReviewRepository extends ServiceEntityRepository
     {
         return $this->getEntityManager()->createQueryBuilder()
             ->from(Review::class, $alias)
-            ->select('r, u, g, t, l, rait')
+            ->select('r, u, g, t, rait, ur, url')
             ->leftJoin('r.author', 'u')
+            ->leftJoin('u.reviews', 'ur')
+            ->leftJoin('ur.likes', 'url')
             ->leftjoin('r.group', 'g')
             ->leftjoin('r.tags', 't')
             ->leftJoin('r.reviewRatings', 'rait')
-            ->leftJoin('r.likes', 'l')
             ;
     }
 

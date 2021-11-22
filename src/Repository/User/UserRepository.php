@@ -38,12 +38,25 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-    public function loadUserByUsername(string $email) : ?User
+    public function loadUserByEmail(string $email) : ?User
     {
         return $this->createQueryBuilder('u')
+            ->select('u, r, rl')
             ->where('u.email = :email')
             ->setParameter('email', $email)
+            ->leftJoin('u.reviews', 'r')
+            ->leftJoin('r.likes', 'rl')
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function loadUserByUsername(string $email) : ?User
+    {    
+        return $this->loadUserByEmail($email);
+    }
+
+    public function loadUserByIdentifier(string $email) : ?User
+    {
+        return $this->loadUserByEmail($email);
     }
 }

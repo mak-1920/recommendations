@@ -45,9 +45,9 @@ class UserProvider implements UserProviderInterface
      *
      * @throws NonUniqueResultException
      */
-    public function loadUserByIdentifier(int $id)
+    public function loadUserByIdentifier(string $email)
     {
-        return $this->userRepository->loadUserByIdentifier($id);
+        return $this->userRepository->loadUserByIdentifier($email);
     }
 
     /**
@@ -73,6 +73,6 @@ class UserProvider implements UserProviderInterface
      */
     public function supportsClass($class): bool
     {
-        return $class === 'App\Entity\User';
+        return $class === 'App\Entity\Users\User';
     }
 }
