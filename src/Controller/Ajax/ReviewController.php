@@ -6,16 +6,17 @@ namespace App\Controller\Ajax;
 
 use App\Controller\BaseController;
 use App\Entity\Review\ReviewRating;
-use App\Repository\Review\ReviewRatingRepository;
-use App\Repository\Review\ReviewRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ReviewController extends BaseController
 {    
-    #[Route('/ajax/sortable-reviews/page/{page}', name: 'review_sortable_page', requirements: ['page' => '\d+'], methods: ['GET'])]
+    #[Route(
+        '/{_locale<%app.locales%>}/ajax/sortable-reviews/page/{page}', 
+        name: 'review_sortable_page', 
+        requirements: ['page' => '\d+'], 
+        methods: ['GET'])]
     public function reviewSortablePage(int $page, Request $request) : Response
     {
         $type = $request->get('param');
@@ -32,7 +33,11 @@ class ReviewController extends BaseController
         ]);
     }
 
-    #[Route('/ajax/reviews-by-tag/page/{page}', name: 'review_page_by_tag', requirements: ['page' => '\d+'], methods: ['GET'])]
+    #[Route(
+        '/{_locale<%app.locales%>}/ajax/reviews-by-tag/page/{page}',
+        name: 'review_page_by_tag', 
+        requirements: ['page' => '\d+'], 
+        methods: ['GET'])]
     public function reviewPageByTag(int $page, Request $request) : Response
     {
         $name = mb_substr($request->get('param'), 4);

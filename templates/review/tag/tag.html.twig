@@ -4,7 +4,7 @@
 
 {% block scrollingBlock %}
     <div class="display-5">
-        Reviews with #{{ tagName }}
+        {{ 'reviews_with'|trans|u.title }} #{{ tagName }}
     </div>
     <div class="scrolling-block" scrolling-data-type="reviews-by-tag" scrolling-param="tag-{{ tagName }}"></div>
 {% endblock %}

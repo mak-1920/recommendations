@@ -9,7 +9,9 @@
 {% endblock %}
 
 {% block form %}
-    <div class="display-4 text-center mb-2">Sign in</div>
+    <div class="display-4 text-center mb-2">
+        {{ 'sign_in_with'|trans|u.title }}
+    </div>
     <form action="{{ path('app_login') }}" method="post">
         <div class="form-floating my-2">
             <input type="email" id="username" name="_username" value="{{ last_username }}"

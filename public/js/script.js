@@ -5,8 +5,13 @@ jQuery(function(){
     var isEnd = {}
 
     function getReviewID(){
-        var location = window.location.href
+        var location = window.location.pathname
         return (location.match(/id(\d+)$/i)[1])
+    }
+
+    function getLocale(){
+        var path = window.location.pathname
+        return path.match(/^\/(ru|en)\//)[1]
     }
 
     function ajaxGenerate(type, param = -1){
@@ -17,14 +22,15 @@ jQuery(function(){
         var data = {}
         if(param != -1)
             data = {'param': param}
+        var locale = getLocale()
 
         xhr[type] = $.ajax({
-            url: "/ajax/" + type + "/page/" + pages[type],
-            type: "get",
-            dataType: "html",
+            url: '/' + locale + '/ajax/' + type + '/page/' + pages[type],
+            type: 'get',
+            dataType: 'html',
             data: data,
             beforeSend: function(){
-                $("#generation-status-" + type).removeClass("d-none")
+                $('#generation-status-' + type).removeClass('d-none')
             },
             success: function(html){
                 if($(html).length === 0) 
@@ -33,7 +39,7 @@ jQuery(function(){
                 pages[type]++
             },
             complete: function(){
-                $("#generation-status-" + type).addClass("d-none")
+                $('#generation-status-' + type).addClass('d-none')
                 isGeneration[type] = false
             }
         })
@@ -42,7 +48,10 @@ jQuery(function(){
     $('.scrolling-block').each((i, e) => {
         var type = $(e).attr('scrolling-data-type')
         var param = $(e).attr('scrolling-param')
-        $(e).after('<div class="loading display-5 text-center" id="generation-status-' + type + '">loading...</div>')
+        $(e).after('<div class="my2- d-flex justify-content-center">'
+            + '<div class="spinner-border text-primary" id="generation-status-' 
+            + type 
+            + '"><span class="sr-only"></span></div></div>')
         pages[type] = 1
         isEnd[type] = false
         isGeneration[type] = false

@@ -1,26 +1,26 @@
 {% extends 'bases/base.html.twig' %}
 
-{% block title %}Reviews{% endblock %}
+{% block title %}{{ 'reviews'|trans|u.title }}{% endblock %}
 
 {% block body %}
     {% for type in sortedType %}
         <a href="{{ path('reviews', {type: type } ) }}" 
             class="nav-link border rounded-pill p2 text-white d-inline-block
                 {{ (type == selectedSortType) ? 'bg-primary' : 'bg-secondary' }}">
-            sort by {{ type }}
+            {{ 'sort by'|trans }} {{ type }}
         </a>
     {% endfor %}
     {% if is_granted('ROLE_USER') %}    
         <a href="{{ path('review_create') }}"
             class="nav-link border rounded-pill bg-success p2 text-white d-inline-block">
-            create review
+            {{ 'create review'|trans }}
         </a>
     {% endif %}
     
     <div class="container bg-light p-2 rounded-2 border border-2 my-2">
         <button class="btn btn-primary mx-auto d-block" data-bs-toggle="collapse"
             data-bs-target="#tags" aria-expanded="false" aria-controls="tags">
-            Show tags
+            {{ 'tags_show'|trans|u.title }}
         </button>
         <div class="collapse my-2" id="tags">
             {% for tag in tags %}

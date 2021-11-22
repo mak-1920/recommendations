@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CommentController extends BaseController
 {
-    #[Route('/ajax/comment/page/{page}', name: 'comment', requirements: ['page' => '\d+'], methods: ['GET'])]
+    #[Route('/{_locale<%app.locales%>}/ajax/comment/page/{page}', name: 'comment', requirements: ['page' => '\d+'], methods: ['GET'])]
     public function index(int $page, Request $request) : Response
     {
         $review = $this->reviewRepository->find($request->get('param'));

@@ -10,7 +10,9 @@
         </div>
         <div class="text-end nav-link">
             {% if is_granted('ROLE_USER') and app.user.id == review.author.id %}
-                <a href="{{ path('review_edit', {'id': review.id}) }}">change</a>
+                <a href="{{ path('review_edit', {'id': review.id}) }}">
+                    {{ 'review_edit'|trans }}
+                </a>
             {% endif %}
         </div>
         <div class="p-2">
@@ -18,7 +20,7 @@
                 {{ review.text | markdown_to_html }}
             </div>
             <div class="fx-5">
-                tags: 
+                {{ 'review_tags'|trans }}: 
                 {% for tag in review.tags %}
                     <a href="{{ path('review_tag', {'tagName': tag}) }}" 
                         class="border d-inline-block px-2 bg-primary rounded-2 text-white text-decoration-none py-1">
@@ -37,8 +39,8 @@
             <div class="col text-center">
                 {{ review.averageRating }}/5
             </div>
-            <div class="col text-center" title={{ review.dateOfPublication | date('d.m.Y/H:i', app.request.attributes.get('_locale')) }}>
-                {{ review.dateOfPublication | date('d.m', app.request.attributes.get('_locale')) }}
+            <div class="col text-center" title={{ review.dateOfPublication|date('d.m.Y/H:i') }}>
+                {{ review.dateOfPublication | date('d.m') }}
             </div>
         </div>
     </div>

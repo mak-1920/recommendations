@@ -1,9 +1,9 @@
 {% extends 'bases/authbase.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{{ 'registration'|trans|u.title }}{% endblock %}
 
 {% block form %}
-    <div class="display-4 text-center mb-2">Register</div>
+    <div class="display-4 text-center mb-2">{{ 'registration'|tras|u.title }}</div>
         {{ form_start(registrationForm) }}
             {{ form_row(registrationForm.nickname) }}
             {{ form_row(registrationForm.email) }}
@@ -11,7 +11,9 @@
                 label: 'Password',
             }) }}
 
-            <button type="submit" class="btn btn-primary btn-lg w-50 m-auto d-block">Register</button>
+            <button type="submit" class="btn btn-primary btn-lg w-50 m-auto d-block">
+                {{ 'registration_button'|trans|u.title }}
+            </button>
         {{ form_end(registrationForm) }}
     </div>
 {% endblock %}

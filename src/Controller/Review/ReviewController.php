@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ReviewController extends BaseController
 {
-    #[Route('/', name: 'reviews')]
+    #[Route('/{_locale<%app.locales%>}/', name: 'reviews')]
     public function index(Request $request): Response
     {
         $sortedType = $request->get('type') ?? $this->sortedTypes[0];
@@ -30,8 +30,8 @@ class ReviewController extends BaseController
         ]);
     }
 
-    #[Route('/review/edit/id{id}', name: 'review_edit', requirements: ['id' => '\d+'], defaults: ['id' => '0'])]
-    #[Route('/review/create', name: 'review_create')]
+    #[Route('/{_locale<%app.locales%>}/review/edit/id{id}', name: 'review_edit', requirements: ['id' => '\d+'], defaults: ['id' => '0'])]
+    #[Route('/{_locale<%app.locales%>}/review/create', name: 'review_create')]
     public function create(Request $request, Review $review = null) : Response
     {
         $title = 'Review edit';
@@ -74,7 +74,7 @@ class ReviewController extends BaseController
     }
 
     #[Route(
-        '/review/id{id}', 
+        '/{_locale<%app.locales%>}/review/id{id}', 
         name: 'review_id', 
         requirements: ['id' => '\d+'])]
     public function reviewId(int $id) : Response

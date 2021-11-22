@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AuthController extends BaseController
 {
-    #[Route('/login', name: 'app_login')]
+    #[Route('/{_locale<%app.locales%>}/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -28,7 +28,7 @@ class AuthController extends BaseController
         ]);
     }
 
-    #[Route('/register', name: 'app_register')]
+    #[Route('/{_locale<%app.locales%>}/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface): Response
     {
         $user = new User();
