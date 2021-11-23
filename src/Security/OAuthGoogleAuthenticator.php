@@ -59,6 +59,7 @@ class OAuthGoogleAuthenticator extends AbstractOAuthAuthenticator
         } else {
             $user->setGoogleId($googleUser->getId());
         }
+        dump($user);
 
         return $user;
     }
