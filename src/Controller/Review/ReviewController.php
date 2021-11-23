@@ -38,42 +38,38 @@ class ReviewController extends BaseController
     public function create(Request $request, Review $review = null) : Response
     {
         /** @var User $user */
-        $isUpdate = true;
-
+        $user = $this->getUser();
         $title = 'Review edit';
+
         if($review == null) {
             $review = new Review();
             $title = 'Review create';
-            $isUpdate = false;
-        } else if(!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') 
-                && $review->getAuthor() != $this->getUser()) {
-            throw new AccessDeniedException();
+        } else {
+            if(!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') 
+                    && $review->getAuthor() != $user) {
+                throw new AccessDeniedException();
+            }
+            $user = $review->getAuthor();
         }
 
         $form = $this->createForm(ReviewCreatorType::class, $review);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $entityManager = $this->getDoctrine()->getManager();
+            $tags = [];
             
             /** @var array $formData */
             $formData = $request->request->get('review_creator');
 
             if(isset($formData['tags'])){
-                $review->setTags($this->reviewTagRepository->getEntityFromStringArray($formData['tags']));
+                $tags = $this->reviewTagRepository->getEntityFromStringArray($formData['tags']);
             }
-            if(!$isUpdate){
-                $review->setAuthor($this->getUser());
-            }
-            
-            $review->setDateOfPublication(new DateTimeImmutable());
 
-            $entityManager->persist($review);
-            $entityManager->flush();
+            $reviewId = $this->reviewRepository->createOrUpdate($review, $user, $tags);
 
             return $this->redirect($this->generateUrl(
                 'review_id', 
-                ['id' => $review->getId()],
+                ['id' => $reviewId],
                 UrlGeneratorInterface::ABSOLUTE_URL
             ));
         }

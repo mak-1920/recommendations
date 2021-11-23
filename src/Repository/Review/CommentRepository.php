@@ -6,6 +6,8 @@ namespace App\Repository\Review;
 
 use App\Entity\Review\Comment;
 use App\Entity\Review\Review;
+use App\Entity\Users\User;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -43,5 +45,26 @@ class CommentRepository extends ServiceEntityRepository
         }
 
         return $res;
+    }
+
+    public function addComment(int $reviewId, User $user, string $text) : int
+    {
+        $reviewRepository = $this->_em->getRepository(ReviewRepository::class);
+        $review = $reviewRepository->find($reviewId);
+
+        $comment = new Comment();
+        $comment->setAuthor($user);
+        $comment->setReview($review);
+        $comment->setText($text);
+        $comment->setTime(new DateTimeImmutable());
+
+        $em = $this->getDoctrine()->getManager();
+        
+        $em->persist($review);
+        $em->persist($comment);
+
+        $em->flush();
+
+        return $comment->getId();
     }
 }

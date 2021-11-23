@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Review;
 
 use App\Entity\Users\User;
+use App\Repository\Review\ReviewRatingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReviewRatingRepository::class)]

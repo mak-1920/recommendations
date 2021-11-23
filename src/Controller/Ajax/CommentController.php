@@ -34,21 +34,9 @@ class CommentController extends BaseController
     public function create(Request $request) : Response
     {
         $reviewId = $request->request->get('reviewId');
-        $review = $this->reviewRepository->find($reviewId);
         $text = $request->request->get('text');
-
-        $comment = new Comment();
-        $comment->setAuthor($this->getUser());
-        $comment->setReview($review);
-        $comment->setText($text);
-        $comment->setTime(new DateTimeImmutable());
-
-        $em = $this->getDoctrine()->getManager();
         
-        $em->persist($review);
-        $em->persist($comment);
-
-        $em->flush();
+        $this->commentRepository->addComment($reviewId, $this->getUser(), $text);
 
         return $this->json(['result' => Response::HTTP_CREATED]);
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository\Review;
 
 use App\Entity\Review\Review;
+use App\Entity\Review\ReviewRating;
 use App\Entity\Users\User;
 use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -55,9 +56,6 @@ class ReviewRepository extends ServiceEntityRepository
             ;
     }
 
-    /**
-     * @return Review[] Returns an array of Review objects
-     */
     public function getLastReviews(int $page, string $sortedBy = null) : array
     {
         /** @var QueryBuilder $qb */
@@ -81,6 +79,70 @@ class ReviewRepository extends ServiceEntityRepository
         }
 
         return $result;
+    }
+
+    public function createOrUpdate(Review $review, User $user, array $tags) : int
+    {
+        $entityManager = $this->_em;
+            
+
+        if(isset($formData['tags'])){
+            $review->setTags($this->reviewTagRepository->getEntityFromStringArray($formData['tags']));
+        }
+        $review->setAuthor($user);
+        
+        $review->setDateOfPublication(new DateTimeImmutable());
+
+        $entityManager->persist($review);
+        $entityManager->flush();
+
+        return $review->getId();
+    }
+
+    public function addOrRemoveLike(int $reviewId, User $user) : Review
+    {
+        $em = $this->_em;
+        /** @var ReviewRepository $reviewRepository */
+        $reviewRepository = $em->getRepository(Review::class);
+        /** @var Review $review */
+        $review = $reviewRepository->findOneWithLikes($reviewId);
+
+        $result = true;
+        if($review->getLikes()->contains($user)){
+            $review->removeLike($user);
+            $result = false;
+        } else {
+            $review->addLike($user);
+        }
+        $em->persist($review);
+        $em->flush();
+        
+        return $review;
+    }
+
+    public function setRating(int $reviewId, User $user, int $value) : array
+    {
+        $em = $this->_em;
+        /** @var ReviewRatingRepository $reviewRatingRepository */
+        $reviewRatingRepository = $em->getRepository(ReviewRating::class);
+        
+        $review = $this->findByID($reviewId);
+        $rating = $reviewRatingRepository->findOneByUserAndReview($user, $review);
+        $result = true;
+
+        if($rating == null){
+            $rating = new ReviewRating($review, $user, $value);
+            $review->addReviewRating($rating);
+        } else {
+            $review->removeReviewRating($rating);
+            $result = false;
+        }
+        
+        $em->persist($rating);
+        $em->persist($review);
+        $em->flush();
+
+        return ['review' => $review, 'result' => $result];
     }
 
     public function findOneWithLikes(int $id) : ?Review

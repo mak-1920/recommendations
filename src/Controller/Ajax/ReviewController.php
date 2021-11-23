@@ -56,46 +56,31 @@ class ReviewController extends BaseController
         methods: ['GET'])]
     public function reviewLike(int $id) : Response
     {
-        $em = $this->getDoctrine()->getManager();
-        /** @var Review $review */
-        $review = $this->reviewRepository->findOneWithLikes($id);
         $user = $this->getUser();
-        $result = true;
-        if($review->getLikes()->contains($user)){
-            $review->removeLike($user);
-            $result = false;
-        } else {
-            $review->addLike($user);
-        }
-        $em->persist($review);
-        $em->flush();
-        return $this->json(['result' => $result, 'likesCount' => $review->getLikes()->count()]);
+        
+        $review = $this->reviewRepository->addOrRemoveLike($id, $user);
+
+        return $this->json([
+            'result' => $review->getLikes()->contains($user), 
+            'likesCount' => $review->getLikes()->count()
+        ]);
     }
 
     #[Route('ajax/review/set-rating/id{id}', 
         name: 'review_set_rating',
         requirements: ['id' => '\d+'],
-        methods: ['POST'])]
+        methods: ['POST']
+    )]
     public function reviewSetRating(int $id, Request $request) : Response
     {
+        $user = $this->getUser();
         $value = (int) $request->request->get('value');
-        $review = $this->reviewRepository->findByID($id);
-        $rating = $this->reviewRatingRepository->findOneByUserAndReview($this->getUser(), $review);
-        $add = true;
 
-        if($rating == null){
-            $rating = new ReviewRating($review, $this->getUser(), $value);
-            $review->addReviewRating($rating);
-        } else {
-            $review->removeReviewRating($rating);
-            $add = false;
-        }
-        
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($rating);
-        $em->persist($review);
-        $em->flush();
+        $res = $this->reviewRepository->setRating($id, $user, $value);
 
-        return $this->json(['add' => $add, 'rateValue' => $review->getAverageRating()]);
+        return $this->json([
+            'add' => $res['result'], 
+            'rateValue' => $res['review']->getAverageRating()
+        ]);
     }
 }

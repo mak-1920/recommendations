@@ -25,10 +25,8 @@ class ReviewRatingRepository extends ServiceEntityRepository
 
     public function findOneByUserAndReview(User $user, Review $review) : ?ReviewRating
     {
-        $qb = $this->createQueryBuilder('r');
-        return $qb
-            ->where('r.valuer = :user AND r.review = :review'
-            )
+        return $this->createQueryBuilder('r')
+            ->where('r.valuer = :user AND r.review = :review')
             ->setParameter('user', $user)
             ->setParameter('review', $review)
             ->getQuery()
