@@ -51,7 +51,7 @@ class OAuthFacebookAuthenticator extends AbstractOAuthAuthenticator
 
         /** @var User $user */
         $user = $this->userRepository
-            ->findOneBy(['email' => $email]);
+            ->loadUserByIdentifier($email);
 
         if (!$user) {
             $user = User::Create($email, 'facebook', $facebookUser->getId(), $facebookUser->getNickname());
