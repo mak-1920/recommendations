@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TagController extends BaseController
 {
-    #[Route('/{_locale<%app.locales%>}/review/tag-{tagName}', name: 'review_tag', requirements: ['name' => '.+'])]
+    #[Route('/{_locale<%app.locales%>}/review-tag-{tagName}', name: 'review_tag', requirements: ['name' => '.+'])]
     public function byTag(?string $tagName = null) : Response
     {
         $tags = $this->reviewTagRepository->findAllOrderByName();

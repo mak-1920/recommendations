@@ -149,6 +149,10 @@
         <source>group_3</source>
         <target>games</target>
       </trans-unit>
+      <trans-unit id="not_access_for_view_comments" resname="not_access_for_view_comments">
+        <source>not_access_for_view_comments</source>
+        <target>please log in to view comments</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

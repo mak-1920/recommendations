@@ -75,7 +75,7 @@ class ReviewController extends BaseController
     }
 
     #[Route(
-        '/{_locale<%app.locales%>}/review/id{id}', 
+        '/{_locale<%app.locales%>}/review-id{id}', 
         name: 'review_id', 
         requirements: ['id' => '\d+'])]
     public function reviewId(int $id) : Response

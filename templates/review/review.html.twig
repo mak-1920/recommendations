@@ -87,5 +87,9 @@
             </form>
             <div class="scrolling-block" scrolling-data-type="comment" scrolling-param="{{ review.id }}"></div>
         </div>
+    {% else %}
+        <div class="display-6 m-2 text-center">
+            {{ 'not_access_for_view_comments'|trans|u.title }}
+        </div>
     {% endif %}
 {% endblock %}

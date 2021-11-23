@@ -149,6 +149,10 @@
         <source>group_3</source>
         <target>игры</target>
       </trans-unit>
+      <trans-unit id="not_access_for_view_comments" resname="not_access_for_view_comments">
+        <source>not_access_for_view_comments</source>
+        <target>пожалуйста, авторизируйтесь для просмотра комментариев</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
