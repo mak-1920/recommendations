@@ -7,12 +7,14 @@ namespace App\Controller\Review;
 use App\Controller\BaseController;
 use App\Entity\Review\Review;
 use App\Entity\Review\ReviewRating;
+use App\Entity\Users\User;
 use App\Form\Review\ReviewCreatorType;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ReviewController extends BaseController
 {
@@ -35,10 +37,17 @@ class ReviewController extends BaseController
     #[Route('/{_locale<%app.locales%>}/review/create', name: 'review_create')]
     public function create(Request $request, Review $review = null) : Response
     {
+        /** @var User $user */
+        $isUpdate = true;
+
         $title = 'Review edit';
         if($review == null) {
             $review = new Review();
             $title = 'Review create';
+            $isUpdate = false;
+        } else if(!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') 
+                && $review->getAuthor() != $this->getUser()) {
+            throw new AccessDeniedException();
         }
 
         $form = $this->createForm(ReviewCreatorType::class, $review);
@@ -51,11 +60,12 @@ class ReviewController extends BaseController
             $formData = $request->request->get('review_creator');
 
             if(isset($formData['tags'])){
-                $tags = $this->reviewTagRepository->getEntityFromStringArray($formData['tags']);
-                $review->setTags($tags);
+                $review->setTags($this->reviewTagRepository->getEntityFromStringArray($formData['tags']));
             }
-
-            $review->setAuthor($this->getUser());
+            if(!$isUpdate){
+                $review->setAuthor($this->getUser());
+            }
+            
             $review->setDateOfPublication(new DateTimeImmutable());
 
             $entityManager->persist($review);
