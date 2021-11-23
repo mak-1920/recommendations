@@ -49,7 +49,7 @@ class OAuthGoogleAuthenticator extends AbstractOAuthAuthenticator
 
         /** @var User $user */
         $user = $this->userRepository
-            ->loadUserByIdentifier($email);
+            ->findOneBy(['email' => $email]);
 
         if (!$user) {
             $user = User::Create($email, 'google', $googleUser->getId(), $googleUser->getName());
@@ -59,7 +59,6 @@ class OAuthGoogleAuthenticator extends AbstractOAuthAuthenticator
         } else {
             $user->setGoogleId($googleUser->getId());
         }
-        dump($user);
 
         return $user;
     }
