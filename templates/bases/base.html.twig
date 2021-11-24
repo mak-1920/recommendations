@@ -29,6 +29,11 @@
                     </button>
                     <div class="navbar-collapse collapse" id="navbar-menu">
                         <ul class="navbar-nav ms-auto">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('apanel') }}" class="nav-link">
+                                    {{ 'apanel'|trans|u.title }}
+                                </a>
+                            {% endif %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="dropdown-language" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

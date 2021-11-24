@@ -173,6 +173,14 @@
         <source>count_reviews</source>
         <target>количество обзоров</target>
       </trans-unit>
+      <trans-unit id="apanel" resname="apanel">
+        <source>apanel</source>
+        <target>АП</target>
+      </trans-unit>
+      <trans-unit id="nickname" resname="nickname">
+        <source>nickname</source>
+        <target>ник</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

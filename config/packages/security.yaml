@@ -46,7 +46,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/(%app.locales%)/admin, role: ROLE_ADMIN }
+        - { path: ^/(%app.locales%)/ap, role: ROLE_ADMIN }
         - { path: ^/(%app.locales%)/review/, role: ROLE_USER }
         - { path: ^/ajax/comment/, role: ROLE_USER }
         - { path: ^/ajax/review/, role: ROLE_USER }
