@@ -49,22 +49,4 @@ class OAuthController extends BaseController
             return $this->redirectToRoute('rewies');
         }
     }
-
-    #[Route('/connect/vk', name: 'connect_vk_start')]
-    public function redirectToVKConnect(ClientRegistry $clientRegistry) : Response
-    {
-        return $clientRegistry
-            ->getClient('vk')
-            ->redirect(['email', 'profile'], []);
-    }
-
-    #[Route("/vk/auth", name: "vk_auth")]
-    public function connectVKCheck() : Response
-    {
-        if (!$this->getUser()) {
-            return new JsonResponse(['status' => false, 'message' => "User not found!"]);
-        } else {
-            return $this->redirectToRoute('rewies');
-        }
-    }
 }
