@@ -50,7 +50,6 @@ security:
         - { path: ^/(%app.locales%)/review/, role: ROLE_USER }
         - { path: ^/ajax/comment/, role: ROLE_USER }
         - { path: ^/ajax/review/, role: ROLE_USER }
-        - { path: ^/connect/, requires_channel: https }
-        - { path: /auth$, requires_channel: https }
-        # - { path: ^/(%app.locales%)/, roles: ROLE_USER }
+        # - { path: ^/connect/, requires_channel: https }
+        # - { path: /auth$, requires_channel: https }
 
