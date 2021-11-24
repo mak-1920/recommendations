@@ -5,14 +5,14 @@
 {% block body %}
     {% for type in sortedType %}
         <a href="{{ path('reviews', {type: type } ) }}" 
-            class="btn rounded-pill p2 d-inline-block text-white mb-1
+            class="btn rounded-pill text-white mb-1
                 {{ (type == selectedSortType) ? 'btn-primary' : 'btn-secondary' }}">
             {{ 'sort_by'|trans }} {{ type | trans }}
         </a>
     {% endfor %}
     {% if is_granted('ROLE_USER') %}    
         <a href="{{ path('review_create') }}"
-            class="btn rounded-pill btn-success p2 text-white d-inline-block mb-1">
+            class="btn rounded-pill btn-success text-white mb-1">
             {{ 'review_edit'|trans }}
         </a>
     {% endif %}
@@ -25,7 +25,7 @@
         <div class="collapse my-2" id="tags">
             {% for tag in tags %}
                 <a href="{{ path('review_tag', {tagName: tag.name}) }}" 
-                    class="d-inline-block px-2 btn btn-primary rounded-2 text-white py-1 mb-1">
+                    class="btn btn-primary btn-sm text-white mb-1">
                     {{ tag.name }}    
                 </a>
             {% endfor %}

@@ -46,7 +46,7 @@
             {{ 'review_tags'|trans }}: 
             {% for tag in review.tags %}
                 <a href="{{ path('review_tag', {'tag': tag}) }}" 
-                    class="border d-inline-block px-2 rounded-2 text-white text-decoration-none py-1 bg-primary">
+                    class="btn btn-primary btn-sm text-white">
                     {{ tag }}
                 </a>
             {% endfor %}
