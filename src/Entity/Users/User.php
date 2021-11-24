@@ -257,4 +257,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function removeReview(Review $review): self
+    {
+        $this->reviews->removeElement($review);
+
+        return $this;
+    }
 }

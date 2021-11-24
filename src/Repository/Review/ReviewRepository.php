@@ -192,7 +192,8 @@ class ReviewRepository extends ServiceEntityRepository
 
         $review = $this->findByID($id);
 
-        if($review == null || $review->getAuthor() != $user){
+        if($review == null 
+            || $review->getAuthor() != $user && array_search(User::ROLE_ADMIN, $user->getRoles())){
             return false;
         }
 

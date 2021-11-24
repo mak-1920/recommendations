@@ -26,7 +26,7 @@ class Review
     #[ORM\Column(type: "text")]
     private string $text;
 
-    #[ORM\ManyToMany(targetEntity: ReviewTag::class, inversedBy: "reviews", cascade: ["persist"])]
+    #[ORM\ManyToMany(targetEntity: ReviewTag::class, inversedBy: "reviews", cascade: ["persist", "remove"])]
     #[ORM\JoinColumn(nullable: false)]
     private Collection $tags;
 
@@ -34,7 +34,7 @@ class Review
     #[ORM\JoinColumn(nullable: false)]
     private ReviewGroup $group;
 
-    #[ORM\OneToMany(targetEntity: ReviewIllustration::class, mappedBy: "review")]
+    #[ORM\OneToMany(targetEntity: ReviewIllustration::class, mappedBy: "review", cascade: ["persist", "remove"])]
     private Collection $illustrations;
     
     #[ORM\Column(type: "datetimetz_immutable")]

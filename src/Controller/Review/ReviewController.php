@@ -12,6 +12,7 @@ use App\Form\Review\ReviewCreatorType;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -88,8 +89,11 @@ class ReviewController extends BaseController
     public function reviewId(int $id) : Response
     {
         $review = $this->reviewRepository->findByID($id);
+        if($review == null){
+            throw new NotFoundHttpException();
+        }
         $isLiked = $review->getLikes()->contains($this->getUser());
-        // $rating = $reviewRatingRepository->findOneByUserAndReview($this->getUser(), $review);
+        
         /** @var ?ReviewRating $rating */
         $rating = $review->getReviewRatings()
             ->filter(fn (ReviewRating $r) => $r->getValuer() == $this->getUser())
