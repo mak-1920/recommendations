@@ -78,7 +78,7 @@ class ReviewController extends BaseController
         return $this->renderForm('review/edit.html.twig', [
             'form' => $form,
             'isCreating' => $iscreating,
-            'reviewId' => $review->getId(),
+            'reviewId' => $iscreating ? 0 : $review->getId(),
         ]);
     }
 

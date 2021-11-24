@@ -49,7 +49,9 @@ class CommentRepository extends ServiceEntityRepository
 
     public function addComment(int $reviewId, User $user, string $text) : int
     {
-        $reviewRepository = $this->_em->getRepository(ReviewRepository::class);
+        $em = $this->_em;
+
+        $reviewRepository = $em->getRepository(Review::class);
         $review = $reviewRepository->find($reviewId);
 
         $comment = new Comment();
@@ -58,8 +60,6 @@ class CommentRepository extends ServiceEntityRepository
         $comment->setText($text);
         $comment->setTime(new DateTimeImmutable());
 
-        $em = $this->getDoctrine()->getManager();
-        
         $em->persist($review);
         $em->persist($comment);
 
@@ -67,4 +67,6 @@ class CommentRepository extends ServiceEntityRepository
 
         return $comment->getId();
     }
+
+    // public function remove(Review $review, )
 }

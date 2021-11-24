@@ -86,9 +86,7 @@ class ReviewRepository extends ServiceEntityRepository
         $entityManager = $this->_em;
             
 
-        if(isset($formData['tags'])){
-            $review->setTags($this->reviewTagRepository->getEntityFromStringArray($formData['tags']));
-        }
+        $review->setTags($tags);
         $review->setAuthor($user);
         
         $review->setDateOfPublication(new DateTimeImmutable());

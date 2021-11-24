@@ -17,10 +17,6 @@ class Comment
     #[ORM\Column(type: 'integer')]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Review::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private Review $review;
-
     #[ORM\Column(type: 'text')]
     private string $text;
 
@@ -30,6 +26,10 @@ class Comment
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     private User $author;
+
+    #[ORM\ManyToOne(targetEntity: Review::class, inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Review $review;
 
     public function getId(): int
     {

@@ -56,12 +56,16 @@ class Review
     #[ORM\Column(type: 'float', options: ['default' => 0])]
     private float $averageRating = 0;
 
+    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Comment::class, orphanRemoval: true)]
+    private $comments;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->illustrations = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->reviewRatings = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): int

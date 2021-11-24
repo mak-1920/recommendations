@@ -33,7 +33,7 @@ class CommentController extends BaseController
     #[Route('/ajax/comment/create', 'comment_create', methods: ['POST'])]
     public function create(Request $request) : Response
     {
-        $reviewId = $request->request->get('reviewId');
+        $reviewId = (int) $request->request->get('reviewId');
         $text = $request->request->get('text');
         
         $this->commentRepository->addComment($reviewId, $this->getUser(), $text);
