@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8a2c1a98f0dfc7cc2cee6670776cf2f",
+    "content-hash": "d44fd98199ffacbedf4cf24d7caab523",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1984,6 +1984,56 @@
                 }
             ],
             "time": "2021-10-06T17:43:30+00:00"
+        },
+        {
+            "name": "j4k/oauth2-vkontakte",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/j4k/oauth2-vkontakte.git",
+                "reference": "b6a517e96aa392e6e657186f447b1a26d474ec32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/j4k/oauth2-vkontakte/zipball/b6a517e96aa392e6e657186f447b1a26d474ec32",
+                "reference": "b6a517e96aa392e6e657186f447b1a26d474ec32",
+                "shasum": ""
+            },
+            "require": {
+                "league/oauth2-client": "^2.0",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.6"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "J4k\\OAuth2\\Client\\Provider\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jack Wall",
+                    "email": "jw@jack.gd"
+                }
+            ],
+            "description": "Vkontakte provider for league/oauth2-client",
+            "keywords": [
+                "league",
+                "package"
+            ],
+            "support": {
+                "issues": "https://github.com/j4k/oauth2-vkontakte/issues",
+                "source": "https://github.com/j4k/oauth2-vkontakte/tree/master"
+            },
+            "time": "2021-08-02T07:27:27+00:00"
         },
         {
             "name": "knpuniversity/oauth2-client-bundle",
@@ -9175,7 +9225,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "j4k/oauth2-vkontakte": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

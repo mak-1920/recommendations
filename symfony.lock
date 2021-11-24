@@ -100,6 +100,9 @@
     "guzzlehttp/psr7": {
         "version": "2.1.0"
     },
+    "j4k/oauth2-vkontakte": {
+        "version": "dev-master"
+    },
     "knpuniversity/oauth2-client-bundle": {
         "version": "2.8",
         "recipe": {

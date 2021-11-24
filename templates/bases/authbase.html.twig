@@ -6,7 +6,7 @@
     <div class="row my-2 justify-content-sm-center">
         <div class="col-sm-5 p-3">
             <div class="display-4 text-center mb-2">{{ 'sign_in_with'|trans|u.title }}</div>
-            <div class="row row-cols-2 justify-content-sm-around mt-3">
+            <div class="row row-cols-3 justify-content-sm-around mt-3">
                 <div class="col">
                     <a href="{{ path('connect_facebook_start') }}" class="btn btn-primary btn-lg w-100">
                         fb
@@ -15,6 +15,11 @@
                 <div class="col">
                     <a href="{{ path('connect_google_start') }}" class="btn btn-primary btn-lg w-100">
                         google
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="{{ path('connect_vk_start') }}" class="btn btn-primary btn-lg w-100">
+                        vk
                     </a>
                 </div>
             </div>
