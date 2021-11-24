@@ -81,13 +81,19 @@ class ReviewRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function findByUser(int $userId, int $page) : array
+    public function findByUser(int $userId, int $page, string $orderBy = null) : array
     {
         $qb = $this->getMainQuery()
             ->where('u.id = :userId')
             ->setParameter('userId', $userId)
             ->setFirstResult(($page - 1) * self::REVIEW_ON_PAGE)
             ->setMaxResults(self::REVIEW_ON_PAGE);
+        if($orderBy != null){
+            $qb->orderBy('r.'.$orderBy, 'DESC')
+                ->addOrderBy('r.id', 'DESC');
+        } else {
+            $qb->orderBy('r.id', 'DESC');
+        }
 
         $paginator = new Paginator($qb, true);
         $result = [];

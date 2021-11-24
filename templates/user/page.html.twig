@@ -13,16 +13,28 @@
     <div class="display-5 text-center">
         {{ 'reviews'|trans|u.title }}
     </div>
-    {% if app.user == user %}    
-        <a href="{{ path('review_create') }}"
-            class="btn rounded-pill btn-success text-white mb-1">
-            {{ 'review_edit'|trans }}
-        </a>
-    {% elseif is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('review_create') }}"
-            class="btn rounded-pill btn-success text-white mb-1">
-            {{ 'review_edit'|trans }} ({{ user.nickname }})
-        </a>
-    {% endif %}
-    <div class="scrolling-block" scrolling-data-type="reviews-by-user" scrolling-param="{{ user.id }}"></div>
+    <div class="container">
+        {% if app.user == user %}    
+            <a href="{{ path('review_create') }}"
+                class="btn rounded-pill btn-success text-white mb-1">
+                {{ 'review_edit'|trans }}
+            </a>
+        {% elseif is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('review_create') }}"
+                class="btn rounded-pill btn-success text-white mb-1">
+                {{ 'review_edit'|trans }} ({{ user.nickname }})
+            </a>
+        {% endif %}
+    </div>
+    <div class="container">
+        {% for type in sortedTypes %}
+            <a href="{{ path('user_page', { 'id': user.id, 'type': type } ) }}" 
+                class="btn rounded-pill text-white mb-1
+                    {{ (type == sortType) ? 'btn-primary' : 'btn-secondary' }}">
+                {{ 'sort_by'|trans }} {{ type | trans }}
+            </a>
+        {% endfor %}
+    </div>
+    <div class="scrolling-block" scrolling-data-type="reviews-by-user" 
+        scrolling-param="{{ user.id }},{{ sortType }}"></div>
 {% endblock %}

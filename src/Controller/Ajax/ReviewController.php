@@ -57,10 +57,16 @@ class ReviewController extends BaseController
     )]
     public function reviewByUser(int $page, Request $request) : Response
     {
-        $reviews = $this->reviewRepository->findByUser(
-            (int)$request->get('param'),
-            $page
-        );
+        $params = explode(',', $request->get('param'));
+
+        switch($params[1]){
+            case $this->sortedTypes[1]: 
+                $reviews = $this->reviewRepository->findByUser((int)$params[0], $page, 'averageRating');
+                break;
+            default:
+                $reviews = $this->reviewRepository->findByUser((int)$params[0], $page);
+                break;
+        }
 
         return $this->render('ajax/review/page.html.twig', [
             'reviews' => $reviews,
