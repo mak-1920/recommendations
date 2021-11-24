@@ -185,4 +185,20 @@ class ReviewRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function remove(int $id, User $user) : bool
+    {
+        $em = $this->_em;
+
+        $review = $this->findByID($id);
+
+        if($review == null || $review->getAuthor() != $user){
+            return false;
+        }
+
+        $em->remove($review);
+        $em->flush();
+
+        return true;
+    }
 }

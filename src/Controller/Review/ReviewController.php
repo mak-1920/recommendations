@@ -39,17 +39,17 @@ class ReviewController extends BaseController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $title = 'Review edit';
+        $iscreating = true;
 
         if($review == null) {
             $review = new Review();
-            $title = 'Review create';
         } else {
             if(!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') 
                     && $review->getAuthor() != $user) {
                 throw new AccessDeniedException();
             }
             $user = $review->getAuthor();
+            $iscreating = false;
         }
 
         $form = $this->createForm(ReviewCreatorType::class, $review);
@@ -74,9 +74,10 @@ class ReviewController extends BaseController
             ));
         }
 
-        return $this->renderForm('review/creat.html.twig', [
+        return $this->renderForm('review/edit.html.twig', [
             'form' => $form,
-            'title' => $title,
+            'isCreating' => $iscreating,
+            'reviewId' => $review->getId(),
         ]);
     }
 
@@ -99,5 +100,21 @@ class ReviewController extends BaseController
             'isLiked' => $isLiked,
             'ratingValue' => $ratingValue,
         ]);
+    }
+    
+    #[Route(
+        '{_locale<%app.locales%>}/review/remove-id{id}',
+        name: 'review_remove',
+        requirements: ['id' => '\d+'],
+    )]
+    public function remove(int $id) : Response
+    {
+        $res = $this->reviewRepository->remove($id, $this->getUser());
+
+        if(!$res) {
+            throw new AccessDeniedException();
+        }
+
+        return $this->redirectToRoute('reviews');
     }
 }

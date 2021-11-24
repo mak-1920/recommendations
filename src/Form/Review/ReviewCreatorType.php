@@ -30,7 +30,10 @@ class ReviewCreatorType extends AbstractType
             ->add('text', options: [
                 'constraints' => [
                     new NotBlank(),
-                ]
+                ],
+                'attr' => [
+                    'class' => 'h-10',
+                ],
             ])
             ->add('tags_input', EntityType::class, [
                 'mapped' => false,

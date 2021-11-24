@@ -153,6 +153,18 @@
         <source>not_access_for_view_comments</source>
         <target>пожалуйста, авторизируйтесь для просмотра комментариев</target>
       </trans-unit>
+      <trans-unit id="review_create_title" resname="review_create_title">
+        <source>review_create_title</source>
+        <target>создание обзора</target>
+      </trans-unit>
+      <trans-unit id="review_update_title" resname="review_update_title">
+        <source>review_update_title</source>
+        <target>изменение обзора</target>
+      </trans-unit>
+      <trans-unit id="review_remove_button" resname="review_remove_button">
+        <source>review_remove_button</source>
+        <target>удалить</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

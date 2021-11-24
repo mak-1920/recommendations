@@ -1,5 +1,7 @@
 {% extends 'bases/base.html.twig' %}
 
+{% set title = isCreating ? 'review_create_title'|trans|u.title : 'review_update_title'|trans|u.title %}
+
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
@@ -23,7 +25,18 @@
     </div>
     {{ form_row(form.author_rating) }}
     {{ form_row(form.tags_input) }}
-    {{ form_row(form.save) }}
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.save) }}
+        </div>
+        {% if not isCreating %}
+            <div class="col text-end">
+                <a href="{{ path('review_remove', {'id': reviewId}) }}" class="btn btn-danger">
+                    {{ 'review_remove_button' | trans | u.title }}
+                </a>
+            </div>
+        {% endif %}
+    </div>
     {{ form_row(form._token) }}
 {{ form_end(form, {'render_rest': false}) }}
 

@@ -50,7 +50,7 @@ class ReviewController extends BaseController
     }
 
     #[Route(
-        'ajax/review/like/id{id}',
+        '/ajax/review/like/id{id}',
         name: 'review_like',
         requirements: ['id' => '\d+'],
         methods: ['GET'])]
@@ -66,7 +66,7 @@ class ReviewController extends BaseController
         ]);
     }
 
-    #[Route('ajax/review/set-rating/id{id}', 
+    #[Route('/ajax/review/set-rating/id{id}', 
         name: 'review_set_rating',
         requirements: ['id' => '\d+'],
         methods: ['POST']
