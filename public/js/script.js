@@ -107,25 +107,13 @@ jQuery(function(){
             }
         })
         var searchingElement = $(options).first()
-        console.log(options)
-        // $(searchingElement).attr('data-select2-tag', 'true')
-        console.log(searchingElement)
         data.id = +($(searchingElement).val())
-        console.log(data)
         if (options.length == 2)
         {
             $(searchingElement).remove()
-            // var lastOption = $(options).last()
-            // console.log($(lastOption).val())
-            // if(isNaN($(lastOption).val())) {
-            //     lastOption.remove()
-            //     console.log('removed')
-            //     $(searchingElement).attr('selected', 'selected')
-            // }
         } 
         if($(getTagInput(e.params.data.text)).length)
             return false
-        console.log('tudu')
         creatTag(e.params.data.text)
         return false
     }).on('select2:unselect', e => {
@@ -145,7 +133,6 @@ jQuery(function(){
     s2.val(tags).trigger('change')
 
     $('.add-comment').click(function(){
-        console.log(1)
         var reviewId = getReviewID()
         $(this).attr('disabled', 'disabled')
         $.ajax({
@@ -240,6 +227,34 @@ jQuery(function(){
             },
             complete: function(){
                 $(buttons).children().removeAttr('disabled')
+            }
+        })
+    })
+
+    $('.comments').on('click', '.comment-remove', function(e, b) {
+        var id = $(this).attr('data')
+        var comment = $(this).closest('.comment')
+        var button = $(this)
+
+        $.ajax({
+            url: '/ajax/comment/remove',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                'id': id,
+            },
+            beforeSend: function(){
+                $(button).addClass('d-none')
+            },
+            success: function(res){
+                if(res.result){
+                    $(comment).remove()
+                }
+            },
+            complete: function(){
+                if($(comment).length){
+                    $(button).removeClass('d-none')
+                }
             }
         })
     })

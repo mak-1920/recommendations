@@ -28,9 +28,10 @@ class CommentRepository extends ServiceEntityRepository
     public function getPageComment(int $page, Review $review) : array
     {
         $query = $this->createQueryBuilder('c')
-            ->select('c, u, r')
+            ->select('c, u, r, ur')
             ->join('c.author', 'u')
             ->join('c.review', 'r')
+            ->leftJoin('u.reviews', 'ur')
             ->where('r = :review')
             ->setFirstResult(($page - 1) * 20)
             ->setMaxResults(20)
@@ -68,5 +69,32 @@ class CommentRepository extends ServiceEntityRepository
         return $comment->getId();
     }
 
-    // public function remove(Review $review, )
+    public function findById(int $id) : ?Comment
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c, u')
+            ->leftJoin('c.author', 'u')
+            ->where('c.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function remove(int $commentId, User $user) : bool
+    {
+        $em = $this->_em;
+
+        $comment = $this->findById($commentId);
+
+        if($comment == null 
+            || !($comment->getAuthor() == $user || array_search(User::ROLE_ADMIN, $user->getRoles()) !== false)){
+            return false;
+        }
+
+        $em->remove($comment);
+        $em->flush();
+
+        return true;
+    }
 }

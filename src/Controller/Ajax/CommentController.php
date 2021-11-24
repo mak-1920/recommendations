@@ -40,4 +40,19 @@ class CommentController extends BaseController
 
         return $this->json(['result' => Response::HTTP_CREATED]);
     }
+
+    #[Route(
+        '/ajax/comment/remove', 
+        name: 'comment_remove', 
+        methods: ['POST']
+    )]
+    public function remove(Request $request) : Response
+    {
+        $commentId = (int) $request->request->get('id');
+        $user = $this->getUser();
+
+        $res = $this->commentRepository->remove($commentId, $user);
+
+        return $this->json(['result' => $res]);
+    }
 }
