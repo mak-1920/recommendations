@@ -21,7 +21,10 @@
             </div>
             <div class="clearfix"></div>
             <div>
-                {{ 'review_author' | trans | u.title }}: {{ review.author }}
+                {{ 'review_author' | trans | u.title }}: 
+                <a href="{{ path('user_page', {'id': review.author.id}) }}" class="link-dark">
+                    {{ review.author }}
+                </a>
             </div>
             <div>
                 {{ 'review_group' | trans | u.title }}: {{ review.group.name | trans }}

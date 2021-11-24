@@ -50,6 +50,24 @@ class ReviewController extends BaseController
     }
 
     #[Route(
+        '/{_locale<%app.locales%>}/ajax/reviews-by-user/page/{page}',
+        name: 'review_by_user',
+        requirements: ['page' => '\d+'],
+        methods: ['GET'],
+    )]
+    public function reviewByUser(int $page, Request $request) : Response
+    {
+        $reviews = $this->reviewRepository->findByUser(
+            (int)$request->get('param'),
+            $page
+        );
+
+        return $this->render('ajax/review/page.html.twig', [
+            'reviews' => $reviews,
+        ]);
+    }
+
+    #[Route(
         '/ajax/review/like/id{id}',
         name: 'review_like',
         requirements: ['id' => '\d+'],

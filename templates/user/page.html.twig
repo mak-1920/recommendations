@@ -1,0 +1,28 @@
+{% extends 'bases/base.html.twig' %}
+
+{% block title %}{{ user.nickname }}{% endblock %}
+
+{% block body %}
+    <div class="display-4 text-center">
+        {{ user.nickname }}
+    </div>
+    <div class="container border border-2 p-2 bg-light my-2 rounded-2">
+        <p>{{ 'count_reviews'|trans|u.title }}: {{ user.reviews.count }}</p>
+        <p class="mb-0">{{ 'count_likes'|trans|u.title }}: {{ user.likesCount }}</p>
+    </div>
+    <div class="display-5 text-center">
+        {{ 'reviews'|trans|u.title }}
+    </div>
+    {% if app.user == user %}    
+        <a href="{{ path('review_create') }}"
+            class="btn rounded-pill btn-success text-white mb-1">
+            {{ 'review_edit'|trans }}
+        </a>
+    {% elseif is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('review_create') }}"
+            class="btn rounded-pill btn-success text-white mb-1">
+            {{ 'review_edit'|trans }} ({{ user.nickname }})
+        </a>
+    {% endif %}
+    <div class="scrolling-block" scrolling-data-type="reviews-by-user" scrolling-param="{{ user.id }}"></div>
+{% endblock %}

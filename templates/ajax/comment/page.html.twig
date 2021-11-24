@@ -12,7 +12,7 @@
                 </div>
             {% endif %}
             <div class="text-start">
-                {{ comment.author }}
+                <a href="{{ path('user_page', {'id': comment.author.id}) }}" class="link-secondary">{{ comment.author }}</a>
                 -
                 {{ comment.time | format_datetime('short', 'short') }}
             </div>

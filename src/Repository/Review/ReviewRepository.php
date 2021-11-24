@@ -32,10 +32,10 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
-    private function getMainQuery(string $alias) : QueryBuilder
+    private function getMainQuery() : QueryBuilder
     {
         return $this->getEntityManager()->createQueryBuilder()
-            ->from(Review::class, $alias)
+            ->from(Review::class, 'r')
             ->select('r, u, g, t, rait, ur, url')
             ->leftJoin('r.author', 'u')
             ->leftJoin('u.reviews', 'ur')
@@ -48,7 +48,7 @@ class ReviewRepository extends ServiceEntityRepository
 
     public function findByID($id) : ?Review
     {
-        return $this->getMainQuery('r')
+        return $this->getMainQuery()
             ->where('r.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
@@ -75,6 +75,24 @@ class ReviewRepository extends ServiceEntityRepository
         $result = [];
 
         foreach($paginator as $post) {
+            $result[] = $post;
+        }
+
+        return $result;
+    }
+
+    public function findByUser(int $userId, int $page) : array
+    {
+        $qb = $this->getMainQuery()
+            ->where('u.id = :userId')
+            ->setParameter('userId', $userId)
+            ->setFirstResult(($page - 1) * self::REVIEW_ON_PAGE)
+            ->setMaxResults(self::REVIEW_ON_PAGE);
+
+        $paginator = new Paginator($qb, true);
+        $result = [];
+
+        foreach($paginator as $post){
             $result[] = $post;
         }
 
@@ -175,7 +193,7 @@ class ReviewRepository extends ServiceEntityRepository
             $ids[] = $post->getId();
         }
 
-        return $this->getMainQuery('r')
+        return $this->getMainQuery()
             ->where('r.id in (:ids)')
             ->orderBy('r.id', 'DESC')
             ->setParameter('ids', $ids)

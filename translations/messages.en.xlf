@@ -165,6 +165,14 @@
         <source>review_remove_button</source>
         <target>remove</target>
       </trans-unit>
+      <trans-unit id="count_likes" resname="count_likes">
+        <source>count_likes</source>
+        <target>count of likes on reviews</target>
+      </trans-unit>
+      <trans-unit id="count_reviews" resname="count_reviews">
+        <source>count_reviews</source>
+        <target>count of reviews</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -8,6 +8,7 @@ use App\Repository\Review\CommentRepository;
 use App\Repository\Review\ReviewRatingRepository;
 use App\Repository\Review\ReviewRepository;
 use App\Repository\Review\ReviewTagRepository;
+use App\Repository\User\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -21,6 +22,7 @@ abstract class BaseController extends AbstractController
         protected ReviewRatingRepository $reviewRatingRepository,
         protected CommentRepository $commentRepository,
         protected TranslatorInterface $translator,
+        protected UserRepository $userRepository,
     ){
     }
 }

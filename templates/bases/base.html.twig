@@ -41,7 +41,7 @@
                             </li>
                             {% if(is_granted('ROLE_USER')) %}
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ path('user_page', {'id': app.user.id}) }}" class="nav-link">
                                         {{ app.user }}
                                     </a>
                                 </li>
