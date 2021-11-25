@@ -58,7 +58,7 @@ class OAuthController extends BaseController
     {
         return $clientRegistry
             ->getClient('yandex')
-            ->redirect(['user','user:email'], []);
+            ->redirect(['email'], []);
     }
 
     #[Route("/yandex/auth", name: "yandex_auth")]
