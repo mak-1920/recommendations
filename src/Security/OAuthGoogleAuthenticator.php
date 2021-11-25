@@ -40,7 +40,6 @@ class OAuthGoogleAuthenticator extends AbstractOAuthAuthenticator
 
         $email = $googleUser->getEmail();
         
-        dump($email);
         throw new Exception();
         /** @var User $existingUser */
         $existingUser = $this->userRepository
@@ -56,15 +55,12 @@ class OAuthGoogleAuthenticator extends AbstractOAuthAuthenticator
 
         if (!$user) {
             $user = User::Create($email, 'google', $googleUser->getId(), $googleUser->getName());
-
-            $this->em->persist($user);
-            $this->em->flush();
         } else {
             $user->setGoogleId($googleUser->getId());
-            
-            $this->em->persist($user);
-            $this->em->flush();
         }
+            
+        $this->em->persist($user);
+        $this->em->flush();
 
         return $user;
     }
