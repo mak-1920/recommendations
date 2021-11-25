@@ -35,21 +35,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /** @var string The hashed password */
     #[ORM\Column(type:"string", nullable:true)]
-    private ?string $password;
+    private ?string $password = null;
 
     #[ORM\Column(type:"string", length:100)]
     private string $nickname;
-
-    #[ORM\Column(type:"string", length:255, nullable:true)]
-    private ?string $google_id;
 
     #[ORM\OneToMany(targetEntity:Review::class, mappedBy:"author")]
     private Collection $reviews;
 
     private int $likesCount = -1;
 
+    #[ORM\Column(type:"string", length:255, nullable:true)]
+    private ?string $google_id = null;
+
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $yandex_id;
+    private ?string $yandex_id = null;
 
     public function __construct()
     {
