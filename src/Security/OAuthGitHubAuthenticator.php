@@ -7,6 +7,7 @@ namespace App\Security;
 use App\Entity\Users\User;
 use App\Repository\User\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use League\OAuth2\Client\Provider\GithubResourceOwner;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -40,6 +41,7 @@ class OAuthGitHubAuthenticator extends AbstractOAuthAuthenticator
 
         /** @var User $user */
         dump([$ghUser, $email]);
+        throw new Exception();
         $user = $this->userRepository
             ->findOneBy(['email' => $email]);
 
