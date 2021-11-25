@@ -59,9 +59,13 @@ abstract class AbstractOAuthAuthenticator extends SocialAuthenticator
     {
         dump($this->getClient());
         dump('getcredentials');
-        dump($this->fetchAccessToken($this->getClient(), [
-            'code' => $request->get('code'),
-        ]));
+        try{
+            dump($this->fetchAccessToken($this->getClient(), [
+                'code' => $request->get('code'),
+            ]));
+        } catch(Exception $e){
+            dump($e->getMessage());
+        }
         throw new Exception('getcredentials');
         return $this->fetchAccessToken($this->getClient());
     }
