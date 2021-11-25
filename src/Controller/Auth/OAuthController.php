@@ -45,7 +45,7 @@ class OAuthController extends BaseController
     public function connectGHCheck() : Response
     {
         if (!$this->getUser()) {
-            return new JsonResponse(['status' => false, 'message' => "User not found!"]);
+            return $this->redirectToRoute('app_login');
         } else {
             return $this->redirectToRoute('reviews');
         }
