@@ -40,10 +40,10 @@ class OAuthGitHubAuthenticator extends AbstractOAuthAuthenticator
         }
 
         /** @var User $user */
-        dump([$ghUser, $email]);
-        throw new Exception();
         $user = $this->userRepository
             ->findOneBy(['email' => $email]);
+        dump([$ghUser, $email]);
+        throw new Exception();
 
         if (!$user) {
             $user = User::Create($email, 'github', (string)$ghUser->getId(), $ghUser->getName());

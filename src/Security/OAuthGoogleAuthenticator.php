@@ -38,7 +38,8 @@ class OAuthGoogleAuthenticator extends AbstractOAuthAuthenticator
             ->fetchUserFromToken($credentials);
 
         $email = $googleUser->getEmail();
-
+        
+        dump($email);
         /** @var User $existingUser */
         $existingUser = $this->userRepository
             ->findOneBy(['google_id' => $googleUser->getId()]);
