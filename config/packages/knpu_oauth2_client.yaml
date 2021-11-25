@@ -13,3 +13,9 @@ knpu_oauth2_client:
             redirect_route: github_auth
             redirect_params: {}
             use_state: true
+        yandex:
+            type: yandex
+            client_id: '%env(YANDEX_CLIENT_ID)%'
+            client_secret: '%env(YANDEX_CLIENT_TOKEN)%'
+            redirect_route: yandex_auth
+            redirect_params: {}

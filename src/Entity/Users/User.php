@@ -51,6 +51,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $githubId;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $yandexId;
+
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
@@ -202,6 +205,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         case 'github':
             $user->setGithubId($socialID);
             break;
+        case 'yandex':
+            $user->setYandexId($socialID);
+            break;
         default:
             break;
         }
@@ -243,6 +249,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setGithubId(?string $githubId): self
     {
         $this->githubId = $githubId;
+
+        return $this;
+    }
+
+    public function getYandexId(): ?string
+    {
+        return $this->yandexId;
+    }
+
+    public function setYandexId(?string $yandexId): self
+    {
+        $this->yandexId = $yandexId;
 
         return $this;
     }

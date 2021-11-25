@@ -1,4 +1,7 @@
 {
+    "aego/oauth2-yandex": {
+        "version": "0.2.2"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
     },

@@ -45,7 +45,27 @@ class OAuthController extends BaseController
     public function connectGHCheck() : Response
     {
         if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login');
+            return new JsonResponse(['status' => false, 'message' => "User not found!"]);
+        } else {
+            return $this->redirectToRoute('reviews');
+        }
+    }
+
+    
+
+    #[Route('/connect/yandex', name: 'connect_yandex_start')]
+    public function redirectToYandexConnect(ClientRegistry $clientRegistry) : Response
+    {
+        return $clientRegistry
+            ->getClient('yandex')
+            ->redirect(['user','user:email'], []);
+    }
+
+    #[Route("/yandex/auth", name: "yandex_auth")]
+    public function connectYandexCheck() : Response
+    {
+        if (!$this->getUser()) {
+            return new JsonResponse(['status' => false, 'message' => "User not found!"]);
         } else {
             return $this->redirectToRoute('reviews');
         }
