@@ -22,6 +22,7 @@ class OAuthGitHubAuthenticator extends AbstractOAuthAuthenticator
     )
     {
         $this->init($clientRegistry, $em, $userRepository, 'github');
+        throw new Exception('github init');
     }
 
     public function getUser(mixed $credentials, UserProviderInterface $userProvider) : ?UserInterface
