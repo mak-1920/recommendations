@@ -32,21 +32,21 @@ class OAuthController extends BaseController
         }
     }
 
-    #[Route('/connect/facebook', name: 'connect_facebook_start')]
-    public function redirectToFacebookConnect(ClientRegistry $clientRegistry) : Response
+    #[Route('/connect/github', name: 'connect_github_start')]
+    public function redirectToGHConnect(ClientRegistry $clientRegistry) : Response
     {
         return $clientRegistry
-            ->getClient('facebook')
+            ->getClient('github')
             ->redirect(['email', 'profile'], []);
     }
 
-    #[Route("/facebook/auth", name: "facebook_auth")]
-    public function connectFacebookCheck() : Response
+    #[Route("/github/auth", name: "github_auth")]
+    public function connectGHCheck() : Response
     {
         if (!$this->getUser()) {
             return new JsonResponse(['status' => false, 'message' => "User not found!"]);
         } else {
-            return $this->redirectToRoute('rewies');
+            return $this->redirectToRoute('reviews');
         }
     }
 }

@@ -41,18 +41,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $nickname;
 
     #[ORM\Column(type:"string", length:255, nullable:true)]
-    private ?string $vk_id;
-
-    #[ORM\Column(type:"string", length:255, nullable:true)]
     private ?string $google_id;
-
-    #[ORM\Column(type:"string", length:255, nullable:true)]
-    private ?string $facebook_id;
 
     #[ORM\OneToMany(targetEntity:Review::class, mappedBy:"author")]
     private Collection $reviews;
 
     private int $likesCount = -1;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $githubId;
 
     public function __construct()
     {
@@ -177,18 +174,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getVkId(): ?string
-    {
-        return $this->vk_id;
-    }
-
-    public function setVkId(?string $vk_id): self
-    {
-        $this->vk_id = $vk_id;
-
-        return $this;
-    }
-
     public function getGoogleId(): ?string
     {
         return $this->google_id;
@@ -214,11 +199,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         case 'google':
             $user->setGoogleId($socialID);
             break;
-        case 'vk':
-            $user->setVkId($socialID);
-            break;
-        case 'facebook':
-            $user->setFacebookId($socialID);
+        case 'github':
+            $user->setGithubId($socialID);
             break;
         default:
             break;
@@ -226,18 +208,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $user->setNickname($nickname);
         $user->setRoles([self::ROLE_USER]);
         return $user;
-    }
-
-    public function getFacebookId(): ?string
-    {
-        return $this->facebook_id;
-    }
-
-    public function setFacebookId(string $facebookId): self
-    {
-        $this->facebook_id = $facebookId;
-
-        return $this;
     }
 
     /**
@@ -261,6 +231,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeReview(Review $review): self
     {
         $this->reviews->removeElement($review);
+
+        return $this;
+    }
+
+    public function getGithubId(): ?string
+    {
+        return $this->githubId;
+    }
+
+    public function setGithubId(?string $githubId): self
+    {
+        $this->githubId = $githubId;
 
         return $this;
     }

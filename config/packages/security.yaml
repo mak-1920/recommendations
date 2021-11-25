@@ -24,7 +24,7 @@ security:
             guard:
                 authenticators: 
                     - App\Security\OAuthGoogleAuthenticator
-                    - App\Security\OAuthFacebookAuthenticator
+                    - App\Security\OAuthGitHubAuthenticator
             entry_point: App\Security\UserAuthenticator
             security: true
             form_login:

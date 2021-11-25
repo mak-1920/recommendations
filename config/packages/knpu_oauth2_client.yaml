@@ -6,10 +6,9 @@ knpu_oauth2_client:
             client_secret: '%env(GOOGLE_CLIENT_TOKEN)%'
             redirect_route: google_auth
             redirect_params: {}
-        facebook:
-            type: facebook
-            client_id: '%env(FACEBOOK_CLIENT_ID)%'
-            client_secret: '%env(FACEBOOK_CLIENT_TOKEN)%'
-            redirect_route: facebook_auth
-            redirect_params: {} 
-            graph_api_version: v2.12
+        github:
+            type: github
+            client_id: '%env(GH_CLIENT_ID)%'
+            client_secret: '%env(GH_CLIENT_TOKEN)%'
+            redirect_route: github_auth
+            redirect_params: {}
