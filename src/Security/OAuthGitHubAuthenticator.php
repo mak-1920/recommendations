@@ -13,7 +13,7 @@ use League\OAuth2\Client\Provider\GithubResourceOwner;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class OAuthGitHubAuthenticator extends AbstractOAuthAuthenticator
+class OAuthGithubAuthenticator extends AbstractOAuthAuthenticator
 {
     public function __construct(
         ClientRegistry $clientRegistry,
