@@ -39,6 +39,7 @@ class OAuthGitHubAuthenticator extends AbstractOAuthAuthenticator
         }
 
         /** @var User $user */
+        dump([$ghUser, $email]);
         $user = $this->userRepository
             ->findOneBy(['email' => $email]);
 
@@ -49,6 +50,9 @@ class OAuthGitHubAuthenticator extends AbstractOAuthAuthenticator
             $this->em->flush();
         } else {
             $user->setGoogleId($ghUser->getId());
+
+            $this->em->persist($user);
+            $this->em->flush();
         }
 
         return $user;
