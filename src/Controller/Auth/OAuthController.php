@@ -38,7 +38,7 @@ class OAuthController extends BaseController
     {
         return $clientRegistry
             ->getClient('github')
-            ->redirect(['email', 'profile'], []);
+            ->redirect(['email'], []);
     }
 
     #[Route("/github/auth", name: "github_auth")]
