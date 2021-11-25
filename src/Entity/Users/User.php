@@ -49,10 +49,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private int $likesCount = -1;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $githubId;
+    private $github_id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $yandexId;
+    private $yandex_id;
 
     public function __construct()
     {
@@ -243,24 +243,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getGithubId(): ?string
     {
-        return $this->githubId;
+        return $this->github_id;
     }
 
-    public function setGithubId(?string $githubId): self
+    public function setGithubId(?string $github_id): self
     {
-        $this->githubId = $githubId;
+        $this->github_id = $github_id;
 
         return $this;
     }
 
     public function getYandexId(): ?string
     {
-        return $this->yandexId;
+        return $this->yandex_id;
     }
 
-    public function setYandexId(?string $yandexId): self
+    public function setYandexId(?string $yandex_id): self
     {
-        $this->yandexId = $yandexId;
+        $this->yandex_id = $yandex_id;
 
         return $this;
     }
