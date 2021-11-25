@@ -40,7 +40,6 @@ class OAuthGoogleAuthenticator extends AbstractOAuthAuthenticator
 
         $email = $googleUser->getEmail();
         
-        throw new Exception();
         /** @var User $existingUser */
         $existingUser = $this->userRepository
             ->findOneBy(['google_id' => $googleUser->getId()]);
