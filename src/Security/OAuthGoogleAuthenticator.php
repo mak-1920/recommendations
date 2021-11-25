@@ -7,6 +7,7 @@ namespace App\Security;
 use App\Entity\Users\User;
 use App\Repository\User\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2Client;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
@@ -40,6 +41,7 @@ class OAuthGoogleAuthenticator extends AbstractOAuthAuthenticator
         $email = $googleUser->getEmail();
         
         dump($email);
+        throw new Exception();
         /** @var User $existingUser */
         $existingUser = $this->userRepository
             ->findOneBy(['google_id' => $googleUser->getId()]);
@@ -59,6 +61,9 @@ class OAuthGoogleAuthenticator extends AbstractOAuthAuthenticator
             $this->em->flush();
         } else {
             $user->setGoogleId($googleUser->getId());
+            
+            $this->em->persist($user);
+            $this->em->flush();
         }
 
         return $user;
