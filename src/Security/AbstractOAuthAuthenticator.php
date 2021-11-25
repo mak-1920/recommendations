@@ -80,6 +80,7 @@ abstract class AbstractOAuthAuthenticator extends SocialAuthenticator
 
     public function getClient(): OAuth2Client
     {
+        dump($this->clientRegistry->getClient($this->social));
         return $this->clientRegistry->getClient($this->social);
     }
 }
