@@ -6,6 +6,7 @@ namespace App\Security;
 
 use App\Repository\User\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2Client;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
@@ -81,6 +82,7 @@ abstract class AbstractOAuthAuthenticator extends SocialAuthenticator
     public function getClient(): OAuth2Client
     {
         dump([$this->clientRegistry->getClient($this->social), $this->social]);
+        throw new Exception('oauth getclient');
         return $this->clientRegistry->getClient($this->social);
     }
 }
