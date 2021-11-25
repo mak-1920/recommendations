@@ -49,9 +49,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private int $likesCount = -1;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $github_id;
-
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $yandex_id;
 
     public function __construct()
@@ -202,9 +199,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         case 'google':
             $user->setGoogleId($socialID);
             break;
-        case 'github':
-            $user->setGithubId($socialID);
-            break;
         case 'yandex':
             $user->setYandexId($socialID);
             break;
@@ -237,18 +231,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeReview(Review $review): self
     {
         $this->reviews->removeElement($review);
-
-        return $this;
-    }
-
-    public function getGithubId(): ?string
-    {
-        return $this->github_id;
-    }
-
-    public function setGithubId(?string $github_id): self
-    {
-        $this->github_id = $github_id;
 
         return $this;
     }

@@ -33,26 +33,6 @@ class OAuthController extends BaseController
         }
     }
 
-    #[Route('/connect/github', name: 'connect_github_start')]
-    public function redirectToGHConnect(ClientRegistry $clientRegistry) : Response
-    {
-        return $clientRegistry
-            ->getClient('github')
-            ->redirect([], []);
-    }
-
-    #[Route("/github/auth", name: "github_auth")]
-    public function connectGHCheck() : Response
-    {
-        if (!$this->getUser()) {
-            return new JsonResponse(['status' => false, 'message' => "User not found!"]);
-        } else {
-            return $this->redirectToRoute('reviews');
-        }
-    }
-
-    
-
     #[Route('/connect/yandex', name: 'connect_yandex_start')]
     public function redirectToYandexConnect(ClientRegistry $clientRegistry) : Response
     {

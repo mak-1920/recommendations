@@ -23,7 +23,6 @@ security:
             provider: users
             guard:
                 authenticators: 
-                    - App\Security\OAuthGithubAuthenticator
                     - App\Security\OAuthGoogleAuthenticator
                     - App\Security\OAuthYandexAuthenticator
             entry_point: App\Security\UserAuthenticator

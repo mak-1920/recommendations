@@ -6,13 +6,6 @@ knpu_oauth2_client:
             client_secret: '%env(GOOGLE_CLIENT_TOKEN)%'
             redirect_route: google_auth
             redirect_params: {}
-        github:
-            type: github
-            client_id: '%env(GH_CLIENT_ID)%'
-            client_secret: '%env(GH_CLIENT_TOKEN)%'
-            redirect_route: github_auth
-            redirect_params: {}
-            use_state: true
         yandex:
             type: yandex
             client_id: '%env(YANDEX_CLIENT_ID)%'
