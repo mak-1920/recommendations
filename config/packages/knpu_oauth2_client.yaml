@@ -12,3 +12,4 @@ knpu_oauth2_client:
             client_secret: '%env(GH_CLIENT_TOKEN)%'
             redirect_route: github_auth
             redirect_params: {}
+            use_state: true
