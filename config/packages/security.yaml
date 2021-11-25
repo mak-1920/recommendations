@@ -23,8 +23,8 @@ security:
             provider: users
             guard:
                 authenticators: 
-                    - App\Security\OAuthGoogleAuthenticator
                     - App\Security\OAuthGitHubAuthenticator
+                    - App\Security\OAuthGoogleAuthenticator
             entry_point: App\Security\UserAuthenticator
             security: true
             form_login:
