@@ -23,7 +23,7 @@ security:
             provider: users
             guard:
                 authenticators: 
-                    - App\Security\OAuthGithubAuthenticator
+                    # - App\Security\OAuthGithubAuthenticator
                     - App\Security\OAuthGoogleAuthenticator
             entry_point: App\Security\UserAuthenticator
             security: true
