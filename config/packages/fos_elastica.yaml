@@ -1,7 +1,10 @@
 # Read the documentation: https://github.com/FriendsOfSymfony/FOSElasticaBundle/blob/master/doc/setup.md
 fos_elastica:
     clients:
-        default: { url: '%env(ELASTICSEARCH_URL)%' }
+        default:
+            url: '%env(ELASTICSEARCH_URL)%'
+            host: '%env(ELASTICSEARCH_HOST)%'
+            port: '%env(ELASTICSEARCH_PORT)%'
     indexes:
         review:
             finder: ~
