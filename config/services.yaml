@@ -21,6 +21,10 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
+    App\Services\Searcher:
+        arguments: 
+            - '@fos_elastica.finder.review'
+
 parameters:
     app.locales: 'en|ru'
 

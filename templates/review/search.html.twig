@@ -1,0 +1,31 @@
+{% extends 'bases/base.html.twig' %}
+
+{% block title %}
+    {% if query|length == 0 %}
+        {{ 'search'|trans|u.title }}
+    {% else %}
+        {{ query }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+<form action="{{ path('review_search') }}">
+    <div class="input-group">
+        <input type="search" value="{{ query }}" placeholder="{{ 'search'|trans|u.title }}..."
+            class="form-control" name="q">
+        <button class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+        </button>
+    </div>
+</form>
+
+<div class="display-5">
+    {{ 'result_bu_query'|trans|u.title }}: "{{ query }}" ({{ count }})
+</div>
+
+<div class="scrolling-block" scrolling-data-type="search" scrolling-param="{{query}}"></div>
+
+{% endblock %}

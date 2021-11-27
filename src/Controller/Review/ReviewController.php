@@ -9,7 +9,10 @@ use App\Entity\Review\Review;
 use App\Entity\Review\ReviewRating;
 use App\Entity\Users\User;
 use App\Form\Review\ReviewCreatorType;
+use App\Services\Searcher;
 use DateTimeImmutable;
+use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
+use FOS\ElasticaBundle\Finder\TransformedFinder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -120,5 +123,20 @@ class ReviewController extends BaseController
         }
 
         return $this->redirectToRoute('reviews');
+    }
+
+    #[Route(
+        '/{_locale<%app.locales%>}/search',
+        name: 'review_search',
+        methods: ['GET'],
+    )]
+    public function search(Request $request, Searcher $searcher) : Response
+    {
+        $query = $request->get('q') ?? '';
+
+        return $this->render('review/search.html.twig', [
+            'query' => $query,
+            'count' => $searcher->getResultCount($query),
+        ]);
     }
 }

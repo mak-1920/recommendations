@@ -57,7 +57,7 @@ class Review
     private float $averageRating = 0;
 
     #[ORM\OneToMany(mappedBy: 'review', targetEntity: Comment::class, orphanRemoval: true)]
-    private $comments;
+    private Collection $comments;
 
     public function __construct()
     {
@@ -283,5 +283,10 @@ class Review
             $sum += $rating->getValue();
         }
         $this->averageRating = round($sum / $this->reviewRatings->count(), 2);
+    }
+
+    public function getComments() : Collection
+    {
+        return $this->comments;
     }
 }

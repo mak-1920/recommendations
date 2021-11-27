@@ -3,4 +3,24 @@ fos_elastica:
     clients:
         default: { url: '%env(ELASTICSEARCH_URL)%' }
     indexes:
-        app: null
+        review:
+            finder: ~
+            persistence:
+                elastica_to_model_transformer :
+                     ignore_missing : true
+                driver: orm
+                model: App\Entity\Review\Review
+                provider: ~
+                finder: ~
+                listener: ~
+            properties:
+                title: {type: text}
+                text: {type: text}
+                comments:
+                    type: 'object'
+                    properties: 
+                        text: {type: text}
+                tags: 
+                    type: 'nested'
+                    properties:
+                        name: {type: text}

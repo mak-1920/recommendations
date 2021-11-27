@@ -181,6 +181,14 @@
         <source>nickname</source>
         <target>nickname</target>
       </trans-unit>
+      <trans-unit id="search" resname="search">
+        <source>search</source>
+        <target>search</target>
+      </trans-unit>
+      <trans-unit id="result_bu_query" resname="result_bu_query">
+        <source>result_bu_query</source>
+        <target>searching results</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

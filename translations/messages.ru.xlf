@@ -181,6 +181,14 @@
         <source>nickname</source>
         <target>ник</target>
       </trans-unit>
+      <trans-unit id="search" resname="search">
+        <source>search</source>
+        <target>поиск</target>
+      </trans-unit>
+      <trans-unit id="result_bu_query" resname="result_bu_query">
+        <source>result_bu_query</source>
+        <target>результаты поиска</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
