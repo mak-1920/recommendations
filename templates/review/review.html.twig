@@ -50,7 +50,7 @@
         <div class="fs-6">
             {{ 'review_tags'|trans }}: 
             {% for tag in review.tags %}
-                <a href="{{ path('review_tag', {'tag': tag}) }}" 
+                <a href="{{ path('review_tag', {'tagName': tag}) }}" 
                     class="btn btn-primary btn-sm text-white">
                     {{ tag }}
                 </a>
