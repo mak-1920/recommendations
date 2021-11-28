@@ -124,13 +124,16 @@ class ReviewController extends BaseController
     public function remove(int $id, ESIndexer $eSIndexer) : Response
     {
         $review = $this->reviewRepository->findByID($id);
-        $res = $this->reviewRepository->remove($review, $this->getUser());
+        $user = $this->getUser();
 
-        if(!$res) {
+        if($review == null || !($review->getAuthor() == $user || array_search(User::ROLE_ADMIN, $user->getRoles()) !== false)){
             throw new AccessDeniedException();
         }
 
         $eSIndexer->delete($review);
+
+        $this->reviewRepository->remove($review);
+
 
         return $this->redirectToRoute('reviews');
     }

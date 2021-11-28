@@ -210,14 +210,9 @@ class ReviewRepository extends ServiceEntityRepository
             ;
     }
 
-    public function remove(Review $review, User $user) : bool
+    public function remove(Review $review) : void
     {
         $em = $this->_em;
-
-        if($review == null 
-            || !($review->getAuthor() == $user || array_search(User::ROLE_ADMIN, $user->getRoles()) !== false)){
-            return false;
-        }
 
         foreach($review->getTags() as $tag){
             $review->removeTag($tag);
@@ -226,7 +221,5 @@ class ReviewRepository extends ServiceEntityRepository
 
         $em->remove($review);
         $em->flush();
-
-        return true;
     }
 }
