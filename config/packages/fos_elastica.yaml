@@ -23,6 +23,6 @@ fos_elastica:
                     properties: 
                         text: {type: text}
                 tags: 
-                    type: 'nested'
+                    type: 'object'
                     properties:
                         name: {type: text}
