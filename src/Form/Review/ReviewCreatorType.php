@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Regex;
 
 class ReviewCreatorType extends AbstractType
@@ -61,6 +62,7 @@ class ReviewCreatorType extends AbstractType
                 'constraints' => [
                     new NotBlank(),
                     new Regex('/\d+/', "String must be digits"),
+                    new Range(min: 0, max: 10),
                 ]
             ])
             ->add('group', EntityType::class, [
