@@ -2,12 +2,11 @@
 fos_elastica:
     clients:
         default:
-            url: '%env(ELASTICSEARCH_URL)%'
             host: '%env(ELASTICSEARCH_HOST)%'
             port: '%env(ELASTICSEARCH_PORT)%'
+            transport: 'https'
     indexes:
         review:
-            finder: ~
             persistence:
                 elastica_to_model_transformer :
                      ignore_missing : true

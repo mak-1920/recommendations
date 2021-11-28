@@ -10,7 +10,11 @@
 
 {% block body %}
 
-<form action="{{ path('review_search') }}">
+<div class="display-5">
+    {{ 'result_bu_query'|trans|u.title }}: "{{ query }}" ({{ count }})
+</div>
+
+<form action="{{ path('review_search') }}" class="my-2">
     <div class="input-group">
         <input type="search" value="{{ query }}" placeholder="{{ 'search'|trans|u.title }}..."
             class="form-control" name="q">
@@ -21,10 +25,6 @@
         </button>
     </div>
 </form>
-
-<div class="display-5">
-    {{ 'result_bu_query'|trans|u.title }}: "{{ query }}" ({{ count }})
-</div>
 
 <div class="scrolling-block" scrolling-data-type="search" scrolling-param="{{query}}"></div>
 
