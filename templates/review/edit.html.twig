@@ -31,7 +31,9 @@
         </div>
         {% if not isCreating %}
             <div class="col text-end">
-                <a href="{{ path('review_remove', {'id': reviewId}) }}" class="btn btn-danger">
+                <a href="{{ path('review_remove', {'id': reviewId}) }}" 
+                    class="btn btn-danger review-remove-button" 
+                    message-text="{{ 'review_remove_prompt_text'|trans|u.title }}">
                     {{ 'review_remove_button' | trans | u.title }}
                 </a>
             </div>

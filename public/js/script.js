@@ -263,4 +263,9 @@ jQuery(function(){
             }
         })
     })
+
+    $('.review-remove-button').on('click', function(){
+        var text = $(this).attr('message-text')
+        return confirm(text)
+    })
 })

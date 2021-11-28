@@ -189,6 +189,10 @@
         <source>result_bu_query</source>
         <target>searching results</target>
       </trans-unit>
+      <trans-unit id="review_remove_prompt_text" resname="review_remove_prompt_text">
+        <source>review_remove_prompt_text</source>
+        <target>are you sure you want to delete the review</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

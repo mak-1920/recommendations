@@ -189,6 +189,10 @@
         <source>result_bu_query</source>
         <target>результаты поиска</target>
       </trans-unit>
+      <trans-unit id="review_remove_prompt_text" resname="review_remove_prompt_text">
+        <source>review_remove_prompt_text</source>
+        <target>вы уверены, что хотите удалить обзор</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
