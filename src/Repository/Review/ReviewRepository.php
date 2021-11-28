@@ -109,7 +109,7 @@ class ReviewRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function createOrUpdate(Review $review, User $user, array $tags) : int
+    public function createOrUpdate(Review $review, User $user, array $tags) : Review
     {
         $entityManager = $this->_em;
             
@@ -121,7 +121,7 @@ class ReviewRepository extends ServiceEntityRepository
         $entityManager->persist($review);
         $entityManager->flush();
 
-        return $review->getId();
+        return $review;
     }
 
     public function addOrRemoveLike(int $reviewId, User $user) : Review
@@ -210,11 +210,9 @@ class ReviewRepository extends ServiceEntityRepository
             ;
     }
 
-    public function remove(int $id, User $user) : bool
+    public function remove(Review $review, User $user) : bool
     {
         $em = $this->_em;
-
-        $review = $this->findByID($id);
 
         if($review == null 
             || !($review->getAuthor() == $user || array_search(User::ROLE_ADMIN, $user->getRoles()) !== false)){
@@ -223,9 +221,7 @@ class ReviewRepository extends ServiceEntityRepository
 
         foreach($review->getTags() as $tag){
             $review->removeTag($tag);
-            dump($tag);
         }
-        dump($review);
         $em->flush();
 
         $em->remove($review);

@@ -301,4 +301,15 @@ class Review
 
         return $this;
     }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->reviewRatings->removeElement($comment)) {
+            if ($comment->getReview() === $this) {
+                $this->changeAverageRating();
+            }
+        }
+
+        return $this;
+    }
 }

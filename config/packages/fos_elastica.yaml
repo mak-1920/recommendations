@@ -14,7 +14,8 @@ fos_elastica:
                 model: App\Entity\Review\Review
                 provider: ~
                 finder: ~
-                listener: ~
+                listener: 
+                    enabled: false
             properties:
                 title: {type: text}
                 text: {type: text}

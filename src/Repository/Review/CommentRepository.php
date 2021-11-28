@@ -48,7 +48,7 @@ class CommentRepository extends ServiceEntityRepository
         return $res;
     }
 
-    public function addComment(int $reviewId, User $user, string $text) : int
+    public function addComment(int $reviewId, User $user, string $text) : ?Comment
     {
         $em = $this->_em;
 
@@ -62,20 +62,21 @@ class CommentRepository extends ServiceEntityRepository
         $comment->setTime(new DateTimeImmutable());
 
         $review->addComment($comment);
-        
+
         $em->persist($review);
         $em->persist($comment);
 
         $em->flush();
 
-        return $comment->getId();
+        return $comment;
     }
 
     public function findById(int $id) : ?Comment
     {
         return $this->createQueryBuilder('c')
-            ->select('c, u')
+            ->select('c, u, r')
             ->leftJoin('c.author', 'u')
+            ->leftJoin('c.review', 'r')
             ->where('c.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
@@ -83,7 +84,7 @@ class CommentRepository extends ServiceEntityRepository
             ;
     }
 
-    public function remove(int $commentId, User $user) : bool
+    public function remove(int $commentId, User $user) : ?Comment
     {
         $em = $this->_em;
 
@@ -91,12 +92,14 @@ class CommentRepository extends ServiceEntityRepository
 
         if($comment == null 
             || !($comment->getAuthor() == $user || array_search(User::ROLE_ADMIN, $user->getRoles()) !== false)){
-            return false;
+            return null;
         }
+
+        $comment->getReview()->removeComment($comment);
 
         $em->remove($comment);
         $em->flush();
 
-        return true;
+        return $comment;
     }
 }

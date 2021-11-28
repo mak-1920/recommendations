@@ -8,11 +8,13 @@ use App\Controller\BaseController;
 use App\Entity\Review\Comment;
 use App\Repository\Review\CommentRepository as ReviewCommentRepository;
 use App\Repository\Review\ReviewRepository as ReviewReviewRepository;
+use App\Services\ESIndexer;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Existence;
 
 class CommentController extends BaseController
 {
@@ -31,12 +33,16 @@ class CommentController extends BaseController
     }
 
     #[Route('/ajax/comment/create', 'comment_create', methods: ['POST'])]
-    public function create(Request $request) : Response
+    public function create(Request $request, ESIndexer $eSIndexer) : Response
     {
         $reviewId = (int) $request->request->get('reviewId');
         $text = $request->request->get('text');
         
-        $this->commentRepository->addComment($reviewId, $this->getUser(), $text);
+        $comment = $this->commentRepository->addComment($reviewId, $this->getUser(), $text);
+
+        if($comment instanceof Comment){
+            $eSIndexer->edit($comment->getReview());
+        }
 
         return $this->json(['result' => Response::HTTP_CREATED]);
     }
@@ -46,13 +52,17 @@ class CommentController extends BaseController
         name: 'comment_remove', 
         methods: ['POST']
     )]
-    public function remove(Request $request) : Response
+    public function remove(Request $request, ESIndexer $eSIndexer) : Response
     {
         $commentId = (int) $request->request->get('id');
         $user = $this->getUser();
 
-        $res = $this->commentRepository->remove($commentId, $user);
+        $comment = $this->commentRepository->remove($commentId, $user);
 
-        return $this->json(['result' => $res]);
+        if($comment instanceof Comment){
+            $eSIndexer->edit($comment->getReview());
+        }
+
+        return $this->json(['result' => $comment != null]);
     }
 }

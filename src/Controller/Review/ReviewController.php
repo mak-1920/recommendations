@@ -9,6 +9,7 @@ use App\Entity\Review\Review;
 use App\Entity\Review\ReviewRating;
 use App\Entity\Users\User;
 use App\Form\Review\ReviewCreatorType;
+use App\Services\ESIndexer;
 use App\Services\Searcher;
 use DateTimeImmutable;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
@@ -39,7 +40,7 @@ class ReviewController extends BaseController
 
     #[Route('/{_locale<%app.locales%>}/review/edit/id{id}', name: 'review_edit', requirements: ['id' => '\d+'], defaults: ['id' => '0'])]
     #[Route('/{_locale<%app.locales%>}/review/create', name: 'review_create')]
-    public function create(Request $request, Review $review = null) : Response
+    public function create(Request $request, Review $review = null, ESIndexer $eSIndexer) : Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -69,11 +70,17 @@ class ReviewController extends BaseController
                 $tags = $this->reviewTagRepository->getEntityFromStringArray($formData['tags']);
             }
 
-            $reviewId = $this->reviewRepository->createOrUpdate($review, $user, $tags);
+            $review = $this->reviewRepository->createOrUpdate($review, $user, $tags);
+
+            if($iscreating){
+                $eSIndexer->new($review);
+            } else {
+                $eSIndexer->edit($review);
+            }
 
             return $this->redirect($this->generateUrl(
                 'review_id', 
-                ['id' => $reviewId],
+                ['id' => $review->getId()],
                 UrlGeneratorInterface::ABSOLUTE_URL
             ));
         }
@@ -114,13 +121,16 @@ class ReviewController extends BaseController
         name: 'review_remove',
         requirements: ['id' => '\d+'],
     )]
-    public function remove(int $id) : Response
+    public function remove(int $id, ESIndexer $eSIndexer) : Response
     {
-        $res = $this->reviewRepository->remove($id, $this->getUser());
+        $review = $this->reviewRepository->findByID($id);
+        $res = $this->reviewRepository->remove($review, $this->getUser());
 
         if(!$res) {
             throw new AccessDeniedException();
         }
+
+        $eSIndexer->delete($review);
 
         return $this->redirectToRoute('reviews');
     }
