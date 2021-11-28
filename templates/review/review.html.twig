@@ -70,7 +70,7 @@
                 </div>
                 <div class="col">
                     <div class="review-rating-buttons text-end 
-                        {{ ratingValue ? 'appreciated' : '' }}">
+                        {{ ratingValue > 0 ? 'appreciated' : '' }}">
                         {% for i in 1..5 %}
                             <button class="btn review-rating-button-{{ i }} {{ (ratingValue >= i) ? 'btn-success' : 'btn-secondary' }}">
                                 {{ i }}

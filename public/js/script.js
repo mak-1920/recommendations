@@ -180,23 +180,26 @@ jQuery(function(){
         })
     })
 
-    $('.review-rating-buttons:not(.appreciated) button').hover(function(){
-        var buttons = $(this).parent()
-        var val = $(this).html()
-        $(buttons).find('button').each((i, e) => {
-            $(e).removeClass('btn-primary').addClass('btn-secondary')
-        })
-        for(i=1; i<=val; i++){
-            $('.review-rating-button-' + i)
-                .addClass('btn-primary')
-                .removeClass('btn-secondary')
+    $(document).on({
+        mouseenter: function(){
+            var buttons = $(this).parent()
+            var val = $(this).html()
+            $(buttons).find('button').each((i, e) => {
+                $(e).removeClass('btn-primary').addClass('btn-secondary')
+            })
+            for(i=1; i<=val; i++){
+                $('.review-rating-button-' + i)
+                    .addClass('btn-primary')
+                    .removeClass('btn-secondary')
+            }
+        }, 
+        mouseleave: function(){
+            $(this).parent().find('button')
+                .removeClass('btn-primary')
+                .addClass('btn-secondary')
         }
-    }, function(){
-        $(this).parent().find('button')
-            .removeClass('btn-primary')
-            .addClass('btn-secondary')
-    })
-    $('.review-rating-buttons button').click(function(){
+    }, '.review-rating-buttons:not(.appreciated) button')
+    $('.review-rating-buttons button').on('click', function(){
         var id = getReviewID()
         var buttons = $(this).parent()
         var value = $(this).html()
@@ -214,10 +217,12 @@ jQuery(function(){
             success: function(res){
                 $('.review-rating-value').html(res.rateValue)
                 if(!res.add){
+                    $(buttons).removeClass('appreciated')
                     $(buttons).children()
                         .removeClass('btn-success')
                         .addClass('btn-secondary')
                 } else {
+                    $(buttons).addClass('appreciated')
                     for(i=1; i<=value; i++){
                         $('.review-rating-button-' + i)
                             .addClass('btn-success')
