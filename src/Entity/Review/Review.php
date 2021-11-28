@@ -26,7 +26,7 @@ class Review
     #[ORM\Column(type: "text")]
     private string $text;
 
-    #[ORM\ManyToMany(targetEntity: ReviewTag::class, inversedBy: "reviews", cascade: ["persist", "remove"])]
+    #[ORM\ManyToMany(targetEntity: ReviewTag::class, inversedBy: "reviews", cascade: ["persist"])]
     #[ORM\JoinColumn(nullable: false)]
     private Collection $tags;
 
@@ -34,7 +34,7 @@ class Review
     #[ORM\JoinColumn(nullable: false)]
     private ReviewGroup $group;
 
-    #[ORM\OneToMany(targetEntity: ReviewIllustration::class, mappedBy: "review", cascade: ["persist", "remove"])]
+    #[ORM\OneToMany(targetEntity: ReviewIllustration::class, mappedBy: "review")]
     private Collection $illustrations;
     
     #[ORM\Column(type: "datetimetz_immutable")]
@@ -115,7 +115,9 @@ class Review
 
     public function removeTag(ReviewTag $tag): self
     {
-        $this->tags->removeElement($tag);
+        if($this->tags->removeElement($tag)){
+            $tag->removeReview($this);
+        }
 
         return $this;
     }
@@ -288,5 +290,15 @@ class Review
     public function getComments() : Collection
     {
         return $this->comments;
+    }
+    
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setReview($this);
+        }
+
+        return $this;
     }
 }

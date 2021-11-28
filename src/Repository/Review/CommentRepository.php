@@ -61,6 +61,8 @@ class CommentRepository extends ServiceEntityRepository
         $comment->setText($text);
         $comment->setTime(new DateTimeImmutable());
 
+        $review->addComment($comment);
+        
         $em->persist($review);
         $em->persist($comment);
 

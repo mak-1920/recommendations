@@ -36,19 +36,23 @@ class ReviewRepository extends ServiceEntityRepository
     {
         return $this->getEntityManager()->createQueryBuilder()
             ->from(Review::class, 'r')
-            ->select('r, u, g, t, rait, ur, url')
+            ->select('r, u, g, t, rait, ur, url, i, c')
             ->leftJoin('r.author', 'u')
             ->leftJoin('u.reviews', 'ur')
             ->leftJoin('ur.likes', 'url')
             ->leftjoin('r.group', 'g')
             ->leftjoin('r.tags', 't')
             ->leftJoin('r.reviewRatings', 'rait')
+            ->leftJoin('r.illustrations', 'i')
+            ->leftJoin('r.comments', 'c')
             ;
     }
 
     public function findByID($id) : ?Review
     {
         return $this->getMainQuery()
+            ->addSelect('tr')
+            ->leftJoin('t.reviews', 'tr')
             ->where('r.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
@@ -109,7 +113,6 @@ class ReviewRepository extends ServiceEntityRepository
     {
         $entityManager = $this->_em;
             
-
         $review->setTags($tags);
         $review->setAuthor($user);
         
@@ -161,13 +164,12 @@ class ReviewRepository extends ServiceEntityRepository
         }
         
         $em->persist($rating);
-        $em->persist($review);
         $em->flush();
 
         return ['review' => $review, 'result' => $result];
     }
 
-    public function findOneWithLikes(int $id) : ?Review
+    public function findOneWithLikesAndTags(int $id) : ?Review
     {
         return $this->createQueryBuilder('r')
             ->select('r, l')
@@ -218,6 +220,13 @@ class ReviewRepository extends ServiceEntityRepository
             || !($review->getAuthor() == $user || array_search(User::ROLE_ADMIN, $user->getRoles()) !== false)){
             return false;
         }
+
+        foreach($review->getTags() as $tag){
+            $review->removeTag($tag);
+            dump($tag);
+        }
+        dump($review);
+        $em->flush();
 
         $em->remove($review);
         $em->flush();
