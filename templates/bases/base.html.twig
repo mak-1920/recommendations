@@ -37,7 +37,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="dropdown-language" role="button"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ app.request.locale|locale_name(app.request.locale)|u.title }}
+                                    {{ app.request.locale|locale_name(app.request.locale)|slice(0, 2)|u.title }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right my-2" aria-labelledby="dropdown-language">
                                     <a class="dropdown-item" href="{{ path('reviews', {_locale: 'en'}) }}">English</a>
