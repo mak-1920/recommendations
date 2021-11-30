@@ -268,4 +268,16 @@ jQuery(function(){
         var text = $(this).attr('message-text')
         return confirm(text)
     })
+
+    $('.file-uploader').fileinput({
+        allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+        language: getLocale(),
+        maxFileSize:2000,
+        maxFilesNum: 3,
+        overwriteInitial: false,
+        showUpload: false,
+        showRemove: false,
+        showClose: false,
+        theme: 'bs5',
+    })
 })
