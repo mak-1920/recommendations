@@ -8,7 +8,7 @@ use App\Entity\Review\Review;
 use App\Entity\Review\ReviewIllustration;
 use Cloudinary\Cloudinary;
 
-class FileStrorage 
+class FileStorage 
 {
     private Cloudinary $cloudinary;
 
