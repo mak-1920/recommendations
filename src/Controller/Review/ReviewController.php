@@ -66,7 +66,6 @@ class ReviewController extends BaseController
             
             /** @var array $formData */
             $formData = $request->request->get('review_creator');
-            throw new NotImplementedException();
 
             if(isset($formData['tags'])){
                 $tags = $this->reviewTagRepository->getEntityFromStringArray($formData['tags']);
@@ -111,6 +110,7 @@ class ReviewController extends BaseController
             ->filter(fn (ReviewRating $r) => $r->getValuer() == $this->getUser())
             ->first();
         $ratingValue = $rating == null ? -1 : $rating->getValue();
+        
         return $this->render('review/review.html.twig', [
             'review' => $review,
             'isLiked' => $isLiked,

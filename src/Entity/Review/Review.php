@@ -34,7 +34,7 @@ class Review
     #[ORM\JoinColumn(nullable: false)]
     private ReviewGroup $group;
 
-    #[ORM\OneToMany(targetEntity: ReviewIllustration::class, mappedBy: "review")]
+    #[ORM\OneToMany(targetEntity: ReviewIllustration::class, mappedBy: "review", cascade: ['persist'], orphanRemoval: true)]
     private Collection $illustrations;
     
     #[ORM\Column(type: "datetimetz_immutable")]

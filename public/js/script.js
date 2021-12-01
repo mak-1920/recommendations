@@ -346,4 +346,6 @@ jQuery(function(){
 
         return false
     })
+
+    $('.carousel').carousel()
 })
