@@ -27,18 +27,20 @@ class IllustrationController extends AbstractController
         $file = $request->files->get('review_creator')['illustrations_input'][0];
         $filename = $request->request->get('fileId');
 
-        if(!$this->fileStorage->uploadTemporaryFile($file, $filename)){
+        $res = $this->fileStorage->uploadTemporaryFile($file);
+
+        if(!$res){
             return $this->json(
                 [
                     'result' => false,
                 ], 
-                Response::HTTP_FORBIDDEN
+                Response::HTTP_FAILED_DEPENDENCY
             );
         } else {
             return $this->json(
                 [
                     'result' => true,
-                    'name' => $filename,
+                    'name' => $res,
                 ], 
                 Response::HTTP_ACCEPTED
             );
@@ -59,7 +61,7 @@ class IllustrationController extends AbstractController
                 [
                     'result' => false,
                 ], 
-                Response::HTTP_FORBIDDEN
+                Response::HTTP_FAILED_DEPENDENCY
             );
         } else {
             return $this->json(

@@ -4,6 +4,8 @@ jQuery(function(){
     var isGeneration = {}
     var isEnd = {}
 
+    var cloudinaryPath = 'https://res.cloudinary.com/ht74ky0yv/image/upload/v1638384344/'
+
     function getReviewID(){
         var location = window.location.pathname
         return (location.match(/id(\d+)$/i)[1])
@@ -297,19 +299,23 @@ jQuery(function(){
         maxFileSize:2000,
         overwriteInitial: false,
         showClose: false,
-        showDelete: true,
+        showRemove: false,
         theme: 'bs5',
         uploadUrl: '/ajax/add_temp_illustration',
     })
     .on('fileuploaded', function(event, previewId, index, fileId){
         var response = previewId.response
+        var el = $('[id*="' + index + '"]')
+        
         if(response.result) {
+            $(el).attr('id', response.name)
+            $(el).find('img').attr('src', cloudinaryPath + response.name)
+            
             createIllustration(response.name)
             return false
         }
     })
     .on('filesuccessremove', function(event, id){
-        var fileName = id.match(/input-(.*)$/i)[1]
         var uploader = $(this)
         
         $.ajax({
@@ -317,21 +323,21 @@ jQuery(function(){
             dataType: 'json',
             method: 'post',
             data: {
-                'fileId': fileName
+                'fileId': id
             },
             beforeSend: function(){
                 $(uploader).fileinput('disable')
             },
             success: function(res){
                 console.log(res, id)
-                $('#' + id).fadeOut(
+                $('[id*="' + id + '"]').fadeOut(
                     300, 
                     function(){ 
                         $(this).remove()
                         console.log('remove')
                     }
                 )
-                removeIllustration(fileName)
+                removeIllustration(id)
             },
             complete: function(){
                 $(uploader).fileinput('enable')

@@ -30,7 +30,7 @@
     {{ form_row(form.title) }}
     {{ form_row(form.text) }}
     {{ form_row(form.group) }}
-    <div class="d-none">
+    <div class="d-nones">
         <ul class="tags"
             data-index="{{ form.tags|length > 0 ? form.tags|last.vars.name + 1 : 0 }}" 
             data-prototype="{{ form_widget(form.tags.vars.prototype)|e('html_attr') }}">

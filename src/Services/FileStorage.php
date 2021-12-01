@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Entity\Review\Review;
 use App\Entity\Review\ReviewIllustration;
 use Cloudinary\Cloudinary;
+use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -21,15 +22,19 @@ class FileStorage
         $this->cloudinary = new Cloudinary($url);
     }
 
-    private function getPath(Review $review) : string
+    private function getTempFolderPath() : string
     {
-        return 'reviews/' . $review->getId() . '/';
+        return 'temp/';
+    }
+    private function getPath(string $folder) : string
+    {
+        return 'reviews/' . $folder . '/';
     }
 
-    public function uploadIllustration(Review $review, string $fileName) : string
+    public function uploadIllustration(string $folder, string $filePath) : string
     {
-        $response = $this->cloudinary->uploadApi()->upload($fileName, [
-            'folder' => $this->getPath($review),
+        $response = $this->cloudinary->uploadApi()->upload($filePath, [
+            'folder' => $this->getPath($folder),
             'eager' => [
                 'width' => 500,
                 'height' => 500,
@@ -38,10 +43,10 @@ class FileStorage
         return $response->offsetGet('public_id');
     }
 
-    public function removeIllustration(Review $review, string $fileName) : bool
+    public function removeIllustration(string $fileName) : bool
     {
         $response = $this->cloudinary->uploadApi()->destroy($fileName);
-        return $response->offsetGet('result');
+        return (bool) $response->offsetGet('result');
     }
 
     public function updateReviewIllustrations(Review $review, array $newIllustrations) : void 
@@ -53,7 +58,7 @@ class FileStorage
             if($index !== false){
                 unset($newIllustrations[$index]);
             } else {
-                $this->removeIllustration($review, $illustraion->getImg());
+                $this->removeIllustration((string)$review->getId(), $illustraion->getImg());
                 $review->removeIllustration($illustraion);
             }
         }
@@ -66,29 +71,16 @@ class FileStorage
         }
     }
 
-    public function uploadTemporaryFile(UploadedFile $file, string $fileName) : bool
+    public function uploadTemporaryFile(UploadedFile $file) : string|false
     {
         if($file){
-            try{
-                $file->move(
-                    $this->directory,
-                    $fileName
-                );
-            } catch (FileException $e){
-                return false;
-            }
+            return $this->uploadIllustration($this->getTempFolderPath(), $file->getPathname());
         }
-        return true;
+        return false;
     }
 
     public function removeTemporaryFile(string $fileName) : bool 
     {
-        if(!file_exists($this->directory . $fileName)){
-            return false;
-        }
-
-        unlink($this->directory . $fileName);
-
-        return true;
+        return $this->removeIllustration($fileName);
     }
 }
