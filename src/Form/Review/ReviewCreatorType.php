@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -24,12 +25,19 @@ class ReviewCreatorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('illustrations', FileType::class, [
+            ->add('illustrations_input', FileType::class, [
+                'mapped' => false,
                 'multiple' => true,
+                'required' => false,
                 'attr' => [
                     'class' => 'file-uploader',
-                    'data-overwrite-initial' => "false",
-                ]
+                ],
+            ])
+            ->add('illustrations', CollectionType::class, [
+                'entry_type' => ReviewIllustrationType::class,
+                'allow_add' => true,
+                'by_reference' => false,
+                'entry_options' => ['label' => false],
             ])
             ->add('title', options:[
                 'constraints' => [

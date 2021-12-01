@@ -269,15 +269,75 @@ jQuery(function(){
         return confirm(text)
     })
 
+    function getIllustrationInput(name) {
+        var item = $('.illustrations :input').filter(function() {
+            return this.value == name
+        })
+        return item
+    }
+    function createIllustration(name) {
+        var list = $('.illustrations')
+        var index = +$(list).attr('data-index')
+        var prototype = $(list).attr('data-prototype').replace(/__name__/g, index)
+
+        var item = $('<fieldset></fieldset>').html(prototype)
+        $(item).find('input').val(name)
+        $(list).append($(item))
+        $(list).attr('data-index', index + 1)
+    }
+    function removeIllustration(name) {
+        var input = getIllustrationInput(name)
+        var listItem = $(input).closest('fieldset')
+        $(listItem).remove()
+    }
+
     $('.file-uploader').fileinput({
         allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
         language: getLocale(),
         maxFileSize:2000,
-        maxFilesNum: 3,
         overwriteInitial: false,
-        showUpload: false,
-        showRemove: false,
         showClose: false,
+        showDelete: true,
         theme: 'bs5',
+        uploadUrl: '/ajax/add_temp_illustration',
+    })
+    .on('fileuploaded', function(event, previewId, index, fileId){
+        var response = previewId.response
+        if(response.result) {
+            createIllustration(response.name)
+            return false
+        }
+    })
+    .on('filesuccessremove', function(event, id){
+        var fileName = id.match(/input-(.*)$/i)[1]
+        var uploader = $(this)
+        
+        $.ajax({
+            url: '/ajax/remove_temp_illustration',
+            dataType: 'json',
+            method: 'post',
+            data: {
+                'fileId': fileName
+            },
+            beforeSend: function(){
+                $(uploader).fileinput('disable')
+            },
+            success: function(res){
+                console.log(res, id)
+                $('#' + id).fadeOut(
+                    300, 
+                    function(){ 
+                        $(this).remove()
+                        console.log('remove')
+                    }
+                )
+                removeIllustration(fileName)
+            },
+            complete: function(){
+                $(uploader).fileinput('enable')
+            }
+        })
+
+        return false
     })
 })

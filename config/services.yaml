@@ -30,6 +30,7 @@ services:
     App\Services\FileStorage:
         arguments:
             - '%env(CLOUDINARY_URL)%'
+            - '%kernel.project_dir%/public/temp/'
 
 parameters:
     app.locales: 'en|ru'

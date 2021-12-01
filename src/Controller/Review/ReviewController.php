@@ -12,6 +12,7 @@ use App\Form\Review\ReviewCreatorType;
 use App\Services\ESIndexer;
 use App\Services\Searcher;
 use DateTimeImmutable;
+use Elastica\Exception\NotImplementedException;
 use FOS\ElasticaBundle\Finder\PaginatedFinderInterface;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +66,7 @@ class ReviewController extends BaseController
             
             /** @var array $formData */
             $formData = $request->request->get('review_creator');
+            throw new NotImplementedException();
 
             if(isset($formData['tags'])){
                 $tags = $this->reviewTagRepository->getEntityFromStringArray($formData['tags']);

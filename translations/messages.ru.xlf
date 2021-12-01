@@ -193,8 +193,8 @@
         <source>review_remove_prompt_text</source>
         <target>вы уверены, что хотите удалить обзор</target>
       </trans-unit>
-      <trans-unit id="Illustrations" resname="Illustrations">
-        <source>Illustrations</source>
+      <trans-unit id="Illustrations input" resname="Illustrations input">
+        <source>Illustrations input</source>
         <target>Иллюстрации</target>
       </trans-unit>
     </body>

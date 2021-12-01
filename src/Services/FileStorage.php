@@ -7,12 +7,16 @@ namespace App\Services;
 use App\Entity\Review\Review;
 use App\Entity\Review\ReviewIllustration;
 use Cloudinary\Cloudinary;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileStorage 
 {
     private Cloudinary $cloudinary;
 
-    public function __construct(string $url)
+    public function __construct(
+        string $url, 
+        private string $directory)
     {
         $this->cloudinary = new Cloudinary($url);
     }
@@ -60,5 +64,31 @@ class FileStorage
             
             $review->addIllustration($newIllustration);
         }
+    }
+
+    public function uploadTemporaryFile(UploadedFile $file, string $fileName) : bool
+    {
+        if($file){
+            try{
+                $file->move(
+                    $this->directory,
+                    $fileName
+                );
+            } catch (FileException $e){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function removeTemporaryFile(string $fileName) : bool 
+    {
+        if(!file_exists($this->directory . $fileName)){
+            return false;
+        }
+
+        unlink($this->directory . $fileName);
+
+        return true;
     }
 }
