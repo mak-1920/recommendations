@@ -1,4 +1,5 @@
 jQuery(function(){
+    var lastInd = {}
     var pages = {}
     var xhr = {}
     var isGeneration = {}
@@ -28,7 +29,7 @@ jQuery(function(){
 
         xhr[type] = $.ajax({
             url: '/' + locale + '/ajax/' + type + '/page/' + pages[type],
-            type: 'get',
+            type: 'post',
             dataType: 'html',
             data: data,
             beforeSend: function(){
@@ -144,9 +145,9 @@ jQuery(function(){
         var reviewId = getReviewID()
         $(this).attr('disabled', 'disabled')
         $.ajax({
-            'url': '/ajax/comment/create',
-            'type': 'post',
-            'data': {
+            url: '/ajax/comment/create',
+            type: 'post',
+            data: {
                 'text': $('.comment-text').val(),
                 'reviewId': reviewId
             },
@@ -165,7 +166,7 @@ jQuery(function(){
         var button = $(this)
         $.ajax({
             url: '/ajax/review/like/id' + reviewId,
-            type: 'get',
+            type: 'post',
             dataType: 'json',
             beforeSend: function(){
                 $(button).attr('disabled', 'disabled')
@@ -364,7 +365,7 @@ jQuery(function(){
         $.ajax({
             url: '/ajax/remove_illustration',
             dataType: 'json',
-            method: 'post',
+            type: 'post',
             data: {
                 'key': id
             },

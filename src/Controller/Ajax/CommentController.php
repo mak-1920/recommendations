@@ -18,7 +18,12 @@ use Symfony\Component\Validator\Constraints\Existence;
 
 class CommentController extends BaseController
 {
-    #[Route('/{_locale<%app.locales%>}/ajax/comment/page/{page}', name: 'comment', requirements: ['page' => '\d+'], methods: ['GET'])]
+    #[Route(
+        '/{_locale<%app.locales%>}/ajax/comment/page/{page}', 
+        name: 'comment', 
+        requirements: ['page' => '\d+'], 
+        methods: ['POST'],
+    )]
     public function index(int $page, Request $request) : Response
     {
         $review = $this->reviewRepository->find($request->get('param'));
@@ -32,7 +37,11 @@ class CommentController extends BaseController
         ]);
     }
 
-    #[Route('/ajax/comment/create', 'comment_create', methods: ['POST'])]
+    #[Route(
+        '/ajax/comment/create', 
+        'comment_create', 
+        methods: ['POST'],
+    )]
     public function create(Request $request, ESIndexer $eSIndexer) : Response
     {
         $reviewId = (int) $request->request->get('reviewId');
@@ -50,7 +59,7 @@ class CommentController extends BaseController
     #[Route(
         '/ajax/comment/remove', 
         name: 'comment_remove', 
-        methods: ['POST']
+        methods: ['POST'],
     )]
     public function remove(Request $request, ESIndexer $eSIndexer) : Response
     {

@@ -16,10 +16,10 @@ class ReviewController extends BaseController
         '/{_locale<%app.locales%>}/ajax/sortable-reviews/page/{page}', 
         name: 'review_sortable_page', 
         requirements: ['page' => '\d+'], 
-        methods: ['GET'])]
+        methods: ['POST'])]
     public function reviewSortablePage(int $page, Request $request) : Response
     {
-        $type = $request->get('param');
+        $type = $request->request->get('param');
         switch($type){
             case $this->sortedTypes[1]: 
                 $reviews = $this->reviewRepository->getLastReviews($page, 'averageRating');
@@ -37,10 +37,10 @@ class ReviewController extends BaseController
         '/{_locale<%app.locales%>}/ajax/reviews-by-tag/page/{page}',
         name: 'review_page_by_tag', 
         requirements: ['page' => '\d+'], 
-        methods: ['GET'])]
+        methods: ['POST'])]
     public function reviewPageByTag(int $page, Request $request) : Response
     {
-        $name = mb_substr($request->get('param'), 4);
+        $name = mb_substr($request->request->get('param'), 4);
 
         $reviews = $this->reviewRepository->findByTagName($name, $page);
 
@@ -53,11 +53,11 @@ class ReviewController extends BaseController
         '/{_locale<%app.locales%>}/ajax/reviews-by-user/page/{page}',
         name: 'review_by_user',
         requirements: ['page' => '\d+'],
-        methods: ['GET'],
+        methods: ['POST'],
     )]
     public function reviewByUser(int $page, Request $request) : Response
     {
-        $params = explode(',', $request->get('param'));
+        $params = explode(',', $request->request->get('param'));
 
         switch($params[1]){
             case $this->sortedTypes[1]: 
@@ -77,7 +77,7 @@ class ReviewController extends BaseController
         '/ajax/review/like/id{id}',
         name: 'review_like',
         requirements: ['id' => '\d+'],
-        methods: ['GET'])]
+        methods: ['POST'])]
     public function reviewLike(int $id) : Response
     {
         $user = $this->getUser();
