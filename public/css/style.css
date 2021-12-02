@@ -51,22 +51,22 @@ header {
 .btn-primary {
     background-color: var(--bs-primary) !important;
     border-color: var(--bs-primary) !important;
-    color: var(--button-primary-color) !important;
+    color: var(--button-color) !important;
 }
 .btn-secondary {
     background-color: var(--bs-secondary) !important;
     border-color: var(--bs-secondary) !important;
-    color: var(--button-secondary-color) !important;
+    color: var(--button-color) !important;
 }
 .btn-success {
     background-color: var(--bs-success) !important;
     border-color: var(--bs-success) !important;
-    color: var(--button-success-color) !important;
+    color: var(--button-color) !important;
 }
 .btn-danger {
     background-color: var(--bs-danger) !important;
     border-color: var(--bs-danger) !important;
-    color: var(--button-danger-color) !important;
+    color: var(--button-color) !important;
 }
 
 .select2-selection {
@@ -77,10 +77,13 @@ header {
 .select2-selection__choice {
     background-color: var(--bs-primary) !important;
     border-color: var(--bs-primary) !important;
-    color: var(--button-color) !important;
+    color: var(--button-color) !important
 }
 .select2-search__field {
     color: var(--bs-body-color) !important;
+}
+.select2-selection__choice__remove {
+    background: transparent var(--selection-remove-img) center/0.75rem auto no-repeat !important;
 }
 
 .file-preview {
