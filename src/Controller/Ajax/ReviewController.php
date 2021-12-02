@@ -13,63 +13,77 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReviewController extends BaseController
 {    
     #[Route(
-        '/{_locale<%app.locales%>}/ajax/sortable-reviews/page/{page}', 
+        '/{_locale<%app.locales%>}/ajax/sortable-reviews/page', 
         name: 'review_sortable_page', 
-        requirements: ['page' => '\d+'], 
         methods: ['POST'])]
-    public function reviewSortablePage(int $page, Request $request) : Response
+    public function reviewSortablePage(Request $request) : Response
     {
+        $lastId = (int)$request->request->get('lastId');
         $type = $request->request->get('param');
+        $reviews = [];
+        
         switch($type){
             case $this->sortedTypes[1]: 
-                $reviews = $this->reviewRepository->getLastReviews($page, 'averageRating');
+                $reviews = $this->reviewRepository->getLastReviews($lastId, 'averageRating');
                 break;
             default:
-                $reviews = $this->reviewRepository->getLastReviews($page);
+                $reviews = $this->reviewRepository->getLastReviews($lastId);
                 break;
         }
-        return $this->render('ajax/review/page.html.twig', [
-            'reviews' => $reviews,
+        $end = end($reviews);
+        return $this->json([
+            'html' => $this->render('ajax/review/page.html.twig', [
+                'reviews' => $reviews,
+            ]),
+            'lastId' => $end ? $end->getId() : 0,
         ]);
     }
 
     #[Route(
-        '/{_locale<%app.locales%>}/ajax/reviews-by-tag/page/{page}',
+        '/{_locale<%app.locales%>}/ajax/reviews-by-tag/page',
         name: 'review_page_by_tag', 
-        requirements: ['page' => '\d+'], 
         methods: ['POST'])]
-    public function reviewPageByTag(int $page, Request $request) : Response
+    public function reviewPageByTag(Request $request) : Response
     {
         $name = mb_substr($request->request->get('param'), 4);
+        $lastId = (int)$request->request->get('lastId');
 
-        $reviews = $this->reviewRepository->findByTagName($name, $page);
+        $reviews = $this->reviewRepository->findByTagName($name, $lastId);
 
-        return $this->render('ajax/review/page.html.twig', [
-            'reviews' => $reviews,
+        $end = end($reviews);
+        return $this->json([
+            'html' => $this->render('ajax/review/page.html.twig', [
+                'reviews' => $reviews,
+            ]),
+            'lastId' => $end ? $end->getId() : 0,
         ]);
     }
 
     #[Route(
-        '/{_locale<%app.locales%>}/ajax/reviews-by-user/page/{page}',
+        '/{_locale<%app.locales%>}/ajax/reviews-by-user/page',
         name: 'review_by_user',
-        requirements: ['page' => '\d+'],
         methods: ['POST'],
     )]
-    public function reviewByUser(int $page, Request $request) : Response
+    public function reviewByUser(Request $request) : Response
     {
+        $lastId = (int)$request->request->get('lastId');
         $params = explode(',', $request->request->get('param'));
 
         switch($params[1]){
             case $this->sortedTypes[1]: 
-                $reviews = $this->reviewRepository->findByUser((int)$params[0], $page, 'averageRating');
+                $reviews = $this->reviewRepository->findByUser((int)$params[0], $lastId, 'averageRating');
                 break;
             default:
-                $reviews = $this->reviewRepository->findByUser((int)$params[0], $page);
+                $reviews = $this->reviewRepository->findByUser((int)$params[0], $lastId);
                 break;
         }
 
-        return $this->render('ajax/review/page.html.twig', [
-            'reviews' => $reviews,
+        $end = end($reviews);
+        return $this->json([
+            'html' => $this->render('ajax/review/page.html.twig', [
+                'reviews' => $reviews,
+            ]),
+            'lastId' => $end ? $end->getId() : 0,
         ]);
     }
 

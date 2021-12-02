@@ -60,19 +60,22 @@ class ReviewRepository extends ServiceEntityRepository
             ;
     }
 
-    public function getLastReviews(int $page, string $sortedBy = null) : array
+    public function getLastReviews(int $lastId, string $sortedBy = null) : array
     {
         /** @var QueryBuilder $qb */
-        $qb = $this->getMainQuery('r');
+        $qb = $this->getMainQuery('r')
+            ->setMaxResults(self::REVIEW_ON_PAGE)
+            ;
+        if($lastId != -1){
+            $qb->andWhere('r.id < :lastId')
+                ->setParameter('lastId', $lastId);
+        }
         if($sortedBy != null){
             $qb->OrderBy('r.'.$sortedBy, 'DESC')
                 ->addOrderBy('r.id', 'DESC');
         } else {
             $qb->orderBy('r.id', 'DESC');
         }
-        $qb->setFirstResult(($page - 1) * self::REVIEW_ON_PAGE)
-            ->setMaxResults(self::REVIEW_ON_PAGE)
-            ;
 
         $paginator = new Paginator($qb, true);
 
@@ -85,18 +88,21 @@ class ReviewRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function findByUser(int $userId, int $page, string $orderBy = null) : array
+    public function findByUser(int $userId, int $lastId, string $orderBy = null) : array
     {
         $qb = $this->getMainQuery()
             ->where('u.id = :userId')
             ->setParameter('userId', $userId)
-            ->setFirstResult(($page - 1) * self::REVIEW_ON_PAGE)
             ->setMaxResults(self::REVIEW_ON_PAGE);
         if($orderBy != null){
             $qb->orderBy('r.'.$orderBy, 'DESC')
                 ->addOrderBy('r.id', 'DESC');
         } else {
             $qb->orderBy('r.id', 'DESC');
+        }
+        if($lastId !== -1){
+            $qb->andWhere('r.id < :lastId')
+                ->setParameter('lastId', $lastId);
         }
 
         $paginator = new Paginator($qb, true);
@@ -181,7 +187,7 @@ class ReviewRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByTagName(string $name, int $page) : array
+    public function findByTagName(string $name, int $lastId) : array
     {
         $qb = $this->createQueryBuilder('r')
             ->select('r')
@@ -189,9 +195,12 @@ class ReviewRepository extends ServiceEntityRepository
             ->where('t.name = :tagName')
             ->setParameter('tagName', $name)
             ->orderBy('r.id', 'DESC')
-            ->setFirstResult(($page - 1) * self::REVIEW_ON_PAGE)
             ->setMaxResults(self::REVIEW_ON_PAGE)
             ;
+        if($lastId !== -1) {
+            $qb->andWhere('r.id < :lastId')
+                ->setParameter('lastId', $lastId);
+        }
 
         $paginator = new Paginator($qb, true);
 

@@ -20,17 +20,25 @@ class SearchController extends AbstractController
     }
 
     #[Route(
-        '/{_locale<%app.locales%>}/ajax/search/page/{page}',
+        '/{_locale<%app.locales%>}/ajax/search/page',
         'review_search_page',
-        requirements: ['page' => '\d+'],
-        methods: ['GET'],
+        methods: ['POST'],
     )]
-    public function search(Request $request, int $page) : Response
+    public function search(Request $request) : Response
     {
         $query = $request->get('param');
+        $page = (int)$request->request->get('lastId');
+        if($page == -1) {
+            $page = 1;
+        }
 
-        return $this->render('ajax/review/page.html.twig', [
-            'reviews' => $this->searcher->getResultByPage($query, $page),
+        $reviews = $this->searcher->getResultByPage($query, $page);
+
+        return $this->json([
+            'html' => $this->render('ajax/review/page.html.twig', [
+                'reviews' => $reviews,
+            ]),
+            'lastId' => $reviews == null ? 0 : $page + 1,
         ]);
     }
 }

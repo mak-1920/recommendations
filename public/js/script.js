@@ -1,6 +1,5 @@
 jQuery(function(){
-    var lastInd = {}
-    var pages = {}
+    var lastId = {}
     var xhr = {}
     var isGeneration = {}
     var isEnd = {}
@@ -24,22 +23,26 @@ jQuery(function(){
 
         var data = {}
         if(param != -1)
-            data = {'param': param}
+            data = {
+                'param': param,
+                'lastId': lastId[type],
+            }
         var locale = getLocale()
 
         xhr[type] = $.ajax({
-            url: '/' + locale + '/ajax/' + type + '/page/' + pages[type],
+            url: '/' + locale + '/ajax/' + type + '/page',
             type: 'post',
-            dataType: 'html',
+            dataType: 'json',
             data: data,
             beforeSend: function(){
                 $('#generation-status-' + type).removeClass('d-none')
             },
-            success: function(html){
-                if($(html).length === 0) 
+            success: function(res){
+                if(res.lastId === 0) 
                     isEnd[type] = true
-                $('.scrolling-block').append(html)
-                pages[type]++
+                $('.scrolling-block').append(res.html.content)
+                lastId[type] = res.lastId
+                console.log(res)
             },
             complete: function(){
                 $('#generation-status-' + type).addClass('d-none')
@@ -55,7 +58,7 @@ jQuery(function(){
             + '<div class="spinner-border text-primary" id="generation-status-' 
             + type 
             + '"><span class="sr-only"></span></div></div>')
-        pages[type] = 1
+        lastId[type] = -1
         isEnd[type] = false
         isGeneration[type] = false
         ajaxGenerate(type, param)

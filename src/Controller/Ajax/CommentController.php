@@ -19,21 +19,27 @@ use Symfony\Component\Validator\Constraints\Existence;
 class CommentController extends BaseController
 {
     #[Route(
-        '/{_locale<%app.locales%>}/ajax/comment/page/{page}', 
+        '/{_locale<%app.locales%>}/ajax/comment/page', 
         name: 'comment', 
-        requirements: ['page' => '\d+'], 
         methods: ['POST'],
     )]
-    public function index(int $page, Request $request) : Response
+    public function index(Request $request) : Response
     {
         $review = $this->reviewRepository->find($request->get('param'));
+        $lastId = (int)$request->request->get('lastId');
+
         $comments = $this->commentRepository->getPageComment(
-            $page,
+            $lastId,
             $review ?? [],
         );
 
-        return $this->render('ajax/comment/page.html.twig', [
-            'comments' => $comments,
+        $end = end($comments);
+        return $this->json([
+            'html' => $this->render('ajax/comment/page.html.twig', [
+                'comments' => $comments,
+            ]),
+            'lastId' => $end ? $end->getId() : 0,
+            'result' => true,
         ]);
     }
 

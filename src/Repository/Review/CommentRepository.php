@@ -25,7 +25,7 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
-    public function getPageComment(int $page, Review $review) : array
+    public function getPageComment(int $lastId, Review $review) : array
     {
         $query = $this->createQueryBuilder('c')
             ->select('c, u, r, ur')
@@ -33,10 +33,16 @@ class CommentRepository extends ServiceEntityRepository
             ->join('c.review', 'r')
             ->leftJoin('u.reviews', 'ur')
             ->where('r = :review')
-            ->setFirstResult(($page - 1) * 20)
-            ->setMaxResults(20)
+            ;
+        if($lastId != -1){
+            $query->andWhere('c.id < :lastId')   
+                ->setParameter('lastId', $lastId)
+                ;
+        }
+        $query->setMaxResults(20)
             ->orderBy('c.id', 'DESC')
-            ->setParameter('review', $review);
+            ->setParameter('review', $review)
+            ;
 
         $paginator = new Paginator($query, true);
 
