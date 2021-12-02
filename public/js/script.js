@@ -99,6 +99,7 @@ jQuery(function(){
         multiple: true,
         tokenSeparators: [',', ' '], 
         width: '100%',
+        // dropdownCssClass: 'select2-dropdown',
     }).on('select2:select', e => {
         var data = e.params.data
         var input = $('.tags-input')
@@ -382,7 +383,7 @@ jQuery(function(){
     window.onbeforeunload = function(){
         var uploader = $('.file-uploader')
 
-        if(uploader.length && saveImages){
+        if(uploader.length &&  location.test(/\/edit\//) && saveImages){
             saveImages = false
             var illustrations = []
             $('.illustrations :input').each(function(index) {

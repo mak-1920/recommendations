@@ -119,7 +119,7 @@
       </trans-unit>
       <trans-unit id="registration_button" resname="registration_button">
         <source>registration_button</source>
-        <target>зарегистрироваться</target>
+        <target>отправить</target>
       </trans-unit>
       <trans-unit id="sign_in" resname="sign_in">
         <source>sign_in</source>
@@ -196,6 +196,14 @@
       <trans-unit id="Illustrations input" resname="Illustrations input">
         <source>Illustrations input</source>
         <target>Иллюстрации</target>
+      </trans-unit>
+      <trans-unit id="dark" resname="dark">
+        <source>dark</source>
+        <target>темная</target>
+      </trans-unit>
+      <trans-unit id="light" resname="light">
+        <source>light</source>
+        <target>светлая</target>
       </trans-unit>
     </body>
   </file>

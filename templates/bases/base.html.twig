@@ -1,3 +1,5 @@
+{% set theme = 'dark' %}
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,6 +7,7 @@
         <title>{% block title %}Recommendations{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         {% block stylesheets %}
+            <link rel="stylesheet" href="/css/themes/{{ tm.theme }}.css">
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
@@ -13,8 +16,8 @@
         {% endblock %}
     </head>
     <body>
-        <header class="navbar-light bg-light mb-2 px-2 sticky-top border-bottom">
-            <nav class="navbar navbar-expand-lg">
+        <header class="bg-light mb-2 px-2 sticky-top">
+            <nav class="navbar navbar-{{ theme }} navbar-expand-lg">
                 <div class="container-fluid">
                     <a href="{{ path('reviews') }}" class="navbar-brand p-0 me-2">Recommendations</a>
                     <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-menu"
@@ -36,6 +39,19 @@
                                 <div class="dropdown-menu dropdown-menu-right my-2" aria-labelledby="dropdown-language">
                                     <a class="dropdown-item" href="{{ path('reviews', {_locale: 'en'}) }}">English</a>
                                     <a class="dropdown-item" href="{{ path('reviews', {_locale: 'ru'}) }}">Русский</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdown-theme" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ tm.theme|trans|u.title }}
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right my-2" aria-labelledby="dropdown-theme">
+                                    {% for theme in tm.themes %}
+                                        <a href="{{ path('settings_theme', {'theme': theme}) }}" class="dropdown-item">
+                                            {{ theme|trans|u.title }}
+                                        </a>
+                                    {% endfor %}
                                 </div>
                             </li>
                             <li class="nav-item">
