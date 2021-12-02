@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class ThemeManager
 {
-    private Request $request;
+    private ?Request $request;
     private array $themes;
 
     public function __construct(
