@@ -42,7 +42,6 @@ jQuery(function(){
                     isEnd[type] = true
                 $('.scrolling-block').append(res.html.content)
                 lastId[type] = res.lastId
-                console.log(res)
             },
             complete: function(){
                 $('#generation-status-' + type).addClass('d-none')
@@ -376,12 +375,10 @@ jQuery(function(){
                 $(uploader).fileinput('disable')
             },
             success: function(res){
-                console.log(res, id)
                 $('[id*="' + id + '"]').fadeOut(
                     300, 
                     function(){ 
                         $(this).remove()
-                        console.log('remove')
                     }
                 )
                 illustrations.splice(illustrations.indexOf(ind), 1)
