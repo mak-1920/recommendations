@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Entity\Review\Review;
 use App\Entity\Review\ReviewIllustration;
 use Cloudinary\Cloudinary;
+use Doctrine\ORM\EntityManager;
 use Exception;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -17,24 +18,21 @@ class FileStorage
 
     public function __construct(
         string $url, 
-        private string $directory)
+        private string $directory,
+        private EntityManager $entityManager,
+    )
     {
         $this->cloudinary = new Cloudinary($url);
     }
-
-    private function getTempFolderPath() : string
+    private function getPath() : string
     {
-        return 'temp/';
-    }
-    private function getPath(string $folder) : string
-    {
-        return 'reviews/' . $folder . '/';
+        return 'reviews/';
     }
 
-    public function uploadIllustration(string $folder, string $filePath) : string
+    public function uploadIllustration(string $filePath) : string
     {
         $response = $this->cloudinary->uploadApi()->upload($filePath, [
-            'folder' => $this->getPath($folder),
+            'folder' => $this->getPath(),
             'eager' => [
                 'width' => 500,
                 'height' => 500,
@@ -69,12 +67,14 @@ class FileStorage
             
             $review->addIllustration($newIllustration);
         }
+
+        $this->entityManager->flush();
     }
 
     public function uploadTemporaryFile(UploadedFile $file) : string|false
     {
         if($file){
-            return $this->uploadIllustration($this->getTempFolderPath(), $file->getPathname());
+            return $this->uploadIllustration($file->getPathname());
         }
         return false;
     }

@@ -125,6 +125,7 @@ jQuery(function(){
 
     $('.review-create-button').click(function() {
         $(".tags-input").val('')
+        saveImages = false
     })
 
     var tags = $('.tags :input').map((i,e) => {
@@ -292,9 +293,32 @@ jQuery(function(){
         var listItem = $(input).closest('fieldset')
         $(listItem).remove()
     }
+    function getIllustrationsImages(){
+        var imgs = []
+
+        $('.illustrations :input').each(function(index) {
+            imgs.push("<img src='" + cloudinaryPath + $(this).val() + "' class='file-preview-image'>")
+        })
+
+        return imgs
+    }
+    function getIllustrationsConfigs(){
+        var imgs = []
+
+        $('.illustrations :input').each(function(index) {
+            imgs.push({
+                'fileId': $(this).val(),
+                'key': $(this).val(),
+            })
+        })
+
+        return imgs
+    }
 
     $('.file-uploader').fileinput({
         allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+        initialPreview: getIllustrationsImages(),
+        initialPreviewConfig: getIllustrationsConfigs(),
         language: getLocale(),
         maxFileSize:2000,
         overwriteInitial: false,
@@ -302,6 +326,10 @@ jQuery(function(){
         showRemove: false,
         theme: 'bs5',
         uploadUrl: '/ajax/add_temp_illustration',
+        deleteUrl: '/ajax/remove_temp_illustration',
+        fileActionSettings: {
+            showDrag: false,
+        },
     })
     .on('fileuploaded', function(event, previewId, index, fileId){
         var response = previewId.response
@@ -323,7 +351,7 @@ jQuery(function(){
             dataType: 'json',
             method: 'post',
             data: {
-                'fileId': id
+                'key': id
             },
             beforeSend: function(){
                 $(uploader).fileinput('disable')
@@ -346,6 +374,32 @@ jQuery(function(){
 
         return false
     })
+    .on('filedeleted', function(event, ind){
+        removeIllustration(ind)
+    })
+
+    var saveImages = true
+    window.onbeforeunload = function(){
+        var uploader = $('.file-uploader')
+
+        if(uploader.length && saveImages){
+            saveImages = false
+            var illustrations = []
+            $('.illustrations :input').each(function(index) {
+                illustrations.push($(this).val())
+            })
+
+            $.ajax({
+                url: '/ajax/save-illustrations',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    'reviewId': getReviewID(),
+                    'illustrations': illustrations,
+                }
+            })
+        }
+    }
 
     $('.carousel').carousel()
 })

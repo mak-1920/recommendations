@@ -2,9 +2,10 @@
 
 namespace App\Controller\Ajax;
 
+use App\Repository\Review\ReviewRepository;
 use App\Services\FileStorage;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,7 +26,6 @@ class IllustrationController extends AbstractController
     {
         /** @var UploadedFile $file */
         $file = $request->files->get('review_creator')['illustrations_input'][0];
-        $filename = $request->request->get('fileId');
 
         $res = $this->fileStorage->uploadTemporaryFile($file);
 
@@ -54,7 +54,7 @@ class IllustrationController extends AbstractController
     )]
     public function removeTempIllustration(Request $request) : Response
     {
-        $filename = $request->request->get('fileId');
+        $filename = $request->request->get('key');
         
         if(!$this->fileStorage->removeTemporaryFile($filename)){
             return $this->json(
@@ -72,5 +72,39 @@ class IllustrationController extends AbstractController
                 Response::HTTP_ACCEPTED
             );
         }
+    }
+
+    #[Route(
+        '/ajax/save-illustrations',
+        name: 'save_illustrations',
+        methods: ['POST'],
+    )]
+    public function saveIllustrations(Request $request, ReviewRepository $reviewRepository) : Response
+    {
+        $reviewId = $request->request->get('reviewId');
+        /** @var string[] $illustrations */
+        $illustrations = $request->request->get('illustrations');
+
+        try {
+            $this->fileStorage->updateReviewIllustrations(
+                $reviewRepository->findByID($reviewId),
+                $illustrations,
+            );
+        } catch(Exception $e){
+            return $this->json(
+                [
+                    'result' => false,
+                    'message' => $e->getMessage(),
+                ],
+                Response::HTTP_FAILED_DEPENDENCY,
+            );
+        }
+
+        return $this->json(
+            [
+                'result' => true,
+            ],
+            Response::HTTP_ACCEPTED,
+        );
     }
 }
