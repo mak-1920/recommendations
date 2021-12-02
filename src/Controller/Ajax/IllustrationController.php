@@ -20,16 +20,16 @@ class IllustrationController extends AbstractController
     ) {}
 
     #[Route(
-        '/ajax/add_temp_illustration',
-        name: 'add_temp_illustration',
+        '/ajax/add_illustration',
+        name: 'add_illustration',
         methods: ['POST'],
     )]
-    public function addTempIllustration(Request $request): Response
+    public function addIllustration(Request $request): Response
     {
         /** @var UploadedFile $file */
         $file = $request->files->get('review_creator')['illustrations_input'][0];
 
-        $res = $this->fileStorage->uploadTemporaryFile($file);
+        $res = $this->fileStorage->uploadIllustration($file);
 
         if(!$res){
             return $this->json(
@@ -50,15 +50,15 @@ class IllustrationController extends AbstractController
     }
 
     #[Route(
-        '/ajax/remove_temp_illustration',
-        name: 'remove_temp_illustration',
+        '/ajax/remove_illustration',
+        name: 'remove_illustration',
         methods: ['POST'],
     )]
-    public function removeTempIllustration(Request $request) : Response
+    public function removeIllustration(Request $request) : Response
     {
         $filename = $request->request->get('key');
         
-        if(!$this->fileStorage->removeTemporaryFile($filename)){
+        if(!$this->fileStorage->removeIllustration($filename)){
             return $this->json(
                 [
                     'result' => false,
@@ -101,6 +101,25 @@ class IllustrationController extends AbstractController
                 Response::HTTP_FAILED_DEPENDENCY,
             );
         }
+
+        return $this->json(
+            [
+                'result' => true,
+            ],
+            Response::HTTP_ACCEPTED,
+        );
+    }
+
+    #[Route(
+        '/ajax/remove-temporary-illustrations',
+        'remove_temporary_illustrations',
+        methods: ['POST'],
+    )]
+    public function removeTemporaryIllustrations(Request $request) : Response
+    {
+        $illustrations = (array)$request->request->get('illustrations');
+
+        $this->fileStorage->removeFiles($illustrations);
 
         return $this->json(
             [

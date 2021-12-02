@@ -326,8 +326,8 @@ jQuery(function(){
         showClose: false,
         showRemove: false,
         theme: 'bs5',
-        uploadUrl: '/ajax/add_temp_illustration',
-        deleteUrl: '/ajax/remove_temp_illustration',
+        uploadUrl: '/ajax/add_illustration',
+        deleteUrl: '/ajax/remove_illustration',
         fileActionSettings: {
             showDrag: false,
         },
@@ -348,7 +348,7 @@ jQuery(function(){
         var uploader = $(this)
         
         $.ajax({
-            url: '/ajax/remove_temp_illustration',
+            url: '/ajax/remove_illustration',
             dataType: 'json',
             method: 'post',
             data: {
@@ -383,22 +383,33 @@ jQuery(function(){
     window.onbeforeunload = function(){
         var uploader = $('.file-uploader')
 
-        if(uploader.length &&  location.test(/\/edit\//) && saveImages){
+        if(uploader.length && saveImages){
             saveImages = false
             var illustrations = []
             $('.illustrations :input').each(function(index) {
                 illustrations.push($(this).val())
             })
 
-            $.ajax({
-                url: '/ajax/save-illustrations',
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    'reviewId': getReviewID(),
-                    'illustrations': illustrations,
-                }
-            })
+            if(/\/edit\//i.test(location)){
+                $.ajax({
+                    url: '/ajax/save-illustrations',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        'reviewId': getReviewID(),
+                        'illustrations': illustrations,
+                    }
+                })
+            } else {
+                $.ajax({
+                    url: '/ajax/remove-temporary-illustrations',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        'illustrations': illustrations,
+                    }
+                })
+            }
         }
     }
 })

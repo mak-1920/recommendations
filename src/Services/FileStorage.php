@@ -29,16 +29,19 @@ class FileStorage
         return 'reviews/';
     }
 
-    public function uploadIllustration(string $filePath) : string
+    public function uploadIllustration(UploadedFile $file) : string|false
     {
-        $response = $this->cloudinary->uploadApi()->upload($filePath, [
-            'folder' => $this->getPath(),
-            'eager' => [
-                'width' => 500,
-                'height' => 500,
-            ],
-        ]);
-        return $response->offsetGet('public_id');
+        if($file) {
+            $response = $this->cloudinary->uploadApi()->upload($file->getPathname(), [
+                'folder' => $this->getPath(),
+                'eager' => [
+                    'width' => 500,
+                    'height' => 500,
+                ],
+            ]);
+            return $response->offsetGet('public_id');
+        }
+        return false;
     }
 
     public function removeIllustration(string $fileName) : bool
@@ -71,16 +74,10 @@ class FileStorage
         $this->entityManager->flush();
     }
 
-    public function uploadTemporaryFile(UploadedFile $file) : string|false
+    public function removeFiles(array $illustrations) : void
     {
-        if($file){
-            return $this->uploadIllustration($file->getPathname());
+        foreach($illustrations as $illustration){
+            $this->removeIllustration($illustration);
         }
-        return false;
-    }
-
-    public function removeTemporaryFile(string $fileName) : bool 
-    {
-        return $this->removeIllustration($fileName);
     }
 }

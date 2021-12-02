@@ -10,6 +10,7 @@ use App\Entity\Review\ReviewRating;
 use App\Entity\Users\User;
 use App\Form\Review\ReviewCreatorType;
 use App\Services\ESIndexer;
+use App\Services\FileStorage;
 use App\Services\Searcher;
 use DateTimeImmutable;
 use Elastica\Exception\NotImplementedException;
@@ -123,7 +124,7 @@ class ReviewController extends BaseController
         name: 'review_remove',
         requirements: ['id' => '\d+'],
     )]
-    public function remove(int $id, ESIndexer $eSIndexer) : Response
+    public function remove(int $id, ESIndexer $eSIndexer, FileStorage $fileStorage) : Response
     {
         $review = $this->reviewRepository->findByID($id);
         $user = $this->getUser();
@@ -132,7 +133,13 @@ class ReviewController extends BaseController
             throw new AccessDeniedException();
         }
 
+        $illustrations = [];
+        foreach($review->getIllustrations() as $illustration){
+            $illustrations[] = $illustration->getImg();
+        }
+
         $eSIndexer->delete($review);
+        $fileStorage->removeFiles($illustrations);
 
         $this->reviewRepository->remove($review);
 
