@@ -8,7 +8,7 @@
         <div class="display-5 text-center mb-3">
             {{ review.title }}
         </div>
-        <div class="container bg-light">
+        <div class="container bg-light py-2 rounded-2 border mb-2">
             <div class="">
                 {% if review.author == app.user or is_granted('ROLE_ADMIN') %}
                     <p class="mb-1">

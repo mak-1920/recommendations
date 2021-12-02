@@ -58,6 +58,10 @@ header {
     border-color: var(--bs-secondary) !important;
     color: var(--button-color) !important;
 }
+.fileinput-upload-button {
+    color: var(--bs-secondary) !important;
+    border-color: var(--border-def-color) !important;
+}
 .btn-success {
     background-color: var(--bs-success) !important;
     border-color: var(--bs-success) !important;
