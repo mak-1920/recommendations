@@ -85,7 +85,7 @@ class IllustrationController extends AbstractController
     {
         $reviewId = $request->request->get('reviewId');
         /** @var string[] $illustrations */
-        $illustrations = $request->request->get('illustrations');
+        $illustrations = $request->request->get('illustrations') ?? [];
 
         try {
             $this->fileStorage->updateReviewIllustrations(
@@ -117,7 +117,7 @@ class IllustrationController extends AbstractController
     )]
     public function removeTemporaryIllustrations(Request $request) : Response
     {
-        $illustrations = (array)$request->request->get('illustrations');
+        $illustrations = (array)$request->request->get('illustrations') ?? [];
 
         $this->fileStorage->removeFiles($illustrations);
 

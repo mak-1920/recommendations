@@ -92,6 +92,10 @@ header {
 .file-drop-zone {
     border: 1px dashed var(--border-def-color) !important;
 }
+.file-highlighted {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+}
 
 .table {
     color: var(--bs-body-color) !important;

@@ -31,6 +31,7 @@ class ReviewCreatorType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'class' => 'file-uploader',
+                    'name' => null,
                 ],
             ])
             ->add('illustrations', CollectionType::class, [

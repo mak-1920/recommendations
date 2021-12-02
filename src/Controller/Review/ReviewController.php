@@ -42,11 +42,13 @@ class ReviewController extends BaseController
 
     #[Route('/{_locale<%app.locales%>}/review/edit/id{id}', name: 'review_edit', requirements: ['id' => '\d+'], defaults: ['id' => '0'])]
     #[Route('/{_locale<%app.locales%>}/review/create', name: 'review_create')]
-    public function create(Request $request, Review $review = null, ESIndexer $eSIndexer) : Response
+    public function create(Request $request, int $id = null, ESIndexer $eSIndexer, FileStorage $fileStorage) : Response
     {
         /** @var User $user */
         $user = $this->getUser();
         $iscreating = true;
+
+        $review = $this->reviewRepository->findByID($id);
 
         if($review == null) {
             $review = new Review();
@@ -58,7 +60,7 @@ class ReviewController extends BaseController
             $user = $review->getAuthor();
             $iscreating = false;
         }
-
+        
         $form = $this->createForm(ReviewCreatorType::class, $review);
         $form->handleRequest($request);
 
@@ -71,7 +73,13 @@ class ReviewController extends BaseController
             if(isset($formData['tags'])){
                 $tags = $this->reviewTagRepository->getEntityFromStringArray($formData['tags']);
             }
-
+            $illustrations = [];
+            if(isset($formData['illustrations'])){
+                foreach($formData['illustrations'] as $illustration){
+                    $illustrations[] = $illustration['img'];
+                }
+            }
+            $review = $fileStorage->updateReviewIllustrations($review, $illustrations, false);
             $review = $this->reviewRepository->createOrUpdate($review, $user, $tags);
 
             if($iscreating){

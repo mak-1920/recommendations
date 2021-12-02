@@ -15,6 +15,7 @@ class ReviewIllustrationType extends AbstractType
         $builder
             ->add('img', TextType::class, [
                 'label' => false,
+                'empty_data' => '',
             ])
         ;
     }

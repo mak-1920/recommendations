@@ -17,6 +17,7 @@ class ReviewTagType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => false,
+                'empty_data' => '',
             ])
         ;
     }

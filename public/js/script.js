@@ -126,7 +126,11 @@ jQuery(function(){
 
     $('.review-create-button').click(function() {
         $(".tags-input").val('')
+        $('.file-uploader').val('')
         saveImages = false
+        for(var illustration of illustrations) {
+            createIllustration(illustration)
+        }
     })
 
     var tags = $('.tags :input').map((i,e) => {
@@ -273,12 +277,12 @@ jQuery(function(){
         return confirm(text)
     })
 
-    function getIllustrationInput(name) {
-        var item = $('.illustrations :input').filter(function() {
-            return this.value == name
-        })
-        return item
-    }
+    // function getIllustrationInput(name) {
+    //     var item = $('.illustrations :input').filter(function() {
+    //         return this.value == name
+    //     })
+    //     return item
+    // }
     function createIllustration(name) {
         var list = $('.illustrations')
         var index = +$(list).attr('data-index')
@@ -289,33 +293,43 @@ jQuery(function(){
         $(list).append($(item))
         $(list).attr('data-index', index + 1)
     }
-    function removeIllustration(name) {
-        var input = getIllustrationInput(name)
-        var listItem = $(input).closest('fieldset')
-        $(listItem).remove()
+    // function removeIllustration(name) {
+    //     var input = getIllustrationInput(name)
+    //     var listItem = $(input).closest('fieldset')
+    //     $(listItem).remove()
+    // }
+    function setIllustrations() {
+        $('.illustrations :input').each(function() {
+            illustrations.push($(this).val())
+            $(this).closest('fieldset').remove()
+        })
+        $('.illustrations').attr('data-index', 0)
     }
     function getIllustrationsImages(){
         var imgs = []
 
-        $('.illustrations :input').each(function(index) {
-            imgs.push("<img src='" + cloudinaryPath + $(this).val() + "' class='file-preview-image'>")
-        })
+        for(var illustration of illustrations) {
+            imgs.push("<img src='" + cloudinaryPath + illustration + "' class='file-preview-image'>")
+        }
 
         return imgs
     }
     function getIllustrationsConfigs(){
         var imgs = []
 
-        $('.illustrations :input').each(function(index) {
+        for(var illustration of illustrations) {
             imgs.push({
-                'fileId': $(this).val(),
-                'key': $(this).val(),
+                'fileId': illustration,
+                'key': illustration,
             })
-        })
+        }
 
         return imgs
     }
 
+    var illustrations = []
+
+    setIllustrations()
     $('.file-uploader').fileinput({
         allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
         initialPreview: getIllustrationsImages(),
@@ -339,8 +353,8 @@ jQuery(function(){
         if(response.result) {
             $(el).attr('id', response.name)
             $(el).find('img').attr('src', cloudinaryPath + response.name)
-            
-            createIllustration(response.name)
+
+            illustrations.push(response.name)
             return false
         }
     })
@@ -366,7 +380,7 @@ jQuery(function(){
                         console.log('remove')
                     }
                 )
-                removeIllustration(id)
+                illustrations.splice(illustrations.indexOf(ind), 1)
             },
             complete: function(){
                 $(uploader).fileinput('enable')
@@ -376,7 +390,9 @@ jQuery(function(){
         return false
     })
     .on('filedeleted', function(event, ind){
-        removeIllustration(ind)
+        // removeIllustration(ind)
+        illustrations.splice(illustrations.indexOf(ind), 1)
+        return false
     })
 
     var saveImages = true
@@ -385,10 +401,6 @@ jQuery(function(){
 
         if(uploader.length && saveImages){
             saveImages = false
-            var illustrations = []
-            $('.illustrations :input').each(function(index) {
-                illustrations.push($(this).val())
-            })
 
             if(/\/edit\//i.test(location)){
                 $.ajax({

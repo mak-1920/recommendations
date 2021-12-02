@@ -9,7 +9,6 @@ use App\Entity\Review\ReviewIllustration;
 use Cloudinary\Cloudinary;
 use Doctrine\ORM\EntityManager;
 use Exception;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileStorage 
@@ -46,12 +45,19 @@ class FileStorage
 
     public function removeIllustration(string $fileName) : bool
     {
-        $response = $this->cloudinary->uploadApi()->destroy($fileName);
-        return (bool) $response->offsetGet('result');
+        $res = false;
+        try{
+            $response = $this->cloudinary->uploadApi()->destroy($fileName);
+            $res = (bool) $response->offsetGet('result');
+        } catch (Exception $e){}
+        return true;
     }
 
-    public function updateReviewIllustrations(Review $review, array $newIllustrations) : void 
+    public function updateReviewIllustrations(Review $review, ?array $newIllustrations, bool $flush = true) : Review 
     {
+        if($newIllustrations == null){
+            $newIllustrations = [];
+        }
         $oldIllustrations = $review->getIllustrations();
         
         foreach($oldIllustrations as $illustraion){
@@ -71,12 +77,16 @@ class FileStorage
             $review->addIllustration($newIllustration);
         }
 
-        $this->entityManager->flush();
+        if($flush) {
+            $this->entityManager->flush();
+        }
+        return $review;
     }
 
     public function removeFiles(array $illustrations) : void
     {
         foreach($illustrations as $illustration){
+
             $this->removeIllustration($illustration);
         }
     }
