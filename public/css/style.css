@@ -2,8 +2,8 @@
     max-height: 10rem;
 }
 
-.mh-carousel {
-    max-height: 25rem;
+.h-25 {
+    height: 25rem !important;
 }
 
 .h-10 {

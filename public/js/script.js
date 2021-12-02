@@ -400,6 +400,4 @@ jQuery(function(){
             })
         }
     }
-
-    $('.carousel').carousel()
 })
