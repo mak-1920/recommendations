@@ -102,7 +102,6 @@ jQuery(function(){
         multiple: true,
         tokenSeparators: [',', ' '], 
         width: '100%',
-        // dropdownCssClass: 'select2-dropdown',
     }).on('select2:select', e => {
         var data = e.params.data
         var input = $('.tags-input')
@@ -137,10 +136,15 @@ jQuery(function(){
     })
 
     var tags = $('.tags :input').map((i,e) => {
-        return $('.tags-input')
-            .find("option:contains('" + $(e).val() + "'):first")
+        // console.log($('.tags-input').html())
+        return $('.tags-input option')
+            .filter(function() {
+                return this.text == $(e).val()
+            })
+            // .find("option:contains('" + $(e).val() + "'):first")
             .val()
     })
+    // console.log(tags)
     s2.val(tags).trigger('change')
 
     $('.add-comment').click(function(){
@@ -280,12 +284,6 @@ jQuery(function(){
         return confirm(text)
     })
 
-    // function getIllustrationInput(name) {
-    //     var item = $('.illustrations :input').filter(function() {
-    //         return this.value == name
-    //     })
-    //     return item
-    // }
     function createIllustration(name) {
         var list = $('.illustrations')
         var index = +$(list).attr('data-index')
@@ -296,11 +294,6 @@ jQuery(function(){
         $(list).append($(item))
         $(list).attr('data-index', index + 1)
     }
-    // function removeIllustration(name) {
-    //     var input = getIllustrationInput(name)
-    //     var listItem = $(input).closest('fieldset')
-    //     $(listItem).remove()
-    // }
     function setIllustrations() {
         $('.illustrations :input').each(function() {
             illustrations.push($(this).val())
@@ -358,6 +351,7 @@ jQuery(function(){
             $(el).find('img').attr('src', cloudinaryPath + response.name)
 
             illustrations.push(response.name)
+            saveImages = true
             return false
         }
     })
@@ -382,6 +376,7 @@ jQuery(function(){
                     }
                 )
                 illustrations.splice(illustrations.indexOf(ind), 1)
+                saveImages = true
             },
             complete: function(){
                 $(uploader).fileinput('enable')
@@ -391,12 +386,12 @@ jQuery(function(){
         return false
     })
     .on('filedeleted', function(event, ind){
-        // removeIllustration(ind)
         illustrations.splice(illustrations.indexOf(ind), 1)
+        saveImages = true
         return false
     })
 
-    var saveImages = true
+    var saveImages = false
     window.onbeforeunload = function(){
         var uploader = $('.file-uploader')
 

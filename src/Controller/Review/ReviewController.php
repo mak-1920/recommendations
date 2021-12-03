@@ -61,6 +61,9 @@ class ReviewController extends BaseController
             $iscreating = false;
         }
         
+        if($request->request->get('review_creator')){
+            $review->setTags([]);
+        }
         $form = $this->createForm(ReviewCreatorType::class, $review);
         $form->handleRequest($request);
 
