@@ -7,12 +7,23 @@
         <title>{% block title %}Recommendations{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         {% block stylesheets %}
-            <link rel="stylesheet" href="/css/themes/{{ tm.theme }}.css">
             {{ encore_entry_link_tags('app') }}
+            <link rel="stylesheet" href="/css/themes/{{ tm.theme }}.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.2.0/dist/select2-bootstrap-5-theme.min.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/css/fileinput.css">
+            <link rel="stylesheet" href="/css/style.css">
         {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+            <script src="https://getbootstrap.com/docs/5.1/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/js/fileinput.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.5/themes/bs5/theme.js"></script>
+            <script src="/js/fileinput/ru.js"></script>
+            <script src="/js/script.js"></script>
         {% endblock %}
     </head>
     <body>
