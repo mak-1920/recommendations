@@ -136,15 +136,12 @@ jQuery(function(){
     })
 
     var tags = $('.tags :input').map((i,e) => {
-        // console.log($('.tags-input').html())
         return $('.tags-input option')
             .filter(function() {
                 return this.text == $(e).val()
             })
-            // .find("option:contains('" + $(e).val() + "'):first")
             .val()
     })
-    // console.log(tags)
     s2.val(tags).trigger('change')
 
     $('.add-comment').click(function(){
@@ -159,6 +156,7 @@ jQuery(function(){
             },
             success: function(){
                 $('.comment-text').val('')
+                location.reload()
             },
             complete: function(){
                 $('.add-comment').removeAttr('disabled')
