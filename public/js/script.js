@@ -1,11 +1,7 @@
 jQuery(function(){
-    var lastId = {}
-    var xhr = {}
-    var isGeneration = {}
-    var isEnd = {}
-
     var cloudinaryPath = 'https://res.cloudinary.com/ht74ky0yv/image/upload/v1638384344/'
 
+    /*>>>>>>>>>>> global funcs >>>>>>>>>>>>*/
     function getReviewID(){
         var location = window.location.pathname
         return (location.match(/id(\d+)$/i)[1])
@@ -15,6 +11,13 @@ jQuery(function(){
         var path = window.location.pathname
         return path.match(/^\/(ru|en)\//)[1]
     }
+    /*<<<<<<<<<<< global funcs <<<<<<<<<<<<*/
+
+    /*>>>>>>>>>>> scrolling >>>>>>>>>>>>*/
+    var lastId = {}
+    var xhr = {}
+    var isGeneration = {}
+    var isEnd = {}
 
     function ajaxGenerate(type, param = -1){
         if(isGeneration[type]) 
@@ -73,7 +76,9 @@ jQuery(function(){
                 ajaxGenerate(type, id)
             })
     });
+    /*<<<<<<<<<<< scroll <<<<<<<<<<<<*/
 
+    /*>>>>>>>>>>> tags >>>>>>>>>>>>*/
     function getTagInput(name) {
         var item = $('.tags :input').filter(function() {
             return this.value == name
@@ -126,6 +131,17 @@ jQuery(function(){
         return false
     })
 
+    var tags = $('.tags :input').map((i,e) => {
+        return $('.tags-input option')
+            .filter(function() {
+                return this.text == $(e).val()
+            })
+            .val()
+    })
+    s2.val(tags).trigger('change')
+    /*<<<<<<<<<<< tags <<<<<<<<<<<<*/
+
+    /*>>>>>>>>>>> review edit >>>>>>>>>>>>*/
     $('.review-create-button').click(function() {
         $(".tags-input").val('')
         $('.file-uploader').val('')
@@ -135,15 +151,13 @@ jQuery(function(){
         }
     })
 
-    var tags = $('.tags :input').map((i,e) => {
-        return $('.tags-input option')
-            .filter(function() {
-                return this.text == $(e).val()
-            })
-            .val()
+    $('.review-remove-button').on('click', function(){
+        var text = $(this).attr('message-text')
+        return confirm(text)
     })
-    s2.val(tags).trigger('change')
+    /*<<<<<<<<<<< review edit <<<<<<<<<<<<*/
 
+    /*>>>>>>>>>>> comments >>>>>>>>>>>>*/
     $('.add-comment').click(function(){
         var reviewId = getReviewID()
         $(this).attr('disabled', 'disabled')
@@ -164,7 +178,9 @@ jQuery(function(){
         })
         return false;
     })
+    /*<<<<<<<<<<< comments <<<<<<<<<<<<*/
 
+    /*>>>>>>>>>>> likes >>>>>>>>>>>>*/
     $('.review-like-button').click(function(){
         var reviewId = getReviewID()
         var button = $(this)
@@ -193,6 +209,36 @@ jQuery(function(){
         })
     })
 
+    $('.comments').on('click', '.comment-remove', function(e, b) {
+        var id = $(this).attr('data')
+        var comment = $(this).closest('.comment')
+        var button = $(this)
+
+        $.ajax({
+            url: '/ajax/comment/remove',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                'id': id,
+            },
+            beforeSend: function(){
+                $(button).addClass('d-none')
+            },
+            success: function(res){
+                if(res.result){
+                    $(comment).remove()
+                }
+            },
+            complete: function(){
+                if($(comment).length){
+                    $(button).removeClass('d-none')
+                }
+            }
+        })
+    })
+    /*<<<<<<<<<<< likes <<<<<<<<<<<<*/
+
+    /*>>>>>>>>>>> rating >>>>>>>>>>>>*/
     $(document).on({
         mouseenter: function(){
             var buttons = $(this).parent()
@@ -212,6 +258,7 @@ jQuery(function(){
                 .addClass('btn-secondary')
         }
     }, '.review-rating-buttons:not(.appreciated) button')
+
     $('.review-rating-buttons button').on('click', function(){
         var id = getReviewID()
         var buttons = $(this).parent()
@@ -248,40 +295,9 @@ jQuery(function(){
             }
         })
     })
+    /*<<<<<<<<<<< rating <<<<<<<<<<<<*/
 
-    $('.comments').on('click', '.comment-remove', function(e, b) {
-        var id = $(this).attr('data')
-        var comment = $(this).closest('.comment')
-        var button = $(this)
-
-        $.ajax({
-            url: '/ajax/comment/remove',
-            type: 'post',
-            dataType: 'json',
-            data: {
-                'id': id,
-            },
-            beforeSend: function(){
-                $(button).addClass('d-none')
-            },
-            success: function(res){
-                if(res.result){
-                    $(comment).remove()
-                }
-            },
-            complete: function(){
-                if($(comment).length){
-                    $(button).removeClass('d-none')
-                }
-            }
-        })
-    })
-
-    $('.review-remove-button').on('click', function(){
-        var text = $(this).attr('message-text')
-        return confirm(text)
-    })
-
+    /*>>>>>>>>>>> illustrations >>>>>>>>>>>>*/
     function createIllustration(name) {
         var list = $('.illustrations')
         var index = +$(list).attr('data-index')
@@ -324,7 +340,7 @@ jQuery(function(){
     var illustrations = []
 
     setIllustrations()
-    $('.file-uploader').fileinput({
+    var uploader = $('.file-uploader').fileinput({
         allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
         initialPreview: getIllustrationsImages(),
         initialPreviewConfig: getIllustrationsConfigs(),
@@ -338,6 +354,9 @@ jQuery(function(){
         deleteUrl: '/ajax/remove_illustration',
         fileActionSettings: {
             showDrag: false,
+        },
+        resumableUploadOptions: {
+            retainErrorHistory: false,
         },
     })
     .on('fileuploaded', function(event, previewId, index, fileId){
@@ -391,9 +410,9 @@ jQuery(function(){
 
     var saveImages = false
     window.onbeforeunload = function(){
-        var uploader = $('.file-uploader')
 
         if(uploader.length && saveImages){
+
             saveImages = false
 
             if(/\/edit\//i.test(location)){
@@ -418,4 +437,5 @@ jQuery(function(){
             }
         }
     }
+    /*<<<<<<<<<<< illustrations <<<<<<<<<<<<*/
 })
