@@ -136,7 +136,7 @@ class ReviewRepository extends ServiceEntityRepository
         /** @var ReviewRepository $reviewRepository */
         $reviewRepository = $em->getRepository(Review::class);
         /** @var Review $review */
-        $review = $reviewRepository->findOneWithLikes($reviewId);
+        $review = $reviewRepository->findOneWithLikesAndTags($reviewId);
 
         $result = true;
         if($review->getLikes()->contains($user)){
