@@ -50,7 +50,7 @@ class AuthController extends BaseController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('review');
+            return $this->redirectToRoute('reviews');
         }
 
         return $this->render('auth/register.html.twig', [
